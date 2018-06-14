@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+=======
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+>>>>>>> 789dac73dcc0e02782b7f73bc4c10eaa3630ffd9
 
 #IncludeRegexScan: ^.*$
 
@@ -6,7 +10,11 @@
 
 #IncludeRegexTransform: 
 
+<<<<<<< HEAD
 /Users/Theodoros/stonefall/Stonefall/main.cpp
+=======
+/Users/david.oyeka/dev/stonefall/main.cpp
+>>>>>>> 789dac73dcc0e02782b7f73bc4c10eaa3630ffd9
 iostream
 -
 

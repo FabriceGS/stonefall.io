@@ -82,10 +82,14 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+<<<<<<< HEAD
 		<Unit filename="/Users/Theodoros/stonefall/Stonefall/GridBlock.cpp">
 			<Option target="stonefall"/>
 		</Unit>
 		<Unit filename="/Users/Theodoros/stonefall/Stonefall/GridBlock.h">
+=======
+		<Unit filename="/Users/david.oyeka/dev/stonefall/main.cpp">
+>>>>>>> 789dac73dcc0e02782b7f73bc4c10eaa3630ffd9
 			<Option target="stonefall"/>
 		</Unit>
 		<Unit filename="/Users/Theodoros/stonefall/Stonefall/GridEntity.h">
