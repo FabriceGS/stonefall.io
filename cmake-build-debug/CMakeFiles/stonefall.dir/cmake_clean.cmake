@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/stonefall.dir/main.cpp.o"
+  "CMakeFiles/stonefall.dir/Stonefall/main.cpp.o"
+  "CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o"
+  "CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o"
   "stonefall.pdb"
   "stonefall"
 )

@@ -1,11 +1,4 @@
-/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/david.oyeka/dev/stonefall
--- The CXX compiler identification is AppleClang 9.1.0.9020039
--- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++
--- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ -- works
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Detecting CXX compile features
--- Detecting CXX compile features - done
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/Theodoros/stonefall
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/david.oyeka/dev/stonefall/cmake-build-debug
+-- Build files have been written to: /Users/Theodoros/stonefall/cmake-build-debug

@@ -8,38 +8,38 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/Users/david.oyeka/dev/stonefall/cmake-build-debug"/>
+				<Option working_dir="/Users/Theodoros/stonefall/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/Users/david.oyeka/dev/stonefall/cmake-build-debug"/>
+				<Option working_dir="/Users/Theodoros/stonefall/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/Users/david.oyeka/dev/stonefall/cmake-build-debug"/>
+				<Option working_dir="/Users/Theodoros/stonefall/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="stonefall">
-				<Option output="/Users/david.oyeka/dev/stonefall/cmake-build-debug/stonefall" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/david.oyeka/dev/stonefall/cmake-build-debug"/>
+				<Option output="/Users/Theodoros/stonefall/cmake-build-debug/stonefall" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/Theodoros/stonefall/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -53,15 +53,15 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 stonefall"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 stonefall"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="stonefall/fast">
-				<Option output="/Users/david.oyeka/dev/stonefall/cmake-build-debug/stonefall" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/Users/david.oyeka/dev/stonefall/cmake-build-debug"/>
+				<Option output="/Users/Theodoros/stonefall/cmake-build-debug/stonefall" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/Theodoros/stonefall/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -75,20 +75,35 @@
 					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 stonefall/fast"/>
-					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/david.oyeka/dev/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 stonefall/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/Theodoros/stonefall/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/david.oyeka/dev/stonefall/README.md">
+		<Unit filename="/Users/Theodoros/stonefall/Stonefall/GridBlock.cpp">
 			<Option target="stonefall"/>
 		</Unit>
-		<Unit filename="/Users/david.oyeka/dev/stonefall/main.cpp">
+		<Unit filename="/Users/Theodoros/stonefall/Stonefall/GridBlock.h">
 			<Option target="stonefall"/>
 		</Unit>
-		<Unit filename="/Users/david.oyeka/dev/stonefall/CMakeLists.txt">
+		<Unit filename="/Users/Theodoros/stonefall/Stonefall/GridEntity.h">
+			<Option target="stonefall"/>
+		</Unit>
+		<Unit filename="/Users/Theodoros/stonefall/Stonefall/Killable.h">
+			<Option target="stonefall"/>
+		</Unit>
+		<Unit filename="/Users/Theodoros/stonefall/Stonefall/Structure/Base.cpp">
+			<Option target="stonefall"/>
+		</Unit>
+		<Unit filename="/Users/Theodoros/stonefall/Stonefall/Structure/Base.h">
+			<Option target="stonefall"/>
+		</Unit>
+		<Unit filename="/Users/Theodoros/stonefall/Stonefall/main.cpp">
+			<Option target="stonefall"/>
+		</Unit>
+		<Unit filename="/Users/Theodoros/stonefall/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>
