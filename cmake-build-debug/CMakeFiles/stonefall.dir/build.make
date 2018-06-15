@@ -57,38 +57,90 @@ include CMakeFiles/stonefall.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/stonefall.dir/flags.make
 
-CMakeFiles/stonefall.dir/main.cpp.o: CMakeFiles/stonefall.dir/flags.make
-CMakeFiles/stonefall.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/stonefall.dir/main.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/stonefall.dir/main.cpp.o -c /Users/david.oyeka/dev/stonefall/main.cpp
+CMakeFiles/stonefall.dir/Stonefall/main.cpp.o: CMakeFiles/stonefall.dir/flags.make
+CMakeFiles/stonefall.dir/Stonefall/main.cpp.o: ../Stonefall/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/stonefall.dir/Stonefall/main.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/stonefall.dir/Stonefall/main.cpp.o -c /Users/david.oyeka/dev/stonefall/Stonefall/main.cpp
 
-CMakeFiles/stonefall.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/stonefall.dir/main.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/david.oyeka/dev/stonefall/main.cpp > CMakeFiles/stonefall.dir/main.cpp.i
+CMakeFiles/stonefall.dir/Stonefall/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/stonefall.dir/Stonefall/main.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/david.oyeka/dev/stonefall/Stonefall/main.cpp > CMakeFiles/stonefall.dir/Stonefall/main.cpp.i
 
-CMakeFiles/stonefall.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/stonefall.dir/main.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/david.oyeka/dev/stonefall/main.cpp -o CMakeFiles/stonefall.dir/main.cpp.s
+CMakeFiles/stonefall.dir/Stonefall/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/stonefall.dir/Stonefall/main.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/david.oyeka/dev/stonefall/Stonefall/main.cpp -o CMakeFiles/stonefall.dir/Stonefall/main.cpp.s
 
-CMakeFiles/stonefall.dir/main.cpp.o.requires:
+CMakeFiles/stonefall.dir/Stonefall/main.cpp.o.requires:
 
-.PHONY : CMakeFiles/stonefall.dir/main.cpp.o.requires
+.PHONY : CMakeFiles/stonefall.dir/Stonefall/main.cpp.o.requires
 
-CMakeFiles/stonefall.dir/main.cpp.o.provides: CMakeFiles/stonefall.dir/main.cpp.o.requires
-	$(MAKE) -f CMakeFiles/stonefall.dir/build.make CMakeFiles/stonefall.dir/main.cpp.o.provides.build
-.PHONY : CMakeFiles/stonefall.dir/main.cpp.o.provides
+CMakeFiles/stonefall.dir/Stonefall/main.cpp.o.provides: CMakeFiles/stonefall.dir/Stonefall/main.cpp.o.requires
+	$(MAKE) -f CMakeFiles/stonefall.dir/build.make CMakeFiles/stonefall.dir/Stonefall/main.cpp.o.provides.build
+.PHONY : CMakeFiles/stonefall.dir/Stonefall/main.cpp.o.provides
 
-CMakeFiles/stonefall.dir/main.cpp.o.provides.build: CMakeFiles/stonefall.dir/main.cpp.o
+CMakeFiles/stonefall.dir/Stonefall/main.cpp.o.provides.build: CMakeFiles/stonefall.dir/Stonefall/main.cpp.o
+
+
+CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o: CMakeFiles/stonefall.dir/flags.make
+CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o: ../Stonefall/GridBlock.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o -c /Users/david.oyeka/dev/stonefall/Stonefall/GridBlock.cpp
+
+CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/david.oyeka/dev/stonefall/Stonefall/GridBlock.cpp > CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.i
+
+CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/david.oyeka/dev/stonefall/Stonefall/GridBlock.cpp -o CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.s
+
+CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o.requires:
+
+.PHONY : CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o.requires
+
+CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o.provides: CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o.requires
+	$(MAKE) -f CMakeFiles/stonefall.dir/build.make CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o.provides.build
+.PHONY : CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o.provides
+
+CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o.provides.build: CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o
+
+
+CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o: CMakeFiles/stonefall.dir/flags.make
+CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o: ../Stonefall/Structure/Base.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o -c /Users/david.oyeka/dev/stonefall/Stonefall/Structure/Base.cpp
+
+CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/david.oyeka/dev/stonefall/Stonefall/Structure/Base.cpp > CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.i
+
+CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/david.oyeka/dev/stonefall/Stonefall/Structure/Base.cpp -o CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.s
+
+CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o.requires:
+
+.PHONY : CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o.requires
+
+CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o.provides: CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o.requires
+	$(MAKE) -f CMakeFiles/stonefall.dir/build.make CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o.provides.build
+.PHONY : CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o.provides
+
+CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o.provides.build: CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o
 
 
 # Object files for target stonefall
 stonefall_OBJECTS = \
-"CMakeFiles/stonefall.dir/main.cpp.o"
+"CMakeFiles/stonefall.dir/Stonefall/main.cpp.o" \
+"CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o" \
+"CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o"
 
 # External object files for target stonefall
 stonefall_EXTERNAL_OBJECTS =
 
-stonefall: CMakeFiles/stonefall.dir/main.cpp.o
+stonefall: CMakeFiles/stonefall.dir/Stonefall/main.cpp.o
+stonefall: CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o
+stonefall: CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o
 stonefall: CMakeFiles/stonefall.dir/build.make
 stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/lib/libPocoNet.60.dylib
 stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/lib/libPocoUtil.60.dylib
@@ -96,7 +148,7 @@ stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/lib/libPocoXML
 stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/lib/libPocoJSON.60.dylib
 stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/lib/libPocoFoundation.60.dylib
 stonefall: CMakeFiles/stonefall.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable stonefall"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable stonefall"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/stonefall.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -104,7 +156,9 @@ CMakeFiles/stonefall.dir/build: stonefall
 
 .PHONY : CMakeFiles/stonefall.dir/build
 
-CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/main.cpp.o.requires
+CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/Stonefall/main.cpp.o.requires
+CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/Stonefall/GridBlock.cpp.o.requires
+CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/Stonefall/Structure/Base.cpp.o.requires
 
 .PHONY : CMakeFiles/stonefall.dir/requires
 

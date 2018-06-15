@@ -3,6 +3,6 @@
 #include "Poco/Net/WebSocket.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    std::cout << "Hello, boy!" << std::endl;
     return 0;
 }
