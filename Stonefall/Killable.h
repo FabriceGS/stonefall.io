@@ -14,7 +14,7 @@ class Killable : public GridEntity {
     public:
         virtual ~Killable() {};
 
-        double getHealth() {return hp};
+        double getHealth() {return hp;};
         void setHealth(double newHp) {hp = newHp;};
 
         bool isDead() {return hp <= 0;};
