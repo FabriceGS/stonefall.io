@@ -4,7 +4,7 @@
 # compile CXX with /Library/Developer/CommandLineTools/usr/bin/c++
 CXX_FLAGS = -g   -std=gnu++1z
 
-CXX_DEFINES = 
+CXX_DEFINES = -DPOCO_NO_AUTOMATIC_LIBS
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/Users/david.oyeka/dev/dev_apps/poco-1.9.0 -isystem /Users/david.oyeka/dev/dev_apps/poco-1.9.0/JSON/include -isystem /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include -isystem /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Net/include -isystem /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Util/include -isystem /Users/david.oyeka/dev/dev_apps/poco-1.9.0/XML/include 
 

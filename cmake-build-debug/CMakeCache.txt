@@ -186,6 +186,36 @@ CMAKE_STRIP:FILEPATH=/Library/Developer/CommandLineTools/usr/bin/strip
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//The directory containing a CMake configuration file for PocoCPP.
+PocoCPP_DIR:PATH=PocoCPP_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for PocoC.
+PocoC_DIR:PATH=PocoC_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for PocoCppUnit.
+PocoCppUnit_DIR:PATH=PocoCppUnit_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for PocoCpp.
+PocoCpp_DIR:PATH=PocoCpp_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for PocoFoundation.
+PocoFoundation_DIR:PATH=/Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/Poco
+
+//The directory containing a CMake configuration file for PocoJSON.
+PocoJSON_DIR:PATH=/Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/Poco
+
+//The directory containing a CMake configuration file for PocoNet.
+PocoNet_DIR:PATH=/Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/Poco
+
+//The directory containing a CMake configuration file for PocoUtil.
+PocoUtil_DIR:PATH=/Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/Poco
+
+//The directory containing a CMake configuration file for PocoXML.
+PocoXML_DIR:PATH=/Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/Poco
+
+//The directory containing a CMake configuration file for PocoXM.
+PocoXM_DIR:PATH=PocoXM_DIR-NOTFOUND
+
 //The directory containing a CMake configuration file for Poco.
 Poco_DIR:PATH=Poco_DIR-NOTFOUND
 

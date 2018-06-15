@@ -5,7 +5,7 @@
 		<Option title="stonefall"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\dev_apps\;CMake Files\..\dev_apps\poco-1.9.0\;CMake Files\..\dev_apps\poco-1.9.0\cmake-build\;CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/Users/david.oyeka/dev/stonefall/cmake-build-debug"/>
@@ -44,6 +44,13 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DPOCO_NO_AUTOMATIC_LIBS"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0/JSON/include"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0/Net/include"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0/Util/include"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0/XML/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/9.1.0/include"/>
@@ -66,6 +73,13 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add option="-DPOCO_NO_AUTOMATIC_LIBS"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0/JSON/include"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0/Net/include"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0/Util/include"/>
+					<Add directory="/Users/david.oyeka/dev/dev_apps/poco-1.9.0/XML/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/include/c++/v1"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/9.1.0/include"/>
@@ -87,6 +101,57 @@
 		</Unit>
 		<Unit filename="/Users/david.oyeka/dev/stonefall/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoConfig.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoFoundationConfig.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoFoundationConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoFoundationTargets.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoJSONConfig.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoJSONConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoJSONTargets.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoNetConfig.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoNetConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoNetTargets.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoUtilConfig.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoUtilConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoUtilTargets.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoXMLConfig.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoXMLConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
+		</Unit>
+		<Unit filename="/Users/david.oyeka/dev/stonefall/../dev_apps/poco-1.9.0/cmake-build/Poco/PocoXMLTargets.cmake">
+			<Option virtualFolder="CMake Files\..\dev_apps\poco-1.9.0\cmake-build\Poco\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

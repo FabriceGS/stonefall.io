@@ -90,6 +90,11 @@ stonefall_EXTERNAL_OBJECTS =
 
 stonefall: CMakeFiles/stonefall.dir/main.cpp.o
 stonefall: CMakeFiles/stonefall.dir/build.make
+stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/lib/libPocoNet.60.dylib
+stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/lib/libPocoUtil.60.dylib
+stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/lib/libPocoXML.60.dylib
+stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/lib/libPocoJSON.60.dylib
+stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake-build/lib/libPocoFoundation.60.dylib
 stonefall: CMakeFiles/stonefall.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable stonefall"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/stonefall.dir/link.txt --verbose=$(VERBOSE)
