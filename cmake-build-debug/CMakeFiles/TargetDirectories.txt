@@ -1,3 +1,0 @@
-/Users/Theodoros/stonefall/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/Theodoros/stonefall/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/Theodoros/stonefall/cmake-build-debug/CMakeFiles/stonefall.dir
