@@ -10,7 +10,7 @@ set(Poco_DIR ~/dev/dev_apps/poco-1.9.0/cmake-build/Poco/)
 
 find_package(Poco 1.9.0 COMPONENTS REQUIRED JSON Net Util XML)
 
-include_directories(/Users/david.oyeka/dev/dev_apps/poco-1.9.0)
+include_directories(~/dev/dev_apps/poco-1.9.0)
 link_libraries(${Poco_LIBRARIES})
 
 add_executable(stonefall ${SOURCE_FILES})
