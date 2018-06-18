@@ -1,8 +1,11 @@
-################
-# Build target #
-################
-
+################################
+# Build target and CMake files #
+################################
 /cmake-build-debug/
+/CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
 
 #################################
 # Every editor you can think of #
