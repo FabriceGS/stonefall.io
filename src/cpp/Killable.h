@@ -18,5 +18,5 @@ class Killable : public GridEntity {
         void setHealth(double newHp) {hp = newHp;};
 
         bool isDead() {return hp <= 0;};
-        virtual int getReward() {};
+        virtual int getReward() { return 0; };
 };

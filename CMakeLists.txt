@@ -4,9 +4,9 @@ project(stonefall)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
-        Stonefall/main.cpp Stonefall/GridEntity.h Stonefall/GridBlock.cpp Stonefall/GridBlock.h Stonefall/Structure/Base.cpp Stonefall/Structure/Base.h Stonefall/Killable.h)
+        src/cpp/main.cpp src/cpp/GridEntity.h src/cpp/GridBlock.cpp src/cpp/GridBlock.h src/cpp/Structure/Base.cpp src/cpp/Structure/Base.h src/cpp/Killable.h src/cpp/Server/PageRequestHandler.cpp src/cpp/Server/PageRequestHandler.h)
 
-set(Poco_DIR ~/dev/dev_apps/poco-1.9.0/cmake-build/Poco/)
+set(Poco_DIR ~/dev/dev_apps/poco-1.9.0/cmake_build/Poco/)
 
 find_package(Poco 1.9.0 COMPONENTS REQUIRED JSON Net Util XML)
 
