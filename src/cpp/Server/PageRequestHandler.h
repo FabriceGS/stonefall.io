@@ -8,11 +8,13 @@
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
+#include "Poco/URI.h"
 
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
-
+using Poco::URI;
+using namespace std;
 
 class PageRequestHandler: public HTTPRequestHandler
     /// Return a HTML document with some JavaScript creating
@@ -20,6 +22,11 @@ class PageRequestHandler: public HTTPRequestHandler
 {
 public:
     void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
+private:
+    const string WEB_DIRECTORY_PREFIX = "src/web";
+    bool routesMatch(URI uri, string route);
+    void serveFile(string filename, HTTPServerResponse &response);
+    void fileToOStream(string filename, ostream &ostr);
 };
 
 
