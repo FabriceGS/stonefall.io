@@ -7,50 +7,60 @@
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
+#include "Poco/URI.h"
+
+#include <fstream>
+#include <iostream>
 
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
+using Poco::URI;
+using namespace std;
+
+bool PageRequestHandler::routesMatch(URI uri, string route) {
+    return route.compare(uri.getPath()) == 0;
+}
 
 void PageRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse &response) {
+    // check for paths
+    URI uri = URI(request.getURI());
+    if (routesMatch(uri, "/") || routesMatch(uri, "/index") || routesMatch(uri, "/index.html")) {
+        serveFile("/index.html", response);
+    } else {
+        // otherwise, serve statically from url
+        serveFile(uri.getPath(), response);
+    }
+}
+
+void PageRequestHandler::serveFile(string filename, HTTPServerResponse &response) {
     response.setChunkedTransferEncoding(true);
     response.setContentType("text/html");
-    std::ostream& ostr = response.send();
-    ostr << "<html>";
-    ostr << "<head>";
-    ostr << "<title>WebSocketServer</title>";
-    ostr << "<script type=\"text/javascript\">";
-    ostr << "function WebSocketTest()";
-    ostr << "{";
-    ostr << "  if (\"WebSocket\" in window)";
-    ostr << "  {";
-    ostr << "    var ws = new WebSocket(\"ws://" << request.serverAddress().toString() << "/ws\");";
-    ostr << "    ws.onopen = function()";
-    ostr << "      {";
-    ostr << "        ws.send(\"Hello, world!\");";
-    ostr << "      };";
-    ostr << "    ws.onmessage = function(evt)";
-    ostr << "      { ";
-    ostr << "        console.log(\"message received \"); ";
-    ostr << "        var msg = evt.data;";
-    ostr << "        alert(\"Message received: \" + msg);";
-    ostr << "        ws.close();";
-    ostr << "      };";
-    ostr << "    ws.onclose = function()";
-    ostr << "      { ";
-    ostr << "        alert(\"WebSocket closed.\");";
-    ostr << "      };";
-    ostr << "  }";
-    ostr << "  else";
-    ostr << "  {";
-    ostr << "     alert(\"This browser does not support WebSockets.\");";
-    ostr << "  }";
-    ostr << "}";
-    ostr << "</script>";
-    ostr << "</head>";
-    ostr << "<body>";
-    ostr << "  <h1>WebSocket Server</h1>";
-    ostr << "  <p><a href=\"javascript:WebSocketTest()\">Run WebSocket Script</a></p>";
-    ostr << "</body>";
-    ostr << "</html>";
+    ifstream inFile;
+    inFile.open(WEB_DIRECTORY_PREFIX + filename);
+    if (!inFile) {
+        // send a 404
+        response.setStatus(HTTPServerResponse::HTTP_NOT_FOUND);
+        response.setReason("Resource not found");
+        ostream& ostr = response.send();
+        ostr << "Resource not found\n";
+    } else {
+        ostream& ostr = response.send();
+        fileToOStream(filename, ostr);
+    }
+}
+
+void PageRequestHandler::fileToOStream(string filename, ostream &ostr) {
+    ifstream inFile;
+    // get size of file
+    inFile.seekg (0,inFile.end);
+    long size = inFile.tellg();
+    inFile.seekg (0);
+    // allocate memory for file content
+    char* buffer = new char[size];
+    // read content of inFile
+    inFile.read (buffer,size);
+    // write to outfile
+    ostr.write (buffer,size);
+    inFile.close();
 }

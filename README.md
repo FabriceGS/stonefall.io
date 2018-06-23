@@ -9,6 +9,6 @@ cd cmake_build
 cmake ..
 make
 ```
-Next, clone the stonefall repository with `git clone https://github.com/stonefallio/stonefall.git`. Then, open up the newly created `stonefall` folder in your IDE of choice. If it asks for a `CMakeLists.txt` file, simply choose the one at the top of the `stonefall` directory. Then, your IDE should be able to build and run Stonefall. To build and run from the command line, simply navigate into the folder and run `cmake . && cmake-build-debug/stonefall`
+Next, clone the stonefall repository with `git clone https://github.com/stonefallio/stonefall.git`. Then, open up the newly created `stonefall` folder in your IDE of choice. If it asks for a `CMakeLists.txt` file, simply choose the one at the top of the `stonefall` directory. Then, your IDE should be able to build and run Stonefall. To build and run from the command line, simply navigate into the folder and run `/Applications/CLion.app/Contents/bin/cmake/bin/cmake --build /Users/mac.mccann/stonefall --target stonefall -- -j 4 && stonefall`
 
 You're all done building Stonefall! Now, let the stones fall!
