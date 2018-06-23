@@ -31,6 +31,7 @@ void PageRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRes
     ostr << "      };";
     ostr << "    ws.onmessage = function(evt)";
     ostr << "      { ";
+    ostr << "        console.log(\"message received \"); ";
     ostr << "        var msg = evt.data;";
     ostr << "        alert(\"Message received: \" + msg);";
     ostr << "        ws.close();";
