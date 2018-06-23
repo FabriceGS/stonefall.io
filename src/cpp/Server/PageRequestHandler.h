@@ -26,7 +26,7 @@ private:
     const string WEB_DIRECTORY_PREFIX = "src/web";
     bool routesMatch(URI uri, string route);
     void serveFile(string filename, HTTPServerResponse &response);
-    void fileToOStream(string filename, ostream &ostr);
+    void fileToOStream(ifstream &inFile, ostream &ostr);
 };
 
 

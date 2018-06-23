@@ -18,7 +18,7 @@ using Poco::Net::HTTPServerResponse;
 using Poco::URI;
 using namespace std;
 
-bool routesMatch(URI uri, string route) {
+bool PageRequestHandler::routesMatch(URI uri, string route) {
     return route.compare(uri.getPath()) == 0;
 }
 
@@ -46,12 +46,11 @@ void PageRequestHandler::serveFile(string filename, HTTPServerResponse &response
         ostr << "Resource not found\n";
     } else {
         ostream& ostr = response.send();
-        fileToOStream(filename, ostr);
+        fileToOStream(inFile, ostr);
     }
 }
 
-void PageRequestHandler::fileToOStream(string filename, ostream &ostr) {
-    ifstream inFile;
+void PageRequestHandler::fileToOStream(ifstream &inFile, ostream &ostr) {
     // get size of file
     inFile.seekg (0,inFile.end);
     long size = inFile.tellg();
