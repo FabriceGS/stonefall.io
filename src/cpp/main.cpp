@@ -16,6 +16,7 @@
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Format.h"
 #include <iostream>
+#include "Server/Websockets.h"
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
@@ -34,78 +35,6 @@ using Poco::Util::Application;
 using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
-
-class WebSocketRequestHandler: public HTTPRequestHandler
-    /// Handle a WebSocket connection.
-{
-public:
-    void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
-    {
-        Application& app = Application::instance();
-        try
-        {
-            WebSocket ws(request, response);
-            app.logger().information("WebSocket connection established.");
-            char buffer[1024];
-            int flags;
-            int n;
-            do
-            {
-                n = ws.receiveFrame(buffer, sizeof(buffer), flags);
-                app.logger().information(Poco::format("Frame received (length=%d, flags=0x%x).", n, unsigned(flags)));
-                ws.sendFrame(buffer, n, flags);
-            }
-            while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
-            app.logger().information("WebSocket connection closed.");
-        }
-        catch (WebSocketException& exc)
-        {
-            app.logger().log(exc);
-            switch (exc.code())
-            {
-                case WebSocket::WS_ERR_HANDSHAKE_UNSUPPORTED_VERSION:
-                    response.set("Sec-WebSocket-Version", WebSocket::WEBSOCKET_VERSION);
-                    // fallthrough
-                case WebSocket::WS_ERR_NO_HANDSHAKE:
-                case WebSocket::WS_ERR_HANDSHAKE_NO_VERSION:
-                case WebSocket::WS_ERR_HANDSHAKE_NO_KEY:
-                    response.setStatusAndReason(HTTPResponse::HTTP_BAD_REQUEST);
-                    response.setContentLength(0);
-                    response.send();
-                    break;
-            }
-        }
-    }
-};
-
-
-class RequestHandlerFactory: public HTTPRequestHandlerFactory
-{
-public:
-    HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request)
-    {
-        Application& app = Application::instance();
-        app.logger().information("Request from "
-                                 + request.clientAddress().toString()
-                                 + ": "
-                                 + request.getMethod()
-                                 + " "
-                                 + request.getURI()
-                                 + " "
-                                 + request.getVersion());
-
-        for (HTTPServerRequest::ConstIterator it = request.begin(); it != request.end(); ++it)
-        {
-            app.logger().information(it->first + ": " + it->second);
-        }
-
-        if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0)
-            return new WebSocketRequestHandler;
-        else
-            return new PageRequestHandler;
-    }
-};
-
 
 class WebSocketServer: public Poco::Util::ServerApplication
     /// The main application class.
@@ -183,7 +112,7 @@ protected:
         else
         {
             // get parameters from configuration file
-            unsigned short port = (unsigned short) config().getInt("WebSocketServer.port", 9980);
+            unsigned short port = (unsigned short) config().getInt("WebSocketServer.port", 4567);
 
             // set-up a server socket
             ServerSocket svs(port);

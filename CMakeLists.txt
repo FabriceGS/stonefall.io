@@ -4,7 +4,7 @@ project(stonefall)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
-        src/cpp/main.cpp src/cpp/GridEntity.h src/cpp/GridBlock.cpp src/cpp/GridBlock.h src/cpp/Structure/Base.cpp src/cpp/Structure/Base.h src/cpp/Killable.h src/cpp/Server/PageRequestHandler.cpp src/cpp/Server/PageRequestHandler.h)
+        src/cpp/main.cpp src/cpp/GridEntity.h src/cpp/GridBlock.cpp src/cpp/GridBlock.h src/cpp/Structure/Base.cpp src/cpp/Structure/Base.h src/cpp/Killable.h src/cpp/Server/PageRequestHandler.cpp src/cpp/Server/PageRequestHandler.h src/cpp/Server/Websockets.cpp src/cpp/Server/Websockets.h)
 
 set(Poco_DIR ~/dev/dev_apps/poco-1.9.0/cmake_build/Poco/)
 
