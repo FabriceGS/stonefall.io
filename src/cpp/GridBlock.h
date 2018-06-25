@@ -5,10 +5,9 @@
 #ifndef STONEFALL_GRIDBLOCK_H
 #define STONEFALL_GRIDBLOCK_H
 
-
 class GridBlock {
 
 };
 
 
-#endif //STONEFALL_GRIDBLOCK_H
+#endif // STONEFALL_GRIDBLOCK_H
