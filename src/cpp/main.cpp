@@ -17,6 +17,7 @@
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Format.h"
 #include <iostream>
+#include "Server/Websockets.h"
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
@@ -35,7 +36,6 @@ using Poco::Util::Application;
 using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
-
 
 
 class WebSocketServer: public Poco::Util::ServerApplication
