@@ -3,9 +3,9 @@
 //
 
 #include "Base.h"
+#include "../Constants.h"
 
-
-Base::Base(GridBlock startingBlock) {
-    this->setHealth(500);
+Base::Base(GridBlock& startingBlock) {
+    this->setHealth(BASE_HP);
     this->setBlock(startingBlock);
 }
