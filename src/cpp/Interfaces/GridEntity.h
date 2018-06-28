@@ -5,22 +5,14 @@
 #ifndef STONEFALL_GRIDENTITY_H
 #define STONEFALL_GRIDENTITY_H
 
-#include "../GridBlock.h"
+class GridBlock;
 
 class GridEntity {
     private:
         GridBlock& block;
-
     public:
-        virtual ~GridEntity() {};
-
-        void setBlock(GridBlock& toSet) {block = toSet;};
-
-        GridBlock getBlock() {return block;};
-
-        int getX() {return block.getX();};
-        int getY() {return block.getY();};
-
+        explicit GridEntity(GridBlock &block) : block(block) { }
+        virtual GridBlock getBlock() = 0;
 };
 
 #endif // STONEFALL_GRIDENTITY_H

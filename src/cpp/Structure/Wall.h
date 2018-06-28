@@ -13,7 +13,7 @@ class Wall : public Killable {
     public:
 
     private:
-        Wall(GridBlock& startingBlock);
+        Wall(GridBlock &block, double hp) : Killable(block, hp) { }
 };
 
 

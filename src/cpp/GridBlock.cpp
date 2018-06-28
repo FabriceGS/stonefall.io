@@ -5,6 +5,4 @@
 #include "GridBlock.h"
 
 
-GridBlock::GridBlock(int &x, int &y) : x(x), y(y) {
-
-}
+GridBlock::GridBlock(int &x, int &y) : x(x), y(y) { }
