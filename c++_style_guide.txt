@@ -7,3 +7,5 @@ Hard line wraps at 100 lines.
 
 Always place the const after the & or * if you want to specify a pointer/reference that cannot
 be targeted somewhere else.
+
+Always use #include "<package-name>/<file-name>", not "../<package-name>/<file-name>" or other relative paths
