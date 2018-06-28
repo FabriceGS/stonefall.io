@@ -13,8 +13,7 @@ class Mine : public Killable {
     private:
 
     public:
-        Mine(GridBlock& startingBlock);
-
+        Mine(GridBlock &block, double hp) : Killable(block, hp) { }
 };
 
 

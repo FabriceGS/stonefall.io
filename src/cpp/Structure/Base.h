@@ -11,8 +11,7 @@ class Base : public Killable {
     private:
 
     public:
-        Base(GridBlock& startingBlock);
-
+        Base(GridBlock &block, double hp) : Killable(block, hp) {}
 };
 
 #endif // STONEFALL_BASE_H

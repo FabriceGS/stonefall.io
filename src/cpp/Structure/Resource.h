@@ -12,7 +12,7 @@ class Resource : public Killable {
     private:
 
     public:
-        Resource(GridBlock& startingBlock);
+        Resource(GridBlock &block, double hp) : Killable(block, hp) { }
 };
 
 

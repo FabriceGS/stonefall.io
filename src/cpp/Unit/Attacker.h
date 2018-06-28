@@ -13,7 +13,7 @@ class Attacker : Killable {
     private:
 
     public:
-        Attacker(GridBlock& startingBlock);
+        Attacker(GridBlock &block, double hp) : Killable(block, hp) { }
 };
 
 

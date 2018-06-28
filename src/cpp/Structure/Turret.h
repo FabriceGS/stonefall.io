@@ -13,7 +13,7 @@ class Turret : public Killable {
     private:
 
     public:
-        Turret(GridBlock& startingBlock);
+        Turret(GridBlock &block, double hp) : Killable(block, hp) { }
 };
 
 

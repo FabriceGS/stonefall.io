@@ -10,9 +10,9 @@
 class GridBlock {
 
     private:
-        GridEntity entity;
-        int& x;
-        int& y;
+        GridEntity* entity;
+        int x;
+        int y;
 
     public:
         GridBlock(int& x, int& y);
@@ -20,10 +20,10 @@ class GridBlock {
         int getX() {return x;};
         int getY() {return y;};
 
-        void populate(GridEntity ent) {entity = ent};
+        void populate(GridEntity* ent) {entity = ent;};
         void depopulate() {entity = nullptr;};
 
-        GridEntity getEntity() {return entity;};
+        GridEntity* getEntity() {return entity;};
         bool isFull() {return entity != nullptr;};
 };
 
