@@ -2,7 +2,7 @@
 // Created by Fabrice Guyot-Sionnest on 6/23/18.
 //
 
-#include "Websockets.h"
+#include "WebSocketRequestHandler.h"
 #include "PageRequestHandler.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -79,29 +79,4 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                 break;
         }
     }
-};
-
-
-HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServerRequest& request)
-{
-    std::cout << "method called: createRequestHandler(); of class: RequestHandlerFactory" << std::endl;
-    Application& app = Application::instance();
-    app.logger().information("Request from "
-                             + request.clientAddress().toString()
-                             + ": "
-                             + request.getMethod()
-                             + " "
-                             + request.getURI()
-                             + " "
-                             + request.getVersion());
-
-    for (HTTPServerRequest::ConstIterator it = request.begin(); it != request.end(); ++it)
-    {
-        app.logger().information(it->first + ": " + it->second);
-    }
-
-    if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0)
-        return new WebSocketRequestHandler;
-    else
-        return new PageRequestHandler;
 };

@@ -100,6 +100,12 @@
 		<Unit filename="/home/mac/stonefall/src/cpp/Server/PageRequestHandler.h">
 			<Option target="stonefall"/>
 		</Unit>
+		<Unit filename="/home/mac/stonefall/src/cpp/Server/Websockets.cpp">
+			<Option target="stonefall"/>
+		</Unit>
+		<Unit filename="/home/mac/stonefall/src/cpp/Server/Websockets.h">
+			<Option target="stonefall"/>
+		</Unit>
 		<Unit filename="/home/mac/stonefall/src/cpp/Structure/Base.cpp">
 			<Option target="stonefall"/>
 		</Unit>

@@ -16,7 +16,7 @@
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Format.h"
 #include <iostream>
-#include "Server/Websockets.h"
+#include "Server/WebSocketRequestHandler.h"
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
@@ -35,6 +35,30 @@ using Poco::Util::Application;
 using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
+
+HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServerRequest& request)
+{
+    std::cout << "method called: createRequestHandler(); of class: RequestHandlerFactory" << std::endl;
+    Application& app = Application::instance();
+    app.logger().information("Request from "
+                             + request.clientAddress().toString()
+                             + ": "
+                             + request.getMethod()
+                             + " "
+                             + request.getURI()
+                             + " "
+                             + request.getVersion());
+
+    for (HTTPServerRequest::ConstIterator it = request.begin(); it != request.end(); ++it)
+    {
+        app.logger().information(it->first + ": " + it->second);
+    }
+
+    if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0)
+        return new WebSocketRequestHandler;
+    else
+        return new PageRequestHandler;
+};
 
 class WebSocketServer: public Poco::Util::ServerApplication
     /// The main application class.

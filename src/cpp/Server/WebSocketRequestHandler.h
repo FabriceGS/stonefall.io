@@ -20,7 +20,6 @@ using Poco::Net::HTTPRequestHandlerFactory;
 class RequestHandlerFactory: public HTTPRequestHandlerFactory {
     public:
         HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request);
-
 };
 
 class WebSocketRequestHandler: public HTTPRequestHandler {
