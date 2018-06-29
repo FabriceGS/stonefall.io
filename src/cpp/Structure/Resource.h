@@ -6,7 +6,7 @@
 #define STONEFALL_RESOURCE_H
 
 
-#include "../Interfaces/Killable.h"
+#include "../AbstractClasses/Killable.h"
 
 class Resource : public Killable {
     private:

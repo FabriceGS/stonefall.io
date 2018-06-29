@@ -6,8 +6,8 @@
 #define STONEFALL_TURRET_H
 
 
-#include "../GridBlock.h"
-#include "../Interfaces/Killable.h"
+#include "../Map/GridBlock.h"
+#include "../AbstractClasses/Killable.h"
 
 class Turret : public Killable {
     private:

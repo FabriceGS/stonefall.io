@@ -5,7 +5,7 @@
 #ifndef STONEFALL_BASE_H
 #define STONEFALL_BASE_H
 
-#include "../Interfaces/Killable.h"
+#include "../AbstractClasses/Killable.h"
 
 class Base : public Killable {
     private:
