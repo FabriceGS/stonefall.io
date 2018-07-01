@@ -2,7 +2,7 @@
 // Created by Fabrice Guyot-Sionnest on 6/23/18.
 //
 
-#include "WebSockets.h"
+#include "WebSocketRequestHandler.h"
 #include "PageRequestHandler.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"

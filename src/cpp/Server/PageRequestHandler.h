@@ -23,7 +23,7 @@ class PageRequestHandler: public HTTPRequestHandler
 public:
     void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
 private:
-    const string WEB_DIRECTORY_PREFIX = "../src/web";
+    const string WEB_DIRECTORY_PREFIX = "src/web";
     bool routesMatch(URI uri, string route);
     void serveFile(string filename, HTTPServerResponse &response);
     void fileToOStream(ifstream &inFile, ostream &ostr);
