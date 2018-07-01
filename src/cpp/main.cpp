@@ -1,4 +1,5 @@
 #include "Server/PageRequestHandler.h"
+#include "Server/WebSocketRequestHandler.h"
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -36,29 +37,6 @@ using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
 
-HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServerRequest& request)
-{
-    std::cout << "method called: createRequestHandler(); of class: RequestHandlerFactory" << std::endl;
-    Application& app = Application::instance();
-    app.logger().information("Request from "
-                             + request.clientAddress().toString()
-                             + ": "
-                             + request.getMethod()
-                             + " "
-                             + request.getURI()
-                             + " "
-                             + request.getVersion());
-
-    for (HTTPServerRequest::ConstIterator it = request.begin(); it != request.end(); ++it)
-    {
-        app.logger().information(it->first + ": " + it->second);
-    }
-
-    if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0)
-        return new WebSocketRequestHandler;
-    else
-        return new PageRequestHandler;
-};
 
 class WebSocketServer: public Poco::Util::ServerApplication
     /// The main application class.
@@ -82,6 +60,8 @@ class WebSocketServer: public Poco::Util::ServerApplication
 public:
     WebSocketServer(): _helpRequested(false)
     {
+        std::cout << "websocket server created" << std::endl;
+
     }
 
     ~WebSocketServer()
@@ -91,6 +71,8 @@ public:
 protected:
     void initialize(Application& self)
     {
+        std::cout << "method called: initialize(); of class WebSocketServer" << std::endl;
+
         loadConfiguration(); // load default configuration files, if present
         ServerApplication::initialize(self);
     }
@@ -102,6 +84,8 @@ protected:
 
     void defineOptions(OptionSet& options)
     {
+        std::cout << "method called: defineOptions(); of class WebSocketServer" << std::endl;
+
         ServerApplication::defineOptions(options);
 
         options.addOption(
@@ -112,6 +96,8 @@ protected:
 
     void handleOption(const std::string& name, const std::string& value)
     {
+        std::cout << "method called: handleOption(); of class WebSocketServer" << std::endl;
+
         ServerApplication::handleOption(name, value);
 
         if (name == "help")
@@ -157,4 +143,4 @@ private:
 };
 
 
-POCO_SERVER_MAIN(WebSocketServer)
+POCO_SERVER_MAIN(WebSocketServer);

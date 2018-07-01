@@ -2,15 +2,16 @@
 // Created by Theodore Tsivranidis on 6/13/18.
 //
 
-#include "../Killable.h"
+#ifndef STONEFALL_BASE_H
+#define STONEFALL_BASE_H
 
+#include "../Interfaces/Killable.h"
 
 class Base : public Killable {
     private:
-        double hp;
-        GridBlock block;
 
     public:
-        Base(GridBlock startingBlock);
-
+        Base(GridBlock &block, double hp) : Killable(block, hp) {}
 };
+
+#endif // STONEFALL_BASE_H
