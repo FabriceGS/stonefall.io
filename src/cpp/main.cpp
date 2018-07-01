@@ -1,5 +1,5 @@
 #include "Server/PageRequestHandler.h"
-#include "Server/Websockets.h"
+#include "Server/WebSockets.h"
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -17,7 +17,7 @@
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Format.h"
 #include <iostream>
-#include "Server/Websockets.h"
+#include "Server/WebSockets.h"
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;

@@ -2,7 +2,7 @@
 // Created by Fabrice Guyot-Sionnest on 6/23/18.
 //
 
-#include "Websockets.h"
+#include "WebSockets.h"
 #include "PageRequestHandler.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -19,6 +19,10 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Format.h"
+#include "Poco/JSON/Parser.h"
+#include "Poco/JSON/Object.h"
+#include "Poco/JSON/Array.h"
+#include "Poco/Dynamic/Var.h"
 #include <iostream>
 
 using Poco::Net::ServerSocket;
@@ -38,6 +42,20 @@ using Poco::Util::Application;
 using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
+using Poco::JSON::Parser;
+using Poco::JSON::Object;
+using Poco::JSON::Array;
+
+using Poco::Dynamic::Var;
+
+void WebSockets::sendMessage(char buffer[], int n, int flags, WebSocket ws){
+    std::cout << "sendMessage called" << std::endl;
+    std::cout << buffer << std::endl;
+    std::cout << n << std::endl;
+    std::cout << flags << std::endl;
+    //send the JSON object
+    ws.sendFrame(buffer, n, flags);
+}
 
 void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
@@ -53,17 +71,90 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
         int n;
         do
         {
-            //receive the JSON object
+            //receive the buffer object
             n = ws.receiveFrame(buffer, sizeof(buffer), flags);
+
+            //log the receipt
             app.logger().information(Poco::format("Frame received (length=%d, flags=0x%x).", n, unsigned(flags)));
-            //send the JSON object
-            ws.sendFrame(buffer, n, flags);
+
+            //convert char array buffer into string
+            std::string JSON(buffer);
+
+            //parse the received JSON object
+            Parser parser;
+            Var result = parser.parse(JSON);
+            Object::Ptr received = result.extract<Object::Ptr>();
+
+            //get id
+            Var idVar = received->get("id");;
+            int id = idVar.convert<int>();
+
+            //get the payload
+            Var payload = received->get("payload");;
+
+            MESSAGE enumId = static_cast<MESSAGE>(id);
+            switch(enumId){
+                case MESSAGE::CONNECT:
+                    //get p
+//                    Array::Ptr arr = payload.extract<Array::Ptr>();
+//                    Object::Ptr object = arr->getObject(0);
+//                    "{\"id\" : \"1234\", \"payload\" : {\"name\" : \"John\"}}"
+
+//
+//                    std::string json = "[ {\"test\" : 0}, { \"test1\" : [1, 2, 3], \"test2\" : 4 } ]";
+//                    Parser parser;
+//                    Var result = parser.parse(json);
+//                    Array::Ptr arr = result.extract<Array::Ptr>();
+//                    Object::Ptr object = arr->getObject(0);//
+//                    object = arr->getObject(1);
+//                    arr = object->getArray("test1");
+//                    result = arr->get(0);
+//                    // update set of coordinates by parsing coordinates message
+//                    String name = payload.get("name").getAsString();
+//
+//                    // Add the player to the game if doesn't already exist
+//                    if (thisPlayer == null) {
+//                        thisPlayer = new Player(name, playerId);
+//                        game.addPlayer(thisPlayer);
+//                    }
+//
+//                    // call update session and tell the backend to update everything
+//                    updateSession(curId);
+                    break;
+                case MESSAGE::ATTACK:
+                    break;
+                case MESSAGE::CREATE:
+                    break;
+                default:
+                    break;
+            }
+
+
+            std::cout << id << std::endl;
+
+            //get an array
+//            std::string json = "[ {\"test\" : 0}, { \"test1\" : [1, 2, 3], \"test2\" : 4 } ]";
+
+//            Array::Ptr arr = result.extract<Array::Ptr>();
+//            Object::Ptr aObject = arr->getObject(0);//
+////            assert (aObject->getValue<int>("test") == 0);
+//            aObject = arr->getObject(1);
+//            arr = aObject->getArray("test1");
+//            result = arr->get(0);
+//            assert (result == 1);
+
+            WebSockets::sendMessage(buffer, n, flags, ws);
+
+
+
+
         }
         while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
         app.logger().information("WebSocket connection closed.");
     }
     catch (WebSocketException& exc)
     {
+        std::cout << "welp that happened" << std::endl;
         app.logger().log(exc);
         switch (exc.code())
         {

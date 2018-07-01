@@ -9,11 +9,16 @@
 #include "Poco/Net/HTTPServerResponse.h"
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
+#include "Poco/Net/WebSocket.h"
+
 
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 using Poco::Net::HTTPRequestHandlerFactory;
+using Poco::Net::WebSocket;
+
+
 
 
 class RequestHandlerFactory: public HTTPRequestHandlerFactory {
@@ -27,5 +32,13 @@ class WebSocketRequestHandler: public HTTPRequestHandler {
         void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
 };
 
+namespace WebSockets{
+    void sendMessage(char buffer[], int n, int flags, WebSocket ws);
+
+};
+
+enum class MESSAGE {
+    CONNECT, UPDATE, ATTACK, CREATE, INITIALIZE, SELL, ERROR, GAMEOVER
+};
 
 #endif //STONEFALL_WEBSOCKETS_H
