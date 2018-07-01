@@ -90,7 +90,13 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
             int id = idVar.convert<int>();
 
             //get the payload
-            Var payload = received->get("payload");;
+            Var payload = received->get("payload");
+            Object::Ptr extractedPayload = payload.extract<Object::Ptr>();
+
+            //get name
+            Var varName = extractedPayload->get("name");
+            std::string name = varName.convert<std::string>();
+            std::cout << name << std::endl;
 
             MESSAGE enumId = static_cast<MESSAGE>(id);
             switch(enumId){
