@@ -4,6 +4,8 @@
 
 #include "WebSocketRequestHandler.h"
 #include "PageRequestHandler.h"
+#include "../Game.h"
+#include "../Player.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
@@ -93,44 +95,90 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
             Var payload = received->get("payload");
             Object::Ptr extractedPayload = payload.extract<Object::Ptr>();
 
-            //get name
-            Var varName = extractedPayload->get("name");
-            std::string name = varName.convert<std::string>();
-            std::cout << name << std::endl;
+            //get player id
+            Var varPlayerId = extractedPayload->get("playerId");
+//            std::string playerId = varPlayerId.convert<std::string>();
+
+            //get the player object
+//            Player player = Game::getPlayer(playerId);
 
             MESSAGE enumId = static_cast<MESSAGE>(id);
             switch(enumId){
-                case MESSAGE::CONNECT:
-                    //get p
-//                    Array::Ptr arr = payload.extract<Array::Ptr>();
-//                    Object::Ptr object = arr->getObject(0);
-//                    "{\"id\" : \"1234\", \"payload\" : {\"name\" : \"John\"}}"
+                case MESSAGE::CONNECT: {
+                    //get name
+                    Var varName = extractedPayload->get("name");
+                    std::string name = varName.convert<std::string>();
+                    std::cout << "name is" + name << std::endl;
 
-//
-//                    std::string json = "[ {\"test\" : 0}, { \"test1\" : [1, 2, 3], \"test2\" : 4 } ]";
-//                    Parser parser;
-//                    Var result = parser.parse(json);
-//                    Array::Ptr arr = result.extract<Array::Ptr>();
-//                    Object::Ptr object = arr->getObject(0);//
-//                    object = arr->getObject(1);
-//                    arr = object->getArray("test1");
-//                    result = arr->get(0);
-//                    // update set of coordinates by parsing coordinates message
-//                    String name = payload.get("name").getAsString();
-//
-//                    // Add the player to the game if doesn't already exist
-//                    if (thisPlayer == null) {
-//                        thisPlayer = new Player(name, playerId);
-//                        game.addPlayer(thisPlayer);
+                    //add player to game if doesn't already exist
+//                    if(player == NULL){
+//                        player = Game::addPlayer(playerId);
+//                        players.insert(playerId);
 //                    }
+                    break;
+                }
+
+                case MESSAGE::ATTACK:{
+
+                    break;
+                }
+                case MESSAGE::CREATE:{
+                    //get x and y coords of creation
+                    int x = extractedPayload->get("x").convert<int>();
+                    int y = extractedPayload->get("y").convert<int>();
+
+//                    if(!Game::validateCreation(x,y,playerId)){
+                        //send an error message
+                        //return out of statement
+//                    }
+
+                    //get creation type enum
+                    int creationType = extractedPayload->get("objectType").convert<int>();
+                    OBJECT_TYPE enumMessageType = static_cast<OBJECT_TYPE>(creationType);
+
+                    switch(enumMessageType){
+                        case OBJECT_TYPE::ATTACKER:
+//                            player.spawnAttacker();
+                            break;
+                        case OBJECT_TYPE::WALL:
+//                            player.spawnWall();
+                            break;
+                        case OBJECT_TYPE::TURRET:
+//                            player.spawnTurret();
+                            break;
+                        case OBJECT_TYPE::MINE:
+//                            player.spawnMine();
+                            break;
+                        default:
+                            break;
+                    }
 //
-//                    // call update session and tell the backend to update everything
-//                    updateSession(curId);
+//                    // Communication protocol for creation types
+//                    // 1: worker
+//                    // 2: attacker
+//                    // 3: turret
+//                    // 4: wall
+//                    int creationType = payload.get("objectType").getAsInt();
+//                    switch (creationType) {
+//                        case 1:
+//                            creationType = 1;
+//                            thisPlayer.spawnWorker();
+//                            break;
+//                        case 2:
+//                            creationType = 2;
+//                            thisPlayer.spawnMeleeAttacker();
+//                            break;
+//                        case 3:
+//                            creationType = 3;
+//                            thisPlayer.spawnTurret(x1, y1);
+//                            break;
+//                        case 4:
+//                            creationType = 4;
+//                            thisPlayer.spawnWall(x1, y1);
+//                            break;
+//                    }
                     break;
-                case MESSAGE::ATTACK:
-                    break;
-                case MESSAGE::CREATE:
-                    break;
+                }
                 default:
                     break;
             }

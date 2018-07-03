@@ -10,6 +10,7 @@
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
 #include "Poco/Net/WebSocket.h"
+#include <unordered_set>
 
 
 using Poco::Net::HTTPRequestHandler;
@@ -28,6 +29,8 @@ class RequestHandlerFactory: public HTTPRequestHandlerFactory {
 };
 
 class WebSocketRequestHandler: public HTTPRequestHandler {
+    private:
+        std::unordered_set<std::string> players;
     public:
         void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
 };
@@ -39,6 +42,10 @@ namespace WebSockets{
 
 enum class MESSAGE {
     CONNECT, UPDATE, ATTACK, CREATE, INITIALIZE, SELL, ERROR, GAMEOVER
+};
+
+enum class OBJECT_TYPE {
+    WALL, TURRET, ATTACKER, MINE, SCAFFOLD
 };
 
 #endif //STONEFALL_WEBSOCKETS_H
