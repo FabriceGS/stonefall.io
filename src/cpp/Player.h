@@ -8,6 +8,12 @@
 
 class Player {
 
+public:
+    void spawnAttacker();
+    void spawnWall();
+    void spawnMine();
+    void spawnTurret();
+
 };
 
 

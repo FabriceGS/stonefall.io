@@ -10,6 +10,7 @@
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
 #include "Poco/Net/WebSocket.h"
+#include "../Game.h"
 #include <unordered_set>
 
 
@@ -31,8 +32,12 @@ class RequestHandlerFactory: public HTTPRequestHandlerFactory {
 class WebSocketRequestHandler: public HTTPRequestHandler {
     private:
         std::unordered_set<std::string> players;
+        Game game;
     public:
         void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
+        WebSocketRequestHandler(Game newGame){
+            game = newGame;
+        }
 };
 
 namespace WebSockets{

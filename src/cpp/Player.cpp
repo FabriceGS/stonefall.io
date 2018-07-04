@@ -3,3 +3,22 @@
 //
 
 #include "Player.h"
+
+void Player::spawnAttacker() {
+
+}
+
+void Player::spawnWall() {
+
+}
+
+void Player::spawnTurret() {
+
+}
+
+void Player::spawnMine() {
+
+}
+
+
+

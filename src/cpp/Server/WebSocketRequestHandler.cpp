@@ -97,10 +97,10 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
             //get player id
             Var varPlayerId = extractedPayload->get("playerId");
-//            std::string playerId = varPlayerId.convert<std::string>();
+            std::string playerId = varPlayerId.convert<std::string>();
 
             //get the player object
-//            Player player = Game::getPlayer(playerId);
+            Player *player = game.getPlayer(playerId);
 
             MESSAGE enumId = static_cast<MESSAGE>(id);
             switch(enumId){
@@ -111,10 +111,10 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     std::cout << "name is" + name << std::endl;
 
                     //add player to game if doesn't already exist
-//                    if(player == NULL){
-//                        player = Game::addPlayer(playerId);
-//                        players.insert(playerId);
-//                    }
+                    if(player == NULL){
+                        player = game.addPlayer(playerId);
+                        players.insert(playerId);
+                    }
                     break;
                 }
 
@@ -127,10 +127,10 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     int x = extractedPayload->get("x").convert<int>();
                     int y = extractedPayload->get("y").convert<int>();
 
-//                    if(!Game::validateCreation(x,y,playerId)){
-                        //send an error message
-                        //return out of statement
-//                    }
+                    if(!game.validateCreation(x,y,playerId)){
+//                        send an error message
+//                        return out of statement
+                    }
 
                     //get creation type enum
                     int creationType = extractedPayload->get("objectType").convert<int>();
@@ -138,45 +138,20 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
                     switch(enumMessageType){
                         case OBJECT_TYPE::ATTACKER:
-//                            player.spawnAttacker();
+                            player->spawnAttacker();
                             break;
                         case OBJECT_TYPE::WALL:
-//                            player.spawnWall();
+                            player->spawnWall();
                             break;
                         case OBJECT_TYPE::TURRET:
-//                            player.spawnTurret();
+                            player->spawnTurret();
                             break;
                         case OBJECT_TYPE::MINE:
-//                            player.spawnMine();
+                            player->spawnMine();
                             break;
                         default:
                             break;
                     }
-//
-//                    // Communication protocol for creation types
-//                    // 1: worker
-//                    // 2: attacker
-//                    // 3: turret
-//                    // 4: wall
-//                    int creationType = payload.get("objectType").getAsInt();
-//                    switch (creationType) {
-//                        case 1:
-//                            creationType = 1;
-//                            thisPlayer.spawnWorker();
-//                            break;
-//                        case 2:
-//                            creationType = 2;
-//                            thisPlayer.spawnMeleeAttacker();
-//                            break;
-//                        case 3:
-//                            creationType = 3;
-//                            thisPlayer.spawnTurret(x1, y1);
-//                            break;
-//                        case 4:
-//                            creationType = 4;
-//                            thisPlayer.spawnWall(x1, y1);
-//                            break;
-//                    }
                     break;
                 }
                 default:
@@ -185,17 +160,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
 
             std::cout << id << std::endl;
-
-            //get an array
-//            std::string json = "[ {\"test\" : 0}, { \"test1\" : [1, 2, 3], \"test2\" : 4 } ]";
-
-//            Array::Ptr arr = result.extract<Array::Ptr>();
-//            Object::Ptr aObject = arr->getObject(0);//
-////            assert (aObject->getValue<int>("test") == 0);
-//            aObject = arr->getObject(1);
-//            arr = aObject->getArray("test1");
-//            result = arr->get(0);
-//            assert (result == 1);
+            std::cout << playerId << std::endl;
 
             WebSockets::sendMessage(buffer, n, flags, ws);
 
@@ -245,8 +210,10 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
         app.logger().information(it->first + ": " + it->second);
     }
 
-    if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0)
-        return new WebSocketRequestHandler;
-    else
+    if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0){
+        Game newGame;
+        return new WebSocketRequestHandler(newGame);
+    } else {
         return new PageRequestHandler;
+    }
 };

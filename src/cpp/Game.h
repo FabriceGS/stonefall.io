@@ -15,12 +15,12 @@ public:
     static bool
     playerExists(std::string);
 
-    static void
+    static Player *
     addPlayer(std::string);
 
     static bool validateCreation(int x, int y, std::string basic_string);
 
-    Player getPlayer(std::string basic_string);
+    Player * getPlayer(std::string basic_string);
 };
 
 
