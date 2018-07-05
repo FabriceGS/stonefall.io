@@ -132,7 +132,7 @@ function Game(width, height, center) {
     TURRET_COST = objects.my.statistics.turret1Cost;
     ATTACKER_COST = objects.my.statistics.attacker1Cost;
     MINE_COST = objects.my.statistics.mineCost;
-    // set costs of the p tags in game.ftl
+    // set costs of the p tags in game.html
     document.getElementById("wallCost").innerHTML = WALL_COST;
     if (WALL_COST >= 1000) {
       $("#wallCost").css("left", "calc(calc(calc(100vw / 2) - 82.5px) + 0px)");

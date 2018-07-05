@@ -61,13 +61,10 @@ void WebSockets::sendMessage(char buffer[], int n, int flags, WebSocket ws){
 
 void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
-    std::cout << "method called: handleRequest()" << std::endl;
-
     Application& app = Application::instance();
     try
     {
         WebSocket ws(request, response);
-        app.logger().information("WebSocket connection established.");
         char buffer[1024];
         int flags;
         int n;
@@ -75,9 +72,6 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
         {
             //receive the buffer object
             n = ws.receiveFrame(buffer, sizeof(buffer), flags);
-
-            //log the receipt
-            app.logger().information(Poco::format("Frame received (length=%d, flags=0x%x).", n, unsigned(flags)));
 
             //convert char array buffer into string
             std::string JSON(buffer);
@@ -108,7 +102,6 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     //get name
                     Var varName = extractedPayload->get("name");
                     std::string name = varName.convert<std::string>();
-                    std::cout << "name is" + name << std::endl;
 
                     //add player to game if doesn't already exist
                     if(player == NULL){
@@ -169,11 +162,9 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
         }
         while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
-        app.logger().information("WebSocket connection closed.");
     }
     catch (WebSocketException& exc)
     {
-        std::cout << "welp that happened" << std::endl;
         app.logger().log(exc);
         switch (exc.code())
         {
@@ -194,21 +185,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
 HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServerRequest& request)
 {
-    std::cout << "method called: createRequestHandler(); of class: RequestHandlerFactory" << std::endl;
     Application& app = Application::instance();
-    app.logger().information("Request from "
-                             + request.clientAddress().toString()
-                             + ": "
-                             + request.getMethod()
-                             + " "
-                             + request.getURI()
-                             + " "
-                             + request.getVersion());
-
-    for (HTTPServerRequest::ConstIterator it = request.begin(); it != request.end(); ++it)
-    {
-        app.logger().information(it->first + ": " + it->second);
-    }
 
     if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0){
         Game newGame;

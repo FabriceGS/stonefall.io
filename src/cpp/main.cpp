@@ -60,8 +60,6 @@ class WebSocketServer: public Poco::Util::ServerApplication
 public:
     WebSocketServer(): _helpRequested(false)
     {
-        std::cout << "websocket server created" << std::endl;
-
     }
 
     ~WebSocketServer()
@@ -71,8 +69,6 @@ public:
 protected:
     void initialize(Application& self)
     {
-        std::cout << "method called: initialize(); of class WebSocketServer" << std::endl;
-
         loadConfiguration(); // load default configuration files, if present
         ServerApplication::initialize(self);
     }
@@ -84,8 +80,6 @@ protected:
 
     void defineOptions(OptionSet& options)
     {
-        std::cout << "method called: defineOptions(); of class WebSocketServer" << std::endl;
-
         ServerApplication::defineOptions(options);
 
         options.addOption(
@@ -96,8 +90,6 @@ protected:
 
     void handleOption(const std::string& name, const std::string& value)
     {
-        std::cout << "method called: handleOption(); of class WebSocketServer" << std::endl;
-
         ServerApplication::handleOption(name, value);
 
         if (name == "help")

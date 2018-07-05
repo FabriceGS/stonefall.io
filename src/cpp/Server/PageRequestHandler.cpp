@@ -35,7 +35,13 @@ void PageRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRes
 
 void PageRequestHandler::serveFile(string filename, HTTPServerResponse &response) {
     response.setChunkedTransferEncoding(true);
-    response.setContentType("text/html");
+    if (filename.find("css", 0) != string::npos) {
+        response.setContentType("text/css");
+    } else if (filename.find("js", 0) != string::npos) {
+        response.setContentType("application/javascript");
+    } else {
+        response.setContentType("text/html");
+    }
     ifstream inFile;
     inFile.open(WEB_DIRECTORY_PREFIX + filename);
     if (!inFile) {
