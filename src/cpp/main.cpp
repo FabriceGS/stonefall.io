@@ -18,6 +18,7 @@
 #include "Poco/Format.h"
 #include <iostream>
 #include "Server/WebSocketRequestHandler.h"
+#include "Server/RequestHandlerFactory.h"
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
@@ -80,6 +81,7 @@ protected:
 
     void defineOptions(OptionSet& options)
     {
+
         ServerApplication::defineOptions(options);
 
         options.addOption(
@@ -90,6 +92,8 @@ protected:
 
     void handleOption(const std::string& name, const std::string& value)
     {
+        std::cout << "method called: handleOption(); of class WebSocketServer" << std::endl;
+
         ServerApplication::handleOption(name, value);
 
         if (name == "help")

@@ -20,20 +20,12 @@ using Poco::Net::HTTPServerResponse;
 using Poco::Net::HTTPRequestHandlerFactory;
 using Poco::Net::WebSocket;
 
-
-
-
-class RequestHandlerFactory: public HTTPRequestHandlerFactory {
-    public:
-        HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request);
-
-};
-
 class WebSocketRequestHandler: public HTTPRequestHandler {
     private:
         std::unordered_set<std::string> players;
         Game game;
     public:
+        void sendMessage(char buffer[], int n, int flags, WebSocket ws);
         void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
         WebSocketRequestHandler(Game newGame){
             game = newGame;

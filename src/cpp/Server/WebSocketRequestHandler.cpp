@@ -50,7 +50,7 @@ using Poco::JSON::Array;
 
 using Poco::Dynamic::Var;
 
-void WebSockets::sendMessage(char buffer[], int n, int flags, WebSocket ws){
+void WebSocketRequestHandler::sendMessage(char buffer[], int n, int flags, WebSocket ws){
     std::cout << "sendMessage called" << std::endl;
     std::cout << buffer << std::endl;
     std::cout << n << std::endl;
@@ -155,11 +155,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
             std::cout << id << std::endl;
             std::cout << playerId << std::endl;
 
-            WebSockets::sendMessage(buffer, n, flags, ws);
-
-
-
-
+            sendMessage(buffer, n, flags, ws);
         }
         while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
     }
@@ -182,15 +178,3 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
     }
 };
 
-
-HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServerRequest& request)
-{
-    Application& app = Application::instance();
-
-    if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0){
-        Game newGame;
-        return new WebSocketRequestHandler(newGame);
-    } else {
-        return new PageRequestHandler;
-    }
-};
