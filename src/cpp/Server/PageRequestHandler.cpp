@@ -2,7 +2,7 @@
 // Created by Mac McCann on 6/18/18.
 //
 
-#include "PageRequestHandler.h"
+#include "Server/PageRequestHandler.h"
 
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPServerRequest.h"

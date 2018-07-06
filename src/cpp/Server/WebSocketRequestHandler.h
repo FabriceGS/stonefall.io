@@ -10,7 +10,7 @@
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
 #include "Poco/Net/WebSocket.h"
-#include "../Game.h"
+#include "Game.h"
 #include <unordered_set>
 
 

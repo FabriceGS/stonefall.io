@@ -4,8 +4,8 @@
 
 #include "WebSocketRequestHandler.h"
 #include "PageRequestHandler.h"
-#include "../Game.h"
-#include "../Player.h"
+#include "Game.h"
+#include "Player.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
