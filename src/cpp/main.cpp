@@ -38,7 +38,6 @@ using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
 
-
 class WebSocketServer: public Poco::Util::ServerApplication
     /// The main application class.
     ///
@@ -137,6 +136,5 @@ protected:
 private:
     bool _helpRequested;
 };
-
 
 POCO_SERVER_MAIN(WebSocketServer);

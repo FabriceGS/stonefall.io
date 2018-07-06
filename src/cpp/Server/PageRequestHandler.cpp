@@ -16,6 +16,7 @@ using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 using Poco::URI;
+using Poco::URI::QueryParameters;
 using namespace std;
 
 bool PageRequestHandler::routesMatch(URI uri, string route) {
@@ -25,8 +26,17 @@ bool PageRequestHandler::routesMatch(URI uri, string route) {
 void PageRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse &response) {
     // check for paths
     URI uri = URI(request.getURI());
-    if (routesMatch(uri, "/") || routesMatch(uri, "/index") || routesMatch(uri, "/index.html")) {
+    if ((routesMatch(uri, "/") || routesMatch(uri, "/index") || routesMatch(uri, "/index.html"))
+        && request.getMethod().compare("GET") == 0) {
         serveFile("/index.html", response);
+    } else if ((routesMatch(uri, "/") || routesMatch(uri, "/index") || routesMatch(uri, "/index.html"))
+        && request.getMethod().compare("POST") == 0) {
+        // handle the initial POST request
+        // get the name from the query params
+        QueryParameters queryParameters = uri.getQueryParameters();
+        for (vector<pair<string, string>>::iterator it = queryParameters.begin(); it != queryParameters.end(); ++it) {
+
+        }
     } else {
         // otherwise, serve statically from url
         serveFile(uri.getPath(), response);
