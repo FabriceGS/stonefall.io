@@ -17,16 +17,11 @@ class Grid {
     private:
         Grid();
         ~Grid();
-        static shared_ptr<GridBlock> gridBlocks[BOARD_LENGTH][BOARD_WIDTH];
+        static array<array<shared_ptr<GridBlock>, BOARD_WIDTH>, BOARD_LENGTH> gridBlocks;
         static void createEdges();
 
     public:
-        const optional<shared_ptr<GridBlock>> static getGridBlock(int x, int y) {
-            if (x >= 0 && x < BOARD_WIDTH && y>= 0 && y < BOARD_LENGTH) {
-            return optional(gridBlocks[x][y]);
-            }
-            return nullopt;
-        }
+        const optional<shared_ptr<GridBlock>> static getGridBlock(int x, int y);
         static void buildGrid();
         const static bool validateCoordinates(int x, int y);
         const static bool isWithinNBlocks(int n, shared_ptr<GridBlock> source, shared_ptr<GridBlock> target);
