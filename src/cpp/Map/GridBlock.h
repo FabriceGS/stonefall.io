@@ -8,6 +8,8 @@
 #include <memory>
 #include "../AbstractClasses/GridEntity.h"
 
+using namespace std;
+
 class GridBlock {
 
     private:
@@ -18,8 +20,8 @@ class GridBlock {
     public:
         GridBlock(int x, int y);
 
-        const int getX() {return x;};
-        const int getY() {return y;};
+        int getX() const {return x;};
+        int getY() const {return y;};
 
         void populate(shared_ptr<GridEntity> ent) {entity = ent;};
         void depopulate() {entity = nullptr;};

@@ -10,21 +10,18 @@
 #include "../Constants.h"
 #include "GridBlock.h"
 
-using namespace std;
 using namespace std::experimental;
 
 class Grid {
     private:
-        Grid();
-        ~Grid();
-        static array<array<shared_ptr<GridBlock>, BOARD_WIDTH>, BOARD_LENGTH> gridBlocks;
+        static array<array<shared_ptr<GridBlock>, BOARD_LENGTH>, BOARD_WIDTH> gridBlocks;
         static void createEdges();
 
     public:
-        const optional<shared_ptr<GridBlock>> static getGridBlock(int x, int y);
+        static optional<shared_ptr<GridBlock>> getGridBlock(int x, int y);
         static void buildGrid();
-        const static bool validateCoordinates(int x, int y);
-        const static bool isWithinNBlocks(int n, shared_ptr<GridBlock> source, shared_ptr<GridBlock> target);
+        static bool validateCoordinates(int x, int y);
+        static bool isWithinNBlocks(int n, GridBlock const& source, GridBlock const& target);
 };
 
 

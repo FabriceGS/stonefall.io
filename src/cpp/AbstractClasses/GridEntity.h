@@ -10,11 +10,12 @@ class GridBlock;
 using namespace std;
 
 class GridEntity {
-    private:
-        shared_ptr<GridBlock> block{};
+    protected:
+        GridBlock& block;
+
     public:
         // Marked explicit to prevent splicing during function calls on GridEntity values.
-        explicit GridEntity(shared_ptr<GridBlock> block) : block(block) { }
+        explicit GridEntity(GridBlock& block) : block(block) { }
         virtual GridBlock getBlock() = 0;
 };
 

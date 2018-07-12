@@ -12,7 +12,7 @@ class Killable : public GridEntity {
         double hp;
 
     public:
-        Killable(GridBlock &block, double hp) : GridEntity(block), hp(hp) {}
+        Killable(GridBlock& block, double hp) : GridEntity(block), hp(hp) {}
         const double getHealth() {return hp;};
         void setHealth(double newHp) {hp = newHp;};
         const bool isDead() {return hp <= 0;};
