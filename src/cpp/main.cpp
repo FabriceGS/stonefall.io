@@ -18,6 +18,7 @@
 #include "Poco/Format.h"
 #include <iostream>
 #include "Server/WebSocketRequestHandler.h"
+#include "Server/RequestHandlerFactory.h"
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
@@ -36,7 +37,6 @@ using Poco::Util::Application;
 using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
-
 
 class WebSocketServer: public Poco::Util::ServerApplication
     /// The main application class.
@@ -60,8 +60,6 @@ class WebSocketServer: public Poco::Util::ServerApplication
 public:
     WebSocketServer(): _helpRequested(false)
     {
-        std::cout << "websocket server created" << std::endl;
-
     }
 
     ~WebSocketServer()
@@ -71,8 +69,6 @@ public:
 protected:
     void initialize(Application& self)
     {
-        std::cout << "method called: initialize(); of class WebSocketServer" << std::endl;
-
         loadConfiguration(); // load default configuration files, if present
         ServerApplication::initialize(self);
     }
@@ -84,7 +80,6 @@ protected:
 
     void defineOptions(OptionSet& options)
     {
-        std::cout << "method called: defineOptions(); of class WebSocketServer" << std::endl;
 
         ServerApplication::defineOptions(options);
 
@@ -141,6 +136,5 @@ protected:
 private:
     bool _helpRequested;
 };
-
 
 POCO_SERVER_MAIN(WebSocketServer);
