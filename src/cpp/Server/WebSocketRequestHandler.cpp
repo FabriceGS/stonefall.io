@@ -119,6 +119,24 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                 }
 
                 case MESSAGE::ATTACK:{
+                    // communicate attacking instructions to game
+
+                    // get coordinates of objective
+                    int x = extractedPayload->get("x").convert<int>();
+                    int y = extractedPayload->get("y").convert<int>();
+
+                    // set of attacker ids
+                    Object::Ptr attackerIds = extractedPayload->getObject("attackers");
+
+                    // iterate over and add to hashset
+                    std::unordered_set<std::string> attackerIdSet;
+                    Object::Iterator iter;
+                    for(iter = attackerIds->begin(); iter != attackerIds->end(); iter++) {
+                        attackerIdSet.insert(iter->first);
+                    }
+
+                    //send the attacker ids to the game
+                    game.attackCommand(player, attackerIdSet);
 
                     break;
                 }
@@ -154,6 +172,11 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     }
                     break;
                 }
+                case MESSAGE::UPDATE:break;
+                case MESSAGE::INITIALIZE:break;
+                case MESSAGE::SELL:break;
+                case MESSAGE::ERROR:break;
+                case MESSAGE::GAMEOVER:break;
                 default:
                     break;
             }
