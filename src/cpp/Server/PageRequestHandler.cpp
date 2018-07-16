@@ -7,6 +7,7 @@
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
+#include "Poco/Net/HTMLForm.h"
 #include "Poco/URI.h"
 
 #include <fstream>
@@ -15,6 +16,7 @@
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
+using Poco::Net::HTMLForm;
 using Poco::URI;
 using namespace std;
 
@@ -31,11 +33,11 @@ void PageRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRes
     } else if ((routesMatch(uri, "/") || routesMatch(uri, "/index") || routesMatch(uri, "/index.html"))
         && request.getMethod().compare("POST") == 0) {
         // handle the initial POST request
-        // get the name from the query params
-        URI::QueryParameters queryParameters = uri.getQueryParameters();
-        for (vector<pair<string, string>>::iterator it = queryParameters.begin(); it != queryParameters.end(); ++it) {
-
-        }
+        // get the name from the form
+        HTMLForm form(request, request.stream());
+        string name = form["name"];
+        ostream& ostr = response.send();
+        ostr << "Your name was " << name << endl;
     } else {
         // otherwise, serve statically from url
         serveFile(uri.getPath(), response);
@@ -58,7 +60,7 @@ void PageRequestHandler::serveFile(string filename, HTTPServerResponse &response
         response.setStatus(HTTPServerResponse::HTTP_NOT_FOUND);
         response.setReason("Resource not found");
         ostream& ostr = response.send();
-        ostr << "Resource not found\n";
+        ostr << "<b>404 Error:</b> Resource not found\n";
     } else {
         ostream& ostr = response.send();
         fileToOStream(inFile, ostr);
@@ -67,14 +69,14 @@ void PageRequestHandler::serveFile(string filename, HTTPServerResponse &response
 
 void PageRequestHandler::fileToOStream(ifstream &inFile, ostream &ostr) {
     // get size of file
-    inFile.seekg (0,inFile.end);
+    inFile.seekg(0,inFile.end);
     long size = inFile.tellg();
-    inFile.seekg (0);
+    inFile.seekg(0);
     // allocate memory for file content
     char* buffer = new char[size];
     // read content of inFile
-    inFile.read (buffer,size);
+    inFile.read(buffer, size);
     // write to outfile
-    ostr.write (buffer,size);
+    ostr.write(buffer, size);
     inFile.close();
 }

@@ -8,28 +8,29 @@
   <link rel="stylesheet" href="css/login.css">
   <link rel="stylesheet" href="css/buttons.css">
   <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
 </head>
 <body>
   <div id="main">
     <h1>Stonefall</h1>
     <!-- form for user to input name  -->
-    <form action="/" method="POST" id="loginForm">
-      <input type="text" id="myName" name="myName" placeholder="Enter your name here"><br>
-      <input type="submit" class="button button-action button-pill" id="submitButton" value="Go">
-    </form>
+    <input type="text" id="name" name="name" placeholder="Enter your name here"><br>
+    <a href="#" class="button button-action button-pill" id="submitButton" value="Go">
 
     <!-- instructions -->
     <h3 id="instructionsHeader"> Never played? </h3>
     <a id="tutorialButton" class="button button-primary button-pill" href="/instructions.html">Tutorial</a>
   </div>
 
-
-  <!-- clear the form so another user can use it -->
-  <script type="text/javascript">
-    document.getElementById("loginForm").reset();
-  </script>
-
   <script src="js/jquery-3.1.1.js"></script>
+  <script>
+      $("#name").val("");
+
+      $("#submitButton").click(() => {
+          // post the data from the 'name' input
+          $.post("/", { name: $("#name").val() }, response => console.log(response));
+      });
+  </script>
 </body>
 <!-- See http://html5boilerplate.com/ for a good place to start
 dealing with real world issues like old browsers.  -->

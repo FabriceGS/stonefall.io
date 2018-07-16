@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "Player.h"
+#include "unordered_set"
 
 
 class Game {
@@ -21,6 +22,8 @@ public:
     static bool validateCreation(int x, int y, std::string basic_string);
 
     Player * getPlayer(std::string basic_string);
+
+    bool attackCommand(Player *player, std::unordered_set<std::string> attackerIdSet);
 };
 
 
