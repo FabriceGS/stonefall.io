@@ -15,7 +15,7 @@ using namespace std::experimental;
 class Grid {
     private:
         static array<array<shared_ptr<GridBlock>, BOARD_LENGTH>, BOARD_WIDTH> gridBlocks;
-        static void createEdges();
+        static void createNeighbors();
 
     public:
         static optional<shared_ptr<GridBlock>> getGridBlock(int x, int y);

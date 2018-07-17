@@ -15,4 +15,13 @@
 #define RESOURCE_HP 5000
 #define ATTACKER_HP 3000
 
+#define NW 0
+#define N 1
+#define NE 2
+#define E 3
+#define W 4
+#define SE 5
+#define S 6
+#define SW 7
+
 #endif // STONEFALL_CONSTANTS_H

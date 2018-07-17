@@ -143,4 +143,4 @@ private:
 };
 
 
-POCO_SERVER_MAIN(WebSocketServer);
+// POCO_SERVER_MAIN(WebSocketServer);

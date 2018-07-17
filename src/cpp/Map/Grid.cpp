@@ -6,9 +6,26 @@
 
 array<array<shared_ptr<GridBlock>, BOARD_LENGTH>, BOARD_WIDTH> Grid::gridBlocks;
 
-void Grid::createEdges() {
-    // TODO: Implement...
-}
+void Grid::createNeighbors() {
+    for (int i = 0; i < BOARD_WIDTH; i++) {
+        for (int j = 0; j < BOARD_LENGTH; j++) {
+            int direction = 0;
+            array<shared_ptr<GridBlock>, 8> neighbors;
+
+            for (int m = i - 1; m <= i + 1; m++) {
+                for (int n = j - 1; n <= j + 1; n++) {
+                    if (m >= 0 && m < BOARD_WIDTH && n >= 0 && n < BOARD_LENGTH) {
+                        if (m == i && n == j)
+                            continue;
+
+                        neighbors[direction] = gridBlocks[m][n];
+                        direction++;
+                    }
+                }
+            }
+            gridBlocks[i][j]->setNeighbors(neighbors);
+        }
+    }}
 
 void Grid::buildGrid() {
     // Building the 2D array of GridBlock pointers.
@@ -19,7 +36,7 @@ void Grid::buildGrid() {
     }
 
     // Connecting the GridBlocks.
-    createEdges();
+    createNeighbors();
 }
 
 bool Grid::validateCoordinates(int x, int y) {

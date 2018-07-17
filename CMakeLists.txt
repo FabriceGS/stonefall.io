@@ -10,7 +10,7 @@ set(SOURCE_FILES
         src/cpp/Server/Websockets.h src/cpp/Structure/Mine.cpp src/cpp/Structure/Mine.h src/cpp/Constants.h
         src/cpp/Structure/Resource.cpp src/cpp/Structure/Resource.h src/cpp/Structure/Turret.cpp
         src/cpp/Structure/Turret.h src/cpp/Structure/Wall.cpp src/cpp/Structure/Wall.h src/cpp/Unit/Attacker.cpp
-        src/cpp/Unit/Attacker.h src/cpp/Map/Grid.cpp src/cpp/Map/Grid.h)
+        src/cpp/Unit/Attacker.h src/cpp/Map/Grid.cpp src/cpp/Map/Grid.h src/cpp/Test/Catch.h src/cpp/Test/Test.cpp)
 
 set(Poco_DIR ~/dev/dev_apps/poco-1.9.0/cmake_build/Poco/)
 

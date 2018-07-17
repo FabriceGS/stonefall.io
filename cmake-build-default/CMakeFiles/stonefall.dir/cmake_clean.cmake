@@ -10,6 +10,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o"
   "CMakeFiles/stonefall.dir/src/cpp/Unit/Attacker.cpp.o"
   "CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o"
+  "CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o"
   "stonefall.pdb"
   "stonefall"
 )

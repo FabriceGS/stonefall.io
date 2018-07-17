@@ -6,6 +6,7 @@
 #define STONEFALL_GRIDBLOCK_H
 
 #include <memory>
+#include <array>
 #include "../AbstractClasses/GridEntity.h"
 
 using namespace std;
@@ -14,11 +15,15 @@ class GridBlock {
 
     private:
         shared_ptr<GridEntity> entity;
+        array<shared_ptr<GridBlock>, 8> neighbors;
         const int x;
         const int y;
 
     public:
         GridBlock(int x, int y);
+
+        void setNeighbors(const array<shared_ptr<GridBlock>, 8> &neighbors);
+        array<shared_ptr<GridBlock>, 8> &getNeighbors();
 
         int getX() const {return x;};
         int getY() const {return y;};
