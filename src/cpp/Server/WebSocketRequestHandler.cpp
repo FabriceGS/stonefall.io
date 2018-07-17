@@ -51,7 +51,7 @@ using Poco::JSON::Array;
 using Poco::Dynamic::Var;
 
 void WebSocketRequestHandler::sendMessage(char buffer[], int n, int flags, WebSocket ws){
-    std::cout << "sendMessage called" << std::endl;
+    std::cout << "sendMessage called fdsa " << std::endl;
     std::cout << buffer << std::endl;
     std::cout << n << std::endl;
     std::cout << flags << std::endl;

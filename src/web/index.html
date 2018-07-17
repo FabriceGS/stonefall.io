@@ -15,7 +15,7 @@
     <h1>Stonefall</h1>
     <!-- form for user to input name  -->
     <input type="text" id="name" name="name" placeholder="Enter your name here"><br>
-    <a href="#" class="button button-action button-pill" id="submitButton" value="Go">
+    <a href="#" class="button button-action button-pill" id="submitButton">Go</a>
 
     <!-- instructions -->
     <h3 id="instructionsHeader"> Never played? </h3>
@@ -26,10 +26,20 @@
   <script>
       $("#name").val("");
 
-      $("#submitButton").click(() => {
-          // post the data from the 'name' input
-          $.post("/", { name: $("#name").val() }, response => console.log(response));
+      $("#submitButton").click(play);
+
+      $(document).keypress(function(e) {
+          if(e.which == 13) {
+              play();
+          }
       });
+
+      function play() {
+          // redirect to /play?name=<name>
+          var unsafeUri = '/play.html?name=' + $("#name").val();
+          var safeUri = encodeURI(unsafeUri);
+          window.location.href = safeUri;
+      }
   </script>
 </body>
 <!-- See http://html5boilerplate.com/ for a good place to start
