@@ -153,28 +153,28 @@ CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o.provides: CMake
 CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o.provides.build: CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o
 
 
-CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o: CMakeFiles/stonefall.dir/flags.make
-CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o: ../src/cpp/Server/Websockets.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o -c /Users/david.oyeka/dev/stonefall/src/cpp/Server/Websockets.cpp
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: CMakeFiles/stonefall.dir/flags.make
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/Server/WebSocketRequestHandler.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o -c /Users/david.oyeka/dev/stonefall/src/cpp/Server/WebSocketRequestHandler.cpp
 
-CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/david.oyeka/dev/stonefall/src/cpp/Server/Websockets.cpp > CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.i
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/david.oyeka/dev/stonefall/src/cpp/Server/WebSocketRequestHandler.cpp > CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.i
 
-CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/david.oyeka/dev/stonefall/src/cpp/Server/Websockets.cpp -o CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.s
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/david.oyeka/dev/stonefall/src/cpp/Server/WebSocketRequestHandler.cpp -o CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.s
 
-CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o.requires:
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o.requires:
 
-.PHONY : CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o.requires
+.PHONY : CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o.requires
 
-CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o.provides: CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o.requires
-	$(MAKE) -f CMakeFiles/stonefall.dir/build.make CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o.provides.build
-.PHONY : CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o.provides
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o.provides: CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o.requires
+	$(MAKE) -f CMakeFiles/stonefall.dir/build.make CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o.provides.build
+.PHONY : CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o.provides
 
-CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o.provides.build: CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o.provides.build: CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o
 
 
 CMakeFiles/stonefall.dir/src/cpp/Structure/Mine.cpp.o: CMakeFiles/stonefall.dir/flags.make
@@ -321,28 +321,76 @@ CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o.provides: CMakeFiles/stonefall.d
 CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o.provides.build: CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o
 
 
-CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o: CMakeFiles/stonefall.dir/flags.make
-CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o: ../src/cpp/Test/Test.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o -c /Users/david.oyeka/dev/stonefall/src/cpp/Test/Test.cpp
+CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o: CMakeFiles/stonefall.dir/flags.make
+CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o: ../src/cpp/Game.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o -c /Users/david.oyeka/dev/stonefall/src/cpp/Game.cpp
 
-CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/david.oyeka/dev/stonefall/src/cpp/Test/Test.cpp > CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.i
+CMakeFiles/stonefall.dir/src/cpp/Game.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/stonefall.dir/src/cpp/Game.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/david.oyeka/dev/stonefall/src/cpp/Game.cpp > CMakeFiles/stonefall.dir/src/cpp/Game.cpp.i
 
-CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/david.oyeka/dev/stonefall/src/cpp/Test/Test.cpp -o CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.s
+CMakeFiles/stonefall.dir/src/cpp/Game.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/stonefall.dir/src/cpp/Game.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/david.oyeka/dev/stonefall/src/cpp/Game.cpp -o CMakeFiles/stonefall.dir/src/cpp/Game.cpp.s
 
-CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o.requires:
+CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o.requires:
 
-.PHONY : CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o.requires
+.PHONY : CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o.requires
 
-CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o.provides: CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o.requires
-	$(MAKE) -f CMakeFiles/stonefall.dir/build.make CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o.provides.build
-.PHONY : CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o.provides
+CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o.provides: CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o.requires
+	$(MAKE) -f CMakeFiles/stonefall.dir/build.make CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o.provides.build
+.PHONY : CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o.provides
 
-CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o.provides.build: CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o
+CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o.provides.build: CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o
+
+
+CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o: CMakeFiles/stonefall.dir/flags.make
+CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o: ../src/cpp/Player.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o -c /Users/david.oyeka/dev/stonefall/src/cpp/Player.cpp
+
+CMakeFiles/stonefall.dir/src/cpp/Player.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/stonefall.dir/src/cpp/Player.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/david.oyeka/dev/stonefall/src/cpp/Player.cpp > CMakeFiles/stonefall.dir/src/cpp/Player.cpp.i
+
+CMakeFiles/stonefall.dir/src/cpp/Player.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/stonefall.dir/src/cpp/Player.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/david.oyeka/dev/stonefall/src/cpp/Player.cpp -o CMakeFiles/stonefall.dir/src/cpp/Player.cpp.s
+
+CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o.requires:
+
+.PHONY : CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o.requires
+
+CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o.provides: CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o.requires
+	$(MAKE) -f CMakeFiles/stonefall.dir/build.make CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o.provides.build
+.PHONY : CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o.provides
+
+CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o.provides.build: CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o
+
+
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: CMakeFiles/stonefall.dir/flags.make
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/Server/RequestHandlerFactory.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o -c /Users/david.oyeka/dev/stonefall/src/cpp/Server/RequestHandlerFactory.cpp
+
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/david.oyeka/dev/stonefall/src/cpp/Server/RequestHandlerFactory.cpp > CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.i
+
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/david.oyeka/dev/stonefall/src/cpp/Server/RequestHandlerFactory.cpp -o CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.s
+
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o.requires:
+
+.PHONY : CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o.requires
+
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o.provides: CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o.requires
+	$(MAKE) -f CMakeFiles/stonefall.dir/build.make CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o.provides.build
+.PHONY : CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o.provides
+
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o.provides.build: CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o
 
 
 # Object files for target stonefall
@@ -351,14 +399,16 @@ stonefall_OBJECTS = \
 "CMakeFiles/stonefall.dir/src/cpp/Map/GridBlock.cpp.o" \
 "CMakeFiles/stonefall.dir/src/cpp/Structure/Base.cpp.o" \
 "CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o" \
-"CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o" \
+"CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o" \
 "CMakeFiles/stonefall.dir/src/cpp/Structure/Mine.cpp.o" \
 "CMakeFiles/stonefall.dir/src/cpp/Structure/Resource.cpp.o" \
 "CMakeFiles/stonefall.dir/src/cpp/Structure/Turret.cpp.o" \
 "CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o" \
 "CMakeFiles/stonefall.dir/src/cpp/Unit/Attacker.cpp.o" \
 "CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o" \
-"CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o"
+"CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o" \
+"CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o" \
+"CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o"
 
 # External object files for target stonefall
 stonefall_EXTERNAL_OBJECTS =
@@ -367,14 +417,16 @@ stonefall: CMakeFiles/stonefall.dir/src/cpp/main.cpp.o
 stonefall: CMakeFiles/stonefall.dir/src/cpp/Map/GridBlock.cpp.o
 stonefall: CMakeFiles/stonefall.dir/src/cpp/Structure/Base.cpp.o
 stonefall: CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o
-stonefall: CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o
+stonefall: CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o
 stonefall: CMakeFiles/stonefall.dir/src/cpp/Structure/Mine.cpp.o
 stonefall: CMakeFiles/stonefall.dir/src/cpp/Structure/Resource.cpp.o
 stonefall: CMakeFiles/stonefall.dir/src/cpp/Structure/Turret.cpp.o
 stonefall: CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o
 stonefall: CMakeFiles/stonefall.dir/src/cpp/Unit/Attacker.cpp.o
 stonefall: CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o
-stonefall: CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o
+stonefall: CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o
+stonefall: CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o
+stonefall: CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o
 stonefall: CMakeFiles/stonefall.dir/build.make
 stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake_build/lib/libPocoNet.60.dylib
 stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake_build/lib/libPocoUtil.60.dylib
@@ -382,7 +434,7 @@ stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake_build/lib/libPocoXML
 stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake_build/lib/libPocoJSON.60.dylib
 stonefall: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/cmake_build/lib/libPocoFoundation.60.dylib
 stonefall: CMakeFiles/stonefall.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable stonefall"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable stonefall"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/stonefall.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -394,14 +446,16 @@ CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/main.cpp.o.r
 CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Map/GridBlock.cpp.o.requires
 CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Structure/Base.cpp.o.requires
 CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o.requires
-CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Server/Websockets.cpp.o.requires
+CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o.requires
 CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Structure/Mine.cpp.o.requires
 CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Structure/Resource.cpp.o.requires
 CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Structure/Turret.cpp.o.requires
 CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o.requires
 CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Unit/Attacker.cpp.o.requires
 CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o.requires
-CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Test/Test.cpp.o.requires
+CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o.requires
+CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o.requires
+CMakeFiles/stonefall.dir/requires: CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o.requires
 
 .PHONY : CMakeFiles/stonefall.dir/requires
 

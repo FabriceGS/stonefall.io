@@ -1,3 +1,4 @@
 /Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/rebuild_cache.dir
 /Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/edit_cache.dir
+/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall-test.dir
 /Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir

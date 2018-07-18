@@ -6,6 +6,6 @@
 
 TEST_CASE("This is a test!", "[grid]")
 {
-     unique_ptr<Grid> grid = new Grid();
+     unique_ptr<Grid> grid = std::make_unique<Grid>();
      grid->buildGrid();
 }

@@ -1,36 +1,47 @@
-<html>
-    <head>
-        <title>WebSocketServer</title>
-        <script type="text/javascript">
-            function WebSocketTest()
-            {
-              if ("WebSocket" in window)
-              {
-                var ws = new WebSocket("ws://localhost:9980/ws");
-                ws.onopen = function()
-                  {
-                    ws.send("Hello, world!");
-                  };
-                ws.onmessage = function(evt)
-                  {
-                    var msg = evt.data;
-                    alert("Message received: " + msg);
-                    ws.close();
-                  };
-                ws.onclose = function()
-                  {
-                    alert("WebSocket closed.");
-                  };
-              }
-              else
-              {
-                 alert("This browser does not support WebSockets.");
-              }
-            }
-        </script>
-    </head>
-    <body>
-      <h1>WebSocket Server</h1>
-      <p><a href="javascript:WebSocketTest()">Run WebSocket Script</a></p>
-    </body>
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>Stonefall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/html5bp.css">
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+  <div id="main">
+    <h1>Stonefall</h1>
+    <!-- form for user to input name  -->
+    <input type="text" id="name" name="name" placeholder="Enter your name here"><br>
+    <a href="#" class="button button-action button-pill" id="submitButton">Go</a>
+
+    <!-- instructions -->
+    <h3 id="instructionsHeader"> Never played? </h3>
+    <a id="tutorialButton" class="button button-primary button-pill" href="/instructions.html">Tutorial</a>
+  </div>
+
+  <script src="js/jquery-3.1.1.js"></script>
+  <script>
+      $("#name").val("");
+
+      $("#submitButton").click(play);
+
+      $(document).keypress(function(e) {
+          if(e.which == 13) {
+              play();
+          }
+      });
+
+      function play() {
+          // redirect to /play?name=<name>
+          var unsafeUri = '/play.html?name=' + $("#name").val();
+          var safeUri = encodeURI(unsafeUri);
+          window.location.href = safeUri;
+      }
+  </script>
+</body>
+<!-- See http://html5boilerplate.com/ for a good place to start
+dealing with real world issues like old browsers.  -->
 </html>

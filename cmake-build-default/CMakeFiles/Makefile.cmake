@@ -67,5 +67,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/stonefall-test.dir/DependInfo.cmake"
   "CMakeFiles/stonefall.dir/DependInfo.cmake"
   )
