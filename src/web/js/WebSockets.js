@@ -18,9 +18,17 @@ const WebSockets = function() {
     MINE: 3
   };
 
-  // const ip = "104.196.202.184";
-  const ip = "localhost:4567";
-  let conn = new WebSocket("ws://" + ip + "/sockets");
+  const loc = window.location;
+  let socketsUri;
+  if (loc.protocol === "https:") {
+      socketsUri = "wss:";
+  } else {
+      socketsUri = "ws:";
+  }
+  socketsUri += "//" + loc.host;
+  socketsUri += "/sockets";
+  let conn = new WebSocket(socketsUri);
+  conn.onopen = () => { conn.send(JSON.stringify({ blah: "fdsa" }))};
   let id = -1;
 
   // Setup the WebSocket connection.

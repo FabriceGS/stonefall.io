@@ -7,12 +7,12 @@
 #include <iostream>
 #include "unordered_set"
 
-Player * Game::getPlayer(std::string basic_string){
-    Player * newPlayer = new Player();
+Player Game::getPlayer(std::string id){
+    Player newPlayer = Player();
     return newPlayer;
 }
 
-bool Game::attackCommand(Player *player, std::unordered_set<std::string> attackerIdSet) {
+bool Game::attackCommand(Player& player, std::unordered_set<std::string> attackerIdSet) {
     std::cout << "attack command" << std::endl;
     for(auto f : attackerIdSet) {
         std::cout << f << std::endl;
@@ -25,11 +25,10 @@ bool Game::playerExists(std::string basic_string) {
     return false;
 }
 
-Player * Game::addPlayer(std::string basic_string) {
+Player Game::addPlayer() {
+    // TODO: generate a random id for the player here
     std::cout<< "add player command" << std::endl;
-    std::cout<< basic_string << std::endl;
-    Player * newPlayer = new Player();
-    return newPlayer;
+    return Player();
 }
 
 bool Game::validateCreation(int x, int y, std::string basic_string) {

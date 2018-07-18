@@ -6,6 +6,10 @@
 #define STONEFALL_PLAYER_H
 
 
+#include <string>
+
+using namespace std;
+
 class Player {
 
 public:
@@ -13,7 +17,9 @@ public:
     void spawnWall();
     void spawnMine();
     void spawnTurret();
-
+    string getId();
+    void setId(string id);
+private:
 };
 
 

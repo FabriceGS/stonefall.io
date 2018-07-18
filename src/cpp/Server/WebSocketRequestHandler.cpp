@@ -47,14 +47,14 @@ using Poco::Util::HelpFormatter;
 using Poco::JSON::Parser;
 using Poco::JSON::Object;
 using Poco::JSON::Array;
-
 using Poco::Dynamic::Var;
+using namespace std;
 
 void WebSocketRequestHandler::sendMessage(char buffer[], int n, int flags, WebSocket ws){
-    std::cout << "sendMessage called fdsa " << std::endl;
-    std::cout << buffer << std::endl;
-    std::cout << n << std::endl;
-    std::cout << flags << std::endl;
+    cout << "sendMessage called " << endl;
+    cout << buffer << endl;
+    cout << n << endl;
+    cout << flags << endl;
     //send the JSON object
     ws.sendFrame(buffer, n, flags);
 }
@@ -62,56 +62,50 @@ void WebSocketRequestHandler::sendMessage(char buffer[], int n, int flags, WebSo
 void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
     Application& app = Application::instance();
-    try
-    {
+    try {
         WebSocket ws(request, response);
         char buffer[1024];
         int flags;
         int n;
-        do
-        {
-            //receive the buffer object
+        do {
+            // receive the buffer object
             n = ws.receiveFrame(buffer, sizeof(buffer), flags);
 
-            //convert char array buffer into string
-            std::string JSON(buffer);
+            // convert char array buffer into string
+            string JSON(buffer);
 
-            //parse the received JSON object
+            // parse the received JSON object
             Parser parser;
             Var result = parser.parse(JSON);
             Object::Ptr received = result.extract<Object::Ptr>();
 
-            //get id
-            Var idVar = received->get("id");;
-            int id = idVar.convert<int>();
+            // get type
+            Var typeVar = received->get("type");;
+            int type = typeVar.convert<int>();
+            MESSAGE typeEnum = static_cast<MESSAGE>(type);
 
             //get the payload
             Var payload = received->get("payload");
             Object::Ptr extractedPayload = payload.extract<Object::Ptr>();
 
-            //get player id
-            Var varPlayerId = extractedPayload->get("playerId");
-            std::string playerId = varPlayerId.convert<std::string>();
+            switch(typeEnum){
+                case MESSAGE::INITIALIZE: {
+                    // get name
+                    Var nameVar = extractedPayload->get("name");
+                    string name = nameVar.convert<string>();
 
-            //get the player object
-            Player *player = game.getPlayer(playerId);
-
-            MESSAGE enumId = static_cast<MESSAGE>(id);
-            switch(enumId){
-                case MESSAGE::CONNECT: {
-                    //get name
-                    Var varName = extractedPayload->get("name");
-                    std::string name = varName.convert<std::string>();
-
-                    //add player to game if doesn't already exist
-                    if(player == NULL){
-                        player = game.addPlayer(playerId);
-                        players.insert(playerId);
-                    }
+                    // add player to game if doesn't already exist
+                    Player player = game.addPlayer();
+                    players.insert(player.getId());
                     break;
                 }
 
-                case MESSAGE::ATTACK:{
+                case MESSAGE::ATTACK: {
+                    // get player from id
+                    Var idVar = extractedPayload->get("id");
+                    string id = idVar.convert<string>();
+                    Player player = game.getPlayer(id);
+
                     // communicate attacking instructions to game
 
                     // get coordinates of objective
@@ -122,7 +116,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     Object::Ptr attackerIds = extractedPayload->getObject("attackers");
 
                     // iterate over and add to hashset
-                    std::unordered_set<std::string> attackerIdSet;
+                    unordered_set<string> attackerIdSet;
                     Object::Iterator iter;
                     for(iter = attackerIds->begin(); iter != attackerIds->end(); iter++) {
                         attackerIdSet.insert(iter->first);
@@ -130,60 +124,60 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
                     //send the attacker ids to the game
                     game.attackCommand(player, attackerIdSet);
-
                     break;
                 }
-                case MESSAGE::CREATE:{
-                    //get x and y coords of creation
+
+                case MESSAGE::CREATE: {
+                    // get player from id
+                    Var idVar = extractedPayload->get("id");
+                    string id = idVar.convert<string>();
+                    Player player = game.getPlayer(id);
+
+                    // get x and y coords of creation
                     int x = extractedPayload->get("x").convert<int>();
                     int y = extractedPayload->get("y").convert<int>();
 
-                    if(!game.validateCreation(x,y,playerId)){
+                    if (!game.validateCreation(x, y, id)) {
 //                        send an error message
 //                        return out of statement
                     }
 
                     //get creation type enum
                     int creationType = extractedPayload->get("objectType").convert<int>();
-                    OBJECT_TYPE enumMessageType = static_cast<OBJECT_TYPE>(creationType);
+                    OBJECT_TYPE creationTypeEnum = static_cast<OBJECT_TYPE>(creationType);
 
-                    switch(enumMessageType){
+                    switch(creationTypeEnum){
                         case OBJECT_TYPE::ATTACKER:
-                            player->spawnAttacker();
+                            player.spawnAttacker();
                             break;
                         case OBJECT_TYPE::WALL:
-                            player->spawnWall();
+                            player.spawnWall();
                             break;
                         case OBJECT_TYPE::TURRET:
-                            player->spawnTurret();
+                            player.spawnTurret();
                             break;
                         case OBJECT_TYPE::MINE:
-                            player->spawnMine();
+                            player.spawnMine();
                             break;
                         default:
                             break;
                     }
                     break;
                 }
+
                 case MESSAGE::UPDATE:break;
-                case MESSAGE::INITIALIZE:break;
                 case MESSAGE::SELL:break;
                 case MESSAGE::ERROR:break;
                 case MESSAGE::GAMEOVER:break;
-                default:
-                    break;
+                default:break;
             }
 
 
-            std::cout << id << std::endl;
-            std::cout << playerId << std::endl;
+            cout << "type: " << type << endl;
 
             sendMessage(buffer, n, flags, ws);
-        }
-        while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
-    }
-    catch (WebSocketException& exc)
-    {
+        } while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
+    } catch (WebSocketException& exc) {
         app.logger().log(exc);
         switch (exc.code())
         {

@@ -16,14 +16,13 @@ public:
     static bool
     playerExists(std::string);
 
-    static Player *
-    addPlayer(std::string);
+    Player addPlayer();
 
     static bool validateCreation(int x, int y, std::string basic_string);
 
-    Player * getPlayer(std::string basic_string);
+    Player getPlayer(std::string id);
 
-    bool attackCommand(Player *player, std::unordered_set<std::string> attackerIdSet);
+    bool attackCommand(Player& player, std::unordered_set<std::string> attackerIdSet);
 };
 
 

@@ -20,5 +20,8 @@ void Player::spawnMine() {
 
 }
 
+string Player::getId() {
+    return "5";
+}
 
-
+void Player::setId(string id) {}
