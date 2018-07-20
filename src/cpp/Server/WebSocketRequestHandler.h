@@ -11,6 +11,7 @@
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
 #include "Poco/Net/WebSocket.h"
 #include "Game.h"
+#include "GameState.h"
 #include <unordered_set>
 
 
@@ -27,9 +28,12 @@ class WebSocketRequestHandler: public HTTPRequestHandler {
     public:
         void sendMessage(char buffer[], int n, int flags, WebSocket ws);
         void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
+        void sendUpdates(GameState& gameState);
+        void updateSession(std::string player, GameState& gameState);
         WebSocketRequestHandler(Game newGame){
             game = newGame;
         }
+
 };
 
 namespace WebSockets{

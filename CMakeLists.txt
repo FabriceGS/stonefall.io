@@ -21,7 +21,7 @@ find_package(Poco 1.9.0 COMPONENTS REQUIRED JSON Net Util XML)
 include_directories(~/dev/dev_apps/poco-1.9.0 src/cpp)
 link_libraries(${Poco_LIBRARIES})
 
-add_executable(stonefall src/cpp/main.cpp ${SOURCE_FILES})
+add_executable(stonefall src/cpp/main.cpp ${SOURCE_FILES} src/cpp/GameState.cpp src/cpp/GameState.h)
 add_executable(stonefall-test src/cpp/Test/Catch.h src/cpp/Test/Test.cpp ${SOURCE_FILES})
 
 target_link_libraries(stonefall)
