@@ -13,8 +13,7 @@
 class Game {
 
 public:
-    static bool
-    playerExists(std::string);
+    static bool playerExists(std::string);
 
     Player addPlayer();
 

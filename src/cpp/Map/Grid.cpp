@@ -10,7 +10,7 @@ void Grid::createNeighbors() {
     for (int i = 0; i < BOARD_WIDTH; i++) {
         for (int j = 0; j < BOARD_LENGTH; j++) {
             int direction = 0;
-            array<shared_ptr<GridBlock>, 8> neighbors;
+            array<weak_ptr<GridBlock>, 8> neighbors;
 
             for (int m = i - 1; m <= i + 1; m++) {
                 for (int n = j - 1; n <= j + 1; n++) {
@@ -56,4 +56,13 @@ optional<shared_ptr<GridBlock>> Grid::getGridBlock(int x, int y) {
         return optional(gridBlocks[x][y]);
     }
     return nullopt;
+}
+
+Grid::~Grid() {
+    cout << std::string("Grid created") << endl;
+
+}
+
+Grid::Grid() {
+    cout << std::string("Grid destroyed") << endl;
 }

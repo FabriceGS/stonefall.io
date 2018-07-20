@@ -73,10 +73,11 @@ void PageRequestHandler::fileToOStream(ifstream &inFile, ostream &ostr) {
     long size = inFile.tellg();
     inFile.seekg(0);
     // allocate memory for file content
-    char* buffer = new char[size];
+    auto * buffer = new char[size];
     // read content of inFile
     inFile.read(buffer, size);
     // write to outfile
     ostr.write(buffer, size);
     inFile.close();
+    delete[] buffer;
 }

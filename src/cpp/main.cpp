@@ -1,5 +1,7 @@
 #include "Server/PageRequestHandler.h"
 #include "Server/WebSocketRequestHandler.h"
+#include "Server/WebSocketRequestHandler.h"
+#include "Server/RequestHandlerFactory.h"
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -16,9 +18,10 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Format.h"
+
 #include <iostream>
-#include "Server/WebSocketRequestHandler.h"
-#include "Server/RequestHandlerFactory.h"
+#include <Map/Grid.h>
+#include <memory>
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
@@ -37,6 +40,8 @@ using Poco::Util::Application;
 using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
+
+int GridBlock::stat = 0;
 
 class WebSocketServer: public Poco::Util::ServerApplication
     /// The main application class.

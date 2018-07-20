@@ -23,13 +23,11 @@ using Poco::Net::WebSocket;
 class WebSocketRequestHandler: public HTTPRequestHandler {
     private:
         std::unordered_set<std::string> players;
-        Game game;
+        Game& game;
     public:
         void sendMessage(char buffer[], int n, int flags, WebSocket ws);
-        void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
-        WebSocketRequestHandler(Game newGame){
-            game = newGame;
-        }
+        void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response) override;
+        explicit WebSocketRequestHandler(Game& newGame) : game(newGame) { }
 };
 
 namespace WebSockets{
