@@ -13,6 +13,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/stonefall-test.dir/src/cpp/Game.cpp.o"
   "CMakeFiles/stonefall-test.dir/src/cpp/Player.cpp.o"
   "CMakeFiles/stonefall-test.dir/src/cpp/Server/RequestHandlerFactory.cpp.o"
+  "CMakeFiles/stonefall-test.dir/src/cpp/Pathing/AStar.cpp.o"
   "stonefall-test.pdb"
   "stonefall-test"
 )

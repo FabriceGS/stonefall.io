@@ -12,7 +12,7 @@ set(SOURCE_FILES
         src/cpp/Structure/Turret.cpp src/cpp/Structure/Turret.h src/cpp/Structure/Wall.cpp src/cpp/Structure/Wall.h
         src/cpp/Unit/Attacker.cpp src/cpp/Unit/Attacker.h src/cpp/Map/Grid.cpp src/cpp/Game.cpp  src/cpp/Game.h
         src/cpp/Player.cpp src/cpp/Player.h src/cpp/Server/RequestHandlerFactory.cpp
-        src/cpp/Server/RequestHandlerFactory.h src/cpp/Map/Grid.h)
+        src/cpp/Server/RequestHandlerFactory.h src/cpp/Map/Grid.h src/cpp/Pathing/AStar.cpp src/cpp/Pathing/AStar.h)
 
 set(Poco_DIR ~/dev/dev_apps/poco-1.9.0/cmake_build/Poco/)
 
@@ -21,7 +21,7 @@ find_package(Poco 1.9.0 COMPONENTS REQUIRED JSON Net Util XML)
 include_directories(~/dev/dev_apps/poco-1.9.0 src/cpp)
 link_libraries(${Poco_LIBRARIES})
 
-add_executable(stonefall src/cpp/main.cpp ${SOURCE_FILES})
+add_executable(stonefall src/cpp/main.cpp ${SOURCE_FILES} src/cpp/Pathing/AStar.cpp src/cpp/Pathing/AStar.h)
 add_executable(stonefall-test src/cpp/Test/Catch.h src/cpp/Test/Test.cpp ${SOURCE_FILES})
 
 target_link_libraries(stonefall)
