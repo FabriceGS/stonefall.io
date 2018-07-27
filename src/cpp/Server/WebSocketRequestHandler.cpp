@@ -5,6 +5,7 @@
 #include "WebSocketRequestHandler.h"
 #include "PageRequestHandler.h"
 #include "Game.h"
+#include "GameState.h"
 #include "Player.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -57,6 +58,21 @@ void WebSocketRequestHandler::sendMessage(char buffer[], int n, int flags, WebSo
     cout << flags << endl;
     //send the JSON object
     ws.sendFrame(buffer, n, flags);
+}
+
+// a method to be called by the game, once the user command queue for a given tick
+// has been emptied (i.e. each task has been completed). Thus, a complete gameState
+// is ready to be passed to the players and displayed for each user.
+// gameState is a gamestate for which one command queue has been completed.
+void WebSocketRequestHandler::sendUpdates(GameState& gameState){
+    for (auto& player: players) {
+        updateSession(player, gameState);
+    }
+}
+
+// a method to update a given player's session, given a gameState
+void WebSocketRequestHandler::updateSession(std::string player, GameState& gameState){
+
 }
 
 void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
@@ -165,7 +181,6 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     break;
                 }
 
-                case MESSAGE::UPDATE:break;
                 case MESSAGE::SELL:break;
                 case MESSAGE::ERROR:break;
                 case MESSAGE::GAMEOVER:break;

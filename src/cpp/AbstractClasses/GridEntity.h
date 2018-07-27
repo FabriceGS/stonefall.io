@@ -7,11 +7,15 @@
 
 class GridBlock;
 
+using namespace std;
+
 class GridEntity {
-    private:
+    protected:
         GridBlock& block;
+
     public:
-        explicit GridEntity(GridBlock &block) : block(block) { }
+        // Marked explicit to prevent splicing during function calls on GridEntity values.
+        explicit GridEntity(GridBlock& block) : block(block) { }
         virtual GridBlock getBlock() = 0;
 };
 
