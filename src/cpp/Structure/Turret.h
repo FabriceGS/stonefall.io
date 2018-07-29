@@ -14,6 +14,8 @@ class Turret : public Killable {
 
     public:
         Turret(GridBlock &block, double hp) : Killable(block, hp) { }
+        GridBlock getBlock() override;
+        int getReward() override;
 };
 
 

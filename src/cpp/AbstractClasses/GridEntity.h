@@ -7,8 +7,6 @@
 
 class GridBlock;
 
-using namespace std;
-
 class GridEntity {
     protected:
         GridBlock& block;

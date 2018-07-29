@@ -9,10 +9,11 @@
 #include "../AbstractClasses/Killable.h"
 
 class Resource : public Killable {
-    private:
-
     public:
         Resource(GridBlock &block, double hp) : Killable(block, hp) { }
+        GridBlock getBlock() override;
+        int getReward() override;
+
 };
 
 
