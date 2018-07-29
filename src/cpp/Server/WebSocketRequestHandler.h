@@ -12,8 +12,7 @@
 #include "Poco/Net/WebSocket.h"
 #include "Game.h"
 #include "GameState.h"
-#include <unordered_set>
-
+#include "unordered_map"
 
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
@@ -23,13 +22,14 @@ using Poco::Net::WebSocket;
 
 class WebSocketRequestHandler: public HTTPRequestHandler {
     private:
-        std::unordered_set<std::string> players;
+        //maps from player id to player websocket session
+        std::unordered_map<std::string, WebSocket> sessions;
         Game game;
     public:
-        void sendMessage(char buffer[], int n, int flags, WebSocket ws);
+        void sendMessage(char const * msg, int n, int flags, WebSocket ws);
         void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
         void sendUpdates(GameState& gameState);
-        void updateSession(std::string player, GameState& gameState);
+        void updateSession(std::string playerId, const char* jsonState);
         WebSocketRequestHandler(Game newGame){
             game = newGame;
         }
