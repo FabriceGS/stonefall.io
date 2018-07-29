@@ -202,6 +202,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     break;
                 }
 
+                //TODO all of these lol
                 case MESSAGE::SELL:break;
                 case MESSAGE::ERROR:break;
                 case MESSAGE::GAMEOVER:break;
