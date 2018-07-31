@@ -152,6 +152,29 @@ const WebSockets = function() {
     sendSell(mines, OBJECT_TYPE.MINE);
   };
 
+  // helper developer functions
+  const sendError = message => {
+    conn.send(
+      JSON.stringify({
+        type: MESSAGE_TYPE.ERROR,
+        payload: {
+          message: message
+        }
+      })
+    );
+  }
+
+  const sendTest = message => {
+    conn.send(
+      JSON.stringify({
+        type: MESSAGE_TYPE.TEST,
+        payload: {
+          message: message
+        }
+      })
+    );
+  }
+
   return {
     setupConnection,
     sendAttack,
@@ -161,6 +184,7 @@ const WebSockets = function() {
     sendMineSpawn,
     sendWallsSell,
     sendTurretsSell,
-    sendMinesSell
+    sendMinesSell,
+    sendError
   };
 };

@@ -27,6 +27,7 @@
 #include "Poco/JSON/Array.h"
 #include "Poco/Dynamic/Var.h"
 #include "Poco/HashMap.h"
+#include "Poco/Message.h"
 #include <iostream>
 #include <memory>
 
@@ -132,6 +133,8 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
             // get player
             shared_ptr<Player> player = std::make_unique<Player>(game.getPlayer(playerId));
+            // TODO: research why this call doesn't work
+            // sessions[player->getId()] = ws;
 
             std::cout << "message case: " << std::endl;
 
@@ -225,10 +228,23 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
                     // send the ids to sell to the game
                     game.sellCommand(std::move(player), toSellIdSet);
+                    break;
                 };
-                case MESSAGE::ERROR:break;
-                case MESSAGE::GAMEOVER:break;
-                default:break;
+
+                case MESSAGE::ERROR: {
+                    auto message = extractedPayload->get("message").convert<string>();
+                    app.logger().log(Poco::Message("", message, Poco::Message::Priority::PRIO_ERROR));
+                    break;
+                };
+
+                case MESSAGE::GAMEOVER: {
+                    app.logger().log(Poco::Message("", "A client sent a GAMEOVER message to us", Poco::Message::Priority::PRIO_WARNING));
+                    break;
+                };
+
+                default: {
+                    app.logger().log(Poco::Message("", "An unrecognized message type was sent", Poco::Message::Priority::PRIO_WARNING));
+                };
             }
 
 
