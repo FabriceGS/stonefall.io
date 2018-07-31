@@ -28,7 +28,9 @@ const WebSockets = function() {
   socketsUri += "//" + loc.host;
   socketsUri += "/sockets";
   let conn = new WebSocket(socketsUri);
-  conn.onopen = () => { conn.send(JSON.stringify({ blah: "fdsa" }))};
+  let message = "{ \"type\": \"-1\" } \0";
+  console.log(message);
+  conn.onopen = () => { conn.send(message)};
   let id = -1;
 
   // Setup the WebSocket connection.
