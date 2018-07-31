@@ -6,6 +6,7 @@
 #define STONEFALL_GAME_H
 
 #include <iostream>
+#include <memory>
 #include "Player.h"
 #include "unordered_set"
 
