@@ -66,8 +66,8 @@ void WebSocketRequestHandler::sendMessage(char const *msg, int n, int flags, Web
 // gameState is a gamestate for which one command queue has been completed.
 void WebSocketRequestHandler::sendUpdates(GameState& gameState)
 {
-    //TODO process the entire gamestate into a JSON object here
-    const char * jsonState = "you've been updated by a smooth criminal";
+    // TODO: process the entire gamestate into a JSON object here
+    const char *jsonState = "you've been updated by a smooth criminal";
 
     // then interpret the game state for each player and update 'em
     for (auto& session: sessions) {
@@ -76,7 +76,7 @@ void WebSocketRequestHandler::sendUpdates(GameState& gameState)
 }
 
 // a method to update a given player's session, given a gameState (represented by a JSON obj) and player id
-void WebSocketRequestHandler::updateSession(std::string playerId, const char* jsonState)
+void WebSocketRequestHandler::updateSession(std::string playerId, const char *jsonState)
 {
     // get session
     WebSocket session = sessions.at(playerId);
@@ -90,20 +90,17 @@ void WebSocketRequestHandler::updateSession(std::string playerId, const char* js
 void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
     Application& app = Application::instance();
-//    try {
-        //TODO this websocket is created and then tossed out right away, seems like it would cause many problems but I can't think of a workaround rn
+    try {
+        // TODO: this websocket is created and then tossed out right away, seems like it would cause many problems but I can't think of a workaround rn
         WebSocket ws(request, response);
-        std::cout << "a message received" << std::endl;
 
         char buffer[1024];
-        //potentially char* buffer though
+        // potentially char* buffer though
 
         int flags;
         int n;
 
         do {
-            std::cout << "in while loop" << std::endl;
-
             // receive the buffer object
             n = ws.receiveFrame(buffer, sizeof(buffer), flags);
 
@@ -120,13 +117,12 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
             auto type = typeVar.convert<int>();
             auto typeEnum = static_cast<MESSAGE>(type);
 
-            //break out if message type is -1
+            // break out if message type is -1
             if(type == -1){
                 break;
             }
 
-            //get the payload
-
+            // get the payload
             Var payload = received->get("payload");
             Object::Ptr extractedPayload = payload.extract<Object::Ptr>();
 
@@ -172,8 +168,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
                     // iterate over and add to hashset
                     unordered_set<string> attackerIdSet;
-                    Object::Iterator iter;
-                    for(iter = attackerIds->begin(); iter != attackerIds->end(); iter++) {
+                    for(auto iter = attackerIds->begin(); iter != attackerIds->end(); iter++) {
                         attackerIdSet.insert(iter->first);
                     }
 
@@ -217,7 +212,19 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                 }
 
                 case MESSAGE::SELL: {
-                    // get id of
+                    // get id of player
+                    auto id = extractedPayload->get("id").convert<string>();
+                    // get set of ids to sell
+                    Object::Ptr toSellIds = extractedPayload->getObject("toSellIds");
+
+                    // iterate over ids to sell and add to hashset
+                    unordered_set<string> toSellIdSet;
+                    for(auto iter = toSellIds->begin(); iter != toSellIds->end(); iter++) {
+                        toSellIdSet.insert(iter->first);
+                    }
+
+                    // send the ids to sell to the game
+                    game.sellCommand(std::move(player), toSellIdSet);
                 };
                 case MESSAGE::ERROR:break;
                 case MESSAGE::GAMEOVER:break;
@@ -229,22 +236,22 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
             sendMessage(buffer, n, flags, ws);
         } while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
-//    }
-//    catch (WebSocketException& exc) {
-//        app.logger().log(exc);
-//        switch (exc.code())
-//        {
-//            case WebSocket::WS_ERR_HANDSHAKE_UNSUPPORTED_VERSION:
-//                response.set("Sec-WebSocket-Version", WebSocket::WEBSOCKET_VERSION);
-//                // fallthrough
-//            case WebSocket::WS_ERR_NO_HANDSHAKE:
-//            case WebSocket::WS_ERR_HANDSHAKE_NO_VERSION:
-//            case WebSocket::WS_ERR_HANDSHAKE_NO_KEY:
-//                response.setStatusAndReason(HTTPResponse::HTTP_BAD_REQUEST);
-//                response.setContentLength(0);
-//                response.send();
-//                break;
-//        }
-//    }
+    }
+    catch (WebSocketException& exc) {
+        app.logger().log(exc);
+        switch (exc.code())
+        {
+            case WebSocket::WS_ERR_HANDSHAKE_UNSUPPORTED_VERSION:
+                response.set("Sec-WebSocket-Version", WebSocket::WEBSOCKET_VERSION);
+                // fallthrough
+            case WebSocket::WS_ERR_NO_HANDSHAKE:
+            case WebSocket::WS_ERR_HANDSHAKE_NO_VERSION:
+            case WebSocket::WS_ERR_HANDSHAKE_NO_KEY:
+                response.setStatusAndReason(HTTPResponse::HTTP_BAD_REQUEST);
+                response.setContentLength(0);
+                response.send();
+                break;
+        }
+    }
 };
 

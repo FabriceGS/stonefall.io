@@ -24,6 +24,8 @@ public:
     Player getPlayer(std::string id);
 
     bool attackCommand(shared_ptr<Player> player, std::unordered_set<std::string> attackerIdSet);
+
+    bool sellCommand(shared_ptr<Player> player, std::unordered_set<std::string> toSellIdSet);
 };
 
 
