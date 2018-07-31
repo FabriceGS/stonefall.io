@@ -54,12 +54,9 @@ using Poco::Dynamic::Var;
 using Poco::HashMap;
 using namespace std;
 
-void WebSocketRequestHandler::sendMessage(char const *msg, int n, int flags, WebSocket ws){
-    cout << "sendMessage called " << endl;
-    cout << msg << endl;
-    cout << n << endl;
-    cout << flags << endl;
-    //send the JSON object
+void WebSocketRequestHandler::sendMessage(char const *msg, int n, int flags, WebSocket ws)
+{
+    // send the JSON object
     ws.sendFrame(msg, n, flags);
 }
 
@@ -67,7 +64,8 @@ void WebSocketRequestHandler::sendMessage(char const *msg, int n, int flags, Web
 // has been emptied (i.e. each task has been completed). Thus, a complete gameState
 // is ready to be passed to the players and displayed for each user.
 // gameState is a gamestate for which one command queue has been completed.
-void WebSocketRequestHandler::sendUpdates(GameState& gameState){
+void WebSocketRequestHandler::sendUpdates(GameState& gameState)
+{
     //TODO process the entire gamestate into a JSON object here
     const char * jsonState = "you've been updated by a smooth criminal";
 
@@ -78,14 +76,14 @@ void WebSocketRequestHandler::sendUpdates(GameState& gameState){
 }
 
 // a method to update a given player's session, given a gameState (represented by a JSON obj) and player id
-void WebSocketRequestHandler::updateSession(std::string playerId, const char* jsonState){
-
-    //get session
+void WebSocketRequestHandler::updateSession(std::string playerId, const char* jsonState)
+{
+    // get session
     WebSocket session = sessions.at(playerId);
     int flags;
     int n;
 
-    //send the buffer
+    // send the buffer
     sendMessage(jsonState, n, flags, session);
 }
 
@@ -93,9 +91,9 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 {
     Application& app = Application::instance();
     try {
-        //TODO this websocket is created and then tossed out right away, seems like it would cause many problems but I can't think of a workaround rn
+        // TODO: this websocket is created and then tossed out right away, seems like it would cause many problems but I can't think of a workaround rn
         WebSocket ws(request, response);
-        char* buffer;
+        char *buffer;
         int flags;
         int n;
 
@@ -116,25 +114,25 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
             int type = typeVar.convert<int>();
             MESSAGE typeEnum = static_cast<MESSAGE>(type);
 
-            //get the payload
+            // get the payload
             Var payload = received->get("payload");
             Object::Ptr extractedPayload = payload.extract<Object::Ptr>();
 
-            //get the playerId
+            // get the playerId
             Var idVar = extractedPayload->get("id");
             string playerId = idVar.convert<string>();
 
-            //get player
+            // get player
             shared_ptr<Player> player = std::make_unique<Player>(game.getPlayer(playerId));
 
-            switch(typeEnum){
+            switch (typeEnum) {
                 case MESSAGE::INITIALIZE: {
                     // get name
                     Var nameVar = extractedPayload->get("name");
                     string name = nameVar.convert<string>();
 
                     // add player to game if doesn't already exist (it shouldn't)
-                    if(player == NULL){
+                    if (player == NULL) {
                         player = std::make_unique<Player>(game.addPlayer());
                         sessions.insert(std::make_pair(player->getId(), ws));
                     } else {
@@ -145,7 +143,6 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                 }
 
                 case MESSAGE::ATTACK: {
-
                     // communicate attacking instructions to game
 
                     // get coordinates of objective
@@ -162,24 +159,23 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                         attackerIdSet.insert(iter->first);
                     }
 
-                    //send the attacker ids to the game
+                    // send the attacker ids to the game
                     game.attackCommand(std::move(player), attackerIdSet);
 
                     break;
                 }
 
                 case MESSAGE::CREATE: {
-
                     // get x and y coords of creation
                     int x = extractedPayload->get("x").convert<int>();
                     int y = extractedPayload->get("y").convert<int>();
 
                     if (!game.validateCreation(x, y, playerId)) {
-//                        TODO send an error message
-//                        return out of statement
+                        // we don't need to send an error message here, we just return
+                        break;
                     }
 
-                    //get creation type enum
+                    // get creation type enum
                     int creationType = extractedPayload->get("objectType").convert<int>();
                     OBJECT_TYPE creationTypeEnum = static_cast<OBJECT_TYPE>(creationType);
 
