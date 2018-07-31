@@ -22,7 +22,7 @@ public:
 
     Player getPlayer(std::string id);
 
-    bool attackCommand(Player& player, std::unordered_set<std::string> attackerIdSet);
+    bool attackCommand(shared_ptr<Player> player, std::unordered_set<std::string> attackerIdSet);
 };
 
 

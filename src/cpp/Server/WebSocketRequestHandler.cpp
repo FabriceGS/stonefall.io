@@ -26,7 +26,9 @@
 #include "Poco/JSON/Object.h"
 #include "Poco/JSON/Array.h"
 #include "Poco/Dynamic/Var.h"
+#include "Poco/HashMap.h"
 #include <iostream>
+#include <memory>
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
@@ -49,15 +51,16 @@ using Poco::JSON::Parser;
 using Poco::JSON::Object;
 using Poco::JSON::Array;
 using Poco::Dynamic::Var;
+using Poco::HashMap;
 using namespace std;
 
-void WebSocketRequestHandler::sendMessage(char buffer[], int n, int flags, WebSocket ws){
+void WebSocketRequestHandler::sendMessage(char const *msg, int n, int flags, WebSocket ws){
     cout << "sendMessage called " << endl;
-    cout << buffer << endl;
+    cout << msg << endl;
     cout << n << endl;
     cout << flags << endl;
     //send the JSON object
-    ws.sendFrame(buffer, n, flags);
+    ws.sendFrame(msg, n, flags);
 }
 
 // a method to be called by the game, once the user command queue for a given tick
@@ -65,24 +68,37 @@ void WebSocketRequestHandler::sendMessage(char buffer[], int n, int flags, WebSo
 // is ready to be passed to the players and displayed for each user.
 // gameState is a gamestate for which one command queue has been completed.
 void WebSocketRequestHandler::sendUpdates(GameState& gameState){
-    for (auto& player: players) {
-        updateSession(player, gameState);
+    //TODO process the entire gamestate into a JSON object here
+    const char * jsonState = "you've been updated by a smooth criminal";
+
+    // then interpret the game state for each player and update 'em
+    for (auto& session: sessions) {
+        updateSession(session.first, jsonState);
     }
 }
 
-// a method to update a given player's session, given a gameState
-void WebSocketRequestHandler::updateSession(std::string player, GameState& gameState){
+// a method to update a given player's session, given a gameState (represented by a JSON obj) and player id
+void WebSocketRequestHandler::updateSession(std::string playerId, const char* jsonState){
 
+    //get session
+    WebSocket session = sessions.at(playerId);
+    int flags;
+    int n;
+
+    //send the buffer
+    sendMessage(jsonState, n, flags, session);
 }
 
 void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
     Application& app = Application::instance();
     try {
+        //TODO this websocket is created and then tossed out right away, seems like it would cause many problems but I can't think of a workaround rn
         WebSocket ws(request, response);
-        char buffer[1024];
+        char* buffer;
         int flags;
         int n;
+
         do {
             // receive the buffer object
             n = ws.receiveFrame(buffer, sizeof(buffer), flags);
@@ -104,23 +120,31 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
             Var payload = received->get("payload");
             Object::Ptr extractedPayload = payload.extract<Object::Ptr>();
 
+            //get the playerId
+            Var idVar = extractedPayload->get("id");
+            string playerId = idVar.convert<string>();
+
+            //get player
+            shared_ptr<Player> player = std::make_unique<Player>(game.getPlayer(playerId));
+
             switch(typeEnum){
                 case MESSAGE::INITIALIZE: {
                     // get name
                     Var nameVar = extractedPayload->get("name");
                     string name = nameVar.convert<string>();
 
-                    // add player to game if doesn't already exist
-                    Player player = game.addPlayer();
-                    players.insert(player.getId());
+                    // add player to game if doesn't already exist (it shouldn't)
+                    if(player == NULL){
+                        player = std::make_unique<Player>(game.addPlayer());
+                        sessions.insert(std::make_pair(player->getId(), ws));
+                    } else {
+                        std::cout << "this case shouldn't have occurred" << std::endl;
+                    }
+
                     break;
                 }
 
                 case MESSAGE::ATTACK: {
-                    // get player from id
-                    Var idVar = extractedPayload->get("id");
-                    string id = idVar.convert<string>();
-                    Player player = game.getPlayer(id);
 
                     // communicate attacking instructions to game
 
@@ -139,22 +163,19 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     }
 
                     //send the attacker ids to the game
-                    game.attackCommand(player, attackerIdSet);
+                    game.attackCommand(std::move(player), attackerIdSet);
+
                     break;
                 }
 
                 case MESSAGE::CREATE: {
-                    // get player from id
-                    Var idVar = extractedPayload->get("id");
-                    string id = idVar.convert<string>();
-                    Player player = game.getPlayer(id);
 
                     // get x and y coords of creation
                     int x = extractedPayload->get("x").convert<int>();
                     int y = extractedPayload->get("y").convert<int>();
 
-                    if (!game.validateCreation(x, y, id)) {
-//                        send an error message
+                    if (!game.validateCreation(x, y, playerId)) {
+//                        TODO send an error message
 //                        return out of statement
                     }
 
@@ -164,16 +185,16 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
                     switch(creationTypeEnum){
                         case OBJECT_TYPE::ATTACKER:
-                            player.spawnAttacker();
+                            player->spawnAttacker();
                             break;
                         case OBJECT_TYPE::WALL:
-                            player.spawnWall();
+                            player->spawnWall();
                             break;
                         case OBJECT_TYPE::TURRET:
-                            player.spawnTurret();
+                            player->spawnTurret();
                             break;
                         case OBJECT_TYPE::MINE:
-                            player.spawnMine();
+                            player->spawnMine();
                             break;
                         default:
                             break;
@@ -181,6 +202,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     break;
                 }
 
+                //TODO all of these lol
                 case MESSAGE::SELL:break;
                 case MESSAGE::ERROR:break;
                 case MESSAGE::GAMEOVER:break;

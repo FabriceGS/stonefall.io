@@ -12,7 +12,7 @@ Player Game::getPlayer(std::string id){
     return newPlayer;
 }
 
-bool Game::attackCommand(Player& player, std::unordered_set<std::string> attackerIdSet) {
+bool Game::attackCommand(shared_ptr<Player> player, std::unordered_set<std::string> attackerIdSet) {
     std::cout << "attack command" << std::endl;
     for(auto f : attackerIdSet) {
         std::cout << f << std::endl;
