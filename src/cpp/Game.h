@@ -19,7 +19,7 @@ public:
 
     Player addPlayer();
 
-    static bool validateCreation(int x, int y, std::string basic_string);
+    static bool validateCreation(int x, int y, std::string basic_string, int creationType);
 
     Player getPlayer(std::string id);
 

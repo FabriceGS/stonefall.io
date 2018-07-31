@@ -111,8 +111,8 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
             // get type
             Var typeVar = received->get("type");;
-            int type = typeVar.convert<int>();
-            MESSAGE typeEnum = static_cast<MESSAGE>(type);
+            auto type = typeVar.convert<int>();
+            auto typeEnum = static_cast<MESSAGE>(type);
 
             // get the payload
             Var payload = received->get("payload");
@@ -120,7 +120,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
             // get the playerId
             Var idVar = extractedPayload->get("id");
-            string playerId = idVar.convert<string>();
+            auto playerId = idVar.convert<string>();
 
             // get player
             shared_ptr<Player> player = std::make_unique<Player>(game.getPlayer(playerId));
@@ -169,14 +169,14 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     // get x and y coords of creation
                     int x = extractedPayload->get("x").convert<int>();
                     int y = extractedPayload->get("y").convert<int>();
+                    // get creation type enum
+                    int creationType = extractedPayload->get("objectType").convert<int>();
 
-                    if (!game.validateCreation(x, y, playerId)) {
-                        // we don't need to send an error message here, we just return
+                    if (!game.validateCreation(x, y, playerId, creationType)) {
+                        // we don't need to send an error message here, just return
                         break;
                     }
 
-                    // get creation type enum
-                    int creationType = extractedPayload->get("objectType").convert<int>();
                     OBJECT_TYPE creationTypeEnum = static_cast<OBJECT_TYPE>(creationType);
 
                     switch(creationTypeEnum){
@@ -198,8 +198,9 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     break;
                 }
 
-                //TODO all of these lol
-                case MESSAGE::SELL:break;
+                case MESSAGE::SELL: {
+                    // get id of
+                };
                 case MESSAGE::ERROR:break;
                 case MESSAGE::GAMEOVER:break;
                 default:break;
