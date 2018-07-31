@@ -90,14 +90,20 @@ void WebSocketRequestHandler::updateSession(std::string playerId, const char* js
 void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
     Application& app = Application::instance();
-    try {
-        // TODO: this websocket is created and then tossed out right away, seems like it would cause many problems but I can't think of a workaround rn
+//    try {
+        //TODO this websocket is created and then tossed out right away, seems like it would cause many problems but I can't think of a workaround rn
         WebSocket ws(request, response);
-        char *buffer;
+        std::cout << "a message received" << std::endl;
+
+        char buffer[1024];
+        //potentially char* buffer though
+
         int flags;
         int n;
 
         do {
+            std::cout << "in while loop" << std::endl;
+
             // receive the buffer object
             n = ws.receiveFrame(buffer, sizeof(buffer), flags);
 
@@ -111,22 +117,34 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
             // get type
             Var typeVar = received->get("type");;
-            int type = typeVar.convert<int>();
-            MESSAGE typeEnum = static_cast<MESSAGE>(type);
+            auto type = typeVar.convert<int>();
+            auto typeEnum = static_cast<MESSAGE>(type);
 
-            // get the payload
+            //break out if message type is -1
+            if(type == -1){
+                break;
+            }
+
+            //get the payload
+
             Var payload = received->get("payload");
             Object::Ptr extractedPayload = payload.extract<Object::Ptr>();
 
             // get the playerId
             Var idVar = extractedPayload->get("id");
-            string playerId = idVar.convert<string>();
+            auto playerId = idVar.convert<string>();
 
             // get player
             shared_ptr<Player> player = std::make_unique<Player>(game.getPlayer(playerId));
 
-            switch (typeEnum) {
+            std::cout << "message case: " << std::endl;
+
+            std::cout << type << std::endl;
+
+            switch(typeEnum){
+                
                 case MESSAGE::INITIALIZE: {
+                    std::cout << "initialize received" << std::endl;
                     // get name
                     Var nameVar = extractedPayload->get("name");
                     string name = nameVar.convert<string>();
@@ -169,14 +187,14 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     // get x and y coords of creation
                     int x = extractedPayload->get("x").convert<int>();
                     int y = extractedPayload->get("y").convert<int>();
+                    // get creation type enum
+                    int creationType = extractedPayload->get("objectType").convert<int>();
 
-                    if (!game.validateCreation(x, y, playerId)) {
-                        // we don't need to send an error message here, we just return
+                    if (!game.validateCreation(x, y, playerId, creationType)) {
+                        // we don't need to send an error message here, just return
                         break;
                     }
 
-                    // get creation type enum
-                    int creationType = extractedPayload->get("objectType").convert<int>();
                     OBJECT_TYPE creationTypeEnum = static_cast<OBJECT_TYPE>(creationType);
 
                     switch(creationTypeEnum){
@@ -198,8 +216,9 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     break;
                 }
 
-                //TODO all of these lol
-                case MESSAGE::SELL:break;
+                case MESSAGE::SELL: {
+                    // get id of
+                };
                 case MESSAGE::ERROR:break;
                 case MESSAGE::GAMEOVER:break;
                 default:break;
@@ -210,21 +229,22 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
             sendMessage(buffer, n, flags, ws);
         } while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
-    } catch (WebSocketException& exc) {
-        app.logger().log(exc);
-        switch (exc.code())
-        {
-            case WebSocket::WS_ERR_HANDSHAKE_UNSUPPORTED_VERSION:
-                response.set("Sec-WebSocket-Version", WebSocket::WEBSOCKET_VERSION);
-                // fallthrough
-            case WebSocket::WS_ERR_NO_HANDSHAKE:
-            case WebSocket::WS_ERR_HANDSHAKE_NO_VERSION:
-            case WebSocket::WS_ERR_HANDSHAKE_NO_KEY:
-                response.setStatusAndReason(HTTPResponse::HTTP_BAD_REQUEST);
-                response.setContentLength(0);
-                response.send();
-                break;
-        }
-    }
+//    }
+//    catch (WebSocketException& exc) {
+//        app.logger().log(exc);
+//        switch (exc.code())
+//        {
+//            case WebSocket::WS_ERR_HANDSHAKE_UNSUPPORTED_VERSION:
+//                response.set("Sec-WebSocket-Version", WebSocket::WEBSOCKET_VERSION);
+//                // fallthrough
+//            case WebSocket::WS_ERR_NO_HANDSHAKE:
+//            case WebSocket::WS_ERR_HANDSHAKE_NO_VERSION:
+//            case WebSocket::WS_ERR_HANDSHAKE_NO_KEY:
+//                response.setStatusAndReason(HTTPResponse::HTTP_BAD_REQUEST);
+//                response.setContentLength(0);
+//                response.send();
+//                break;
+//        }
+//    }
 };
 

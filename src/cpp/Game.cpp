@@ -31,7 +31,7 @@ Player Game::addPlayer() {
     return Player();
 }
 
-bool Game::validateCreation(int x, int y, std::string basic_string) {
+bool Game::validateCreation(int x, int y, std::string basic_string, int creationType) {
     std::cout<< "validate creation command" << std::endl;
     return false;
 }
