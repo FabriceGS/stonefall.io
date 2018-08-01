@@ -150,14 +150,13 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     // get playerId
                     playerId = extractedPayload->get("id").convert<string>();
                     // set of attacker ids
-                    Array::Ptr attackerIds;
-                    extractedPayload->get("attackers").convert<Array::Ptr>(attackerIds);
-                    
-
-                    // iterate over and add to hashset
+                    Var attackerIdsVar = extractedPayload->get("attackers");
+                    Array::Ptr attackerIds = attackerIdsVar.extract<Array::Ptr>();
                     unordered_set<string> attackerIdSet;
-                    for(auto iter = attackerIds->begin(); iter != attackerIds->end(); iter++) {
-                        attackerIdSet.insert(iter->first);
+
+                    for (int i = 0; i < attackerIds->size(); i++) {
+                        string attackerId = attackerIds->getElement<string>(i);
+                        attackerIdSet.insert(attackerId);
                     }
 
                     // send the attacker ids to the game
