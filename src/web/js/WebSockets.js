@@ -3,7 +3,7 @@ const WebSockets = function() {
     INITIALIZE: 0,
     UPDATE: 1,
     ATTACK: 2,
-    CREATE: 3,
+    SPAWN: 3,
     SELL: 4,
     ERROR: 5,
     GAMEOVER: 6,
@@ -85,15 +85,15 @@ const WebSockets = function() {
     );
   };
 
-  const sendSpawn = (x, y, type) => {
+  const sendSpawn = (x, y, objectType) => {
     conn.send(
       JSON.stringify({
-        type: MESSAGE_TYPE.CREATE,
+        type: MESSAGE_TYPE.SPAWN,
         payload: {
           id: id,
           x: x,
           y: y,
-          objectType: type
+          objectType
         }
       })
     );

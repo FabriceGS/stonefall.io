@@ -149,11 +149,10 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     int y = extractedPayload->get("y").convert<int>();
                     // get playerId
                     playerId = extractedPayload->get("id").convert<string>();
-                    // set of attacker ids
+                    // get set of attacker ids
                     Var attackerIdsVar = extractedPayload->get("attackers");
                     Array::Ptr attackerIds = attackerIdsVar.extract<Array::Ptr>();
                     unordered_set<string> attackerIdSet;
-
                     for (int i = 0; i < attackerIds->size(); i++) {
                         string attackerId = attackerIds->getElement<string>(i);
                         attackerIdSet.insert(attackerId);
@@ -165,23 +164,23 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     break;
                 }
 
-                case MESSAGE::CREATE: {
-                    // get x and y coords of creation
+                case MESSAGE::SPAWN: {
+                    // get coordinates of creation
                     auto x = extractedPayload->get("x").convert<int>();
                     auto y = extractedPayload->get("y").convert<int>();
                     // get creation type enum
-                    auto creationType = extractedPayload->get("objectType").convert<int>();
+                    auto spawnType = extractedPayload->get("objectType").convert<int>();
                     // get id of player
                     playerId = extractedPayload->get("id").convert<string>();
 
-                    if (!game->validateCreation(x, y, playerId, creationType)) {
+                    if (!game->validateCreation(x, y, playerId, spawnType)) {
                         // we don't need to send an error message here, just return
                         break;
                     }
 
-                    OBJECT_TYPE creationTypeEnum = static_cast<OBJECT_TYPE>(creationType);
+                    OBJECT_TYPE spawnTypeEnum = static_cast<OBJECT_TYPE>(spawnType);
 
-                    switch(creationTypeEnum){
+                    switch (spawnTypeEnum) {
                         case OBJECT_TYPE::ATTACKER:
                             game->spawnAttacker(playerId, x, y);
                             break;
@@ -204,13 +203,16 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     // get id of player
                     auto id = extractedPayload->get("id").convert<string>();
                     // get set of ids to sell
-                    Object::Ptr toSellIds = extractedPayload->getObject("toSellIds");
-
-                    // iterate over ids to sell and add to hashset
+                    Var toSellIdsVar = extractedPayload->get("toSellIds");
+                    Array::Ptr toSellIds = toSellIdsVar.extract<Array::Ptr>();
                     unordered_set<string> toSellIdSet;
-                    for(auto iter = toSellIds->begin(); iter != toSellIds->end(); iter++) {
-                        toSellIdSet.insert(iter->first);
+                    for (int i = 0; i < toSellIds->size(); i++) {
+                        auto toSellId = toSellIds->getElement<string>(i);
+                        toSellIdSet.insert(toSellId);
                     }
+                    // it might not be necessary to get the type of the object to sell
+                    auto toSellType = extractedPayload->get("objectType").convert<int>();
+                    OBJECT_TYPE toSellTypeEnum = static_cast<OBJECT_TYPE>(toSellType);
 
                     // send the ids to sell to the game
                     game->sellCommand(playerId, toSellIdSet);
