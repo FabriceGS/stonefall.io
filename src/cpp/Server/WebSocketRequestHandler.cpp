@@ -5,6 +5,7 @@
 #include "WebSocketRequestHandler.h"
 #include "PageRequestHandler.h"
 #include "Game.h"
+#include "GameState.h"
 #include "Player.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -25,7 +26,10 @@
 #include "Poco/JSON/Object.h"
 #include "Poco/JSON/Array.h"
 #include "Poco/Dynamic/Var.h"
+#include "Poco/HashMap.h"
+#include "Poco/Message.h"
 #include <iostream>
+#include <memory>
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
@@ -48,28 +52,57 @@ using Poco::JSON::Parser;
 using Poco::JSON::Object;
 using Poco::JSON::Array;
 using Poco::Dynamic::Var;
+using Poco::HashMap;
 using namespace std;
 
-void WebSocketRequestHandler::sendMessage(char buffer[], int n, int flags, WebSocket ws){
-    cout << "sendMessage called " << endl;
-    cout << buffer << endl;
-    cout << n << endl;
-    cout << flags << endl;
-    //send the JSON object
-    ws.sendFrame(buffer, n, flags);
+void WebSocketRequestHandler::sendMessage(char const *msg, int n, int flags, WebSocket ws)
+{
+    // send the JSON object
+    ws.sendFrame(msg, n, flags);
+}
+
+// a method to be called by the game, once the user command queue for a given tick
+// has been emptied (i.e. each task has been completed). Thus, a complete gameState
+// is ready to be passed to the players and displayed for each user.
+// gameState is a gamestate for which one command queue has been completed.
+void WebSocketRequestHandler::sendUpdates(const GameState& gameState)
+{
+    // TODO: process the entire gamestate into a JSON object here
+    const char *jsonState = "you've been updated by a smooth criminal";
+
+    // then interpret the game state for each player and update 'em
+    for (auto& session: sessions) {
+        updateSession(session.first, jsonState);
+    }
+}
+
+// a method to update a given player's session, given a gameState (represented by a JSON obj) and player id
+void WebSocketRequestHandler::updateSession(string playerId, const char *jsonState)
+{
+    // get session
+    shared_ptr<WebSocket> session = sessions.at(playerId);
+    int flags;
+    int n;
+
+    // send the buffer
+    sendMessage(jsonState, n, flags, *session);
 }
 
 void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
 {
     Application& app = Application::instance();
     try {
-        WebSocket ws(request, response);
+        shared_ptr<WebSocket> ws = make_shared<WebSocket>(request, response);
+        // this is a hack: https://stackoverflow.com/questions/16182814/how-to-keep-websocket-connect-until-either-side-close
+        ws->setReceiveTimeout(Poco::Timespan(10, 0, 0, 0, 0));
+
         char buffer[1024];
         int flags;
         int n;
+
         do {
             // receive the buffer object
-            n = ws.receiveFrame(buffer, sizeof(buffer), flags);
+            n = ws->receiveFrame(buffer, sizeof(buffer), flags);
 
             // convert char array buffer into string
             string JSON(buffer);
@@ -81,83 +114,84 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
             // get type
             Var typeVar = received->get("type");;
-            int type = typeVar.convert<int>();
-            MESSAGE typeEnum = static_cast<MESSAGE>(type);
+            auto type = typeVar.convert<int>();
+            auto typeEnum = static_cast<MESSAGE>(type);
 
-            //get the payload
+            // break out if message type is negative
+            if (type < 0) {
+                break;
+            }
+
+            // get the payload
             Var payload = received->get("payload");
             Object::Ptr extractedPayload = payload.extract<Object::Ptr>();
 
-            switch(typeEnum){
+            // the current player, either to be added or found from the id
+            string playerId;
+
+            switch (typeEnum) {
+
                 case MESSAGE::INITIALIZE: {
                     // get name
                     Var nameVar = extractedPayload->get("name");
                     string name = nameVar.convert<string>();
 
-                    // add player to game if doesn't already exist
-                    Player player = game.addPlayer();
-                    players.insert(player.getId());
+                    // add a new player to the game
+                    Player player = game->addPlayer(name);
+                    sessions.insert(make_pair(player.getId(), ws));
+
                     break;
                 }
 
                 case MESSAGE::ATTACK: {
-                    // get player from id
-                    Var idVar = extractedPayload->get("id");
-                    string id = idVar.convert<string>();
-                    Player player = game.getPlayer(id);
-
-                    // communicate attacking instructions to game
-
                     // get coordinates of objective
                     int x = extractedPayload->get("x").convert<int>();
                     int y = extractedPayload->get("y").convert<int>();
-
-                    // set of attacker ids
-                    Object::Ptr attackerIds = extractedPayload->getObject("attackers");
-
-                    // iterate over and add to hashset
+                    // get playerId
+                    playerId = extractedPayload->get("id").convert<string>();
+                    // get set of attacker ids
+                    Var attackerIdsVar = extractedPayload->get("attackers");
+                    Array::Ptr attackerIds = attackerIdsVar.extract<Array::Ptr>();
                     unordered_set<string> attackerIdSet;
-                    Object::Iterator iter;
-                    for(iter = attackerIds->begin(); iter != attackerIds->end(); iter++) {
-                        attackerIdSet.insert(iter->first);
+                    for (int i = 0; i < attackerIds->size(); i++) {
+                        string attackerId = attackerIds->getElement<string>(i);
+                        attackerIdSet.insert(attackerId);
                     }
 
-                    //send the attacker ids to the game
-                    game.attackCommand(player, attackerIdSet);
+                    // send the attacker ids to the game
+                    game->attackCommand(playerId, attackerIdSet);
+
                     break;
                 }
 
-                case MESSAGE::CREATE: {
-                    // get player from id
-                    Var idVar = extractedPayload->get("id");
-                    string id = idVar.convert<string>();
-                    Player player = game.getPlayer(id);
+                case MESSAGE::SPAWN: {
+                    // get coordinates of creation
+                    auto x = extractedPayload->get("x").convert<int>();
+                    auto y = extractedPayload->get("y").convert<int>();
+                    // get creation type enum
+                    auto spawnType = extractedPayload->get("objectType").convert<int>();
+                    // get id of player
+                    playerId = extractedPayload->get("id").convert<string>();
 
-                    // get x and y coords of creation
-                    int x = extractedPayload->get("x").convert<int>();
-                    int y = extractedPayload->get("y").convert<int>();
-
-                    if (!game.validateCreation(x, y, id)) {
-//                        send an error message
-//                        return out of statement
+                    if (!game->validateCreation(x, y, playerId, spawnType)) {
+                        // we don't need to send an error message here, just return
+                        break;
                     }
 
-                    //get creation type enum
-                    int creationType = extractedPayload->get("objectType").convert<int>();
-                    OBJECT_TYPE creationTypeEnum = static_cast<OBJECT_TYPE>(creationType);
+                    OBJECT_TYPE spawnTypeEnum = static_cast<OBJECT_TYPE>(spawnType);
 
-                    switch(creationTypeEnum){
+                    switch (spawnTypeEnum) {
                         case OBJECT_TYPE::ATTACKER:
-                            player.spawnAttacker();
+                            game->spawnAttacker(playerId, x, y);
                             break;
                         case OBJECT_TYPE::WALL:
-                            player.spawnWall();
+                            game->spawnWall(playerId, x, y);
                             break;
                         case OBJECT_TYPE::TURRET:
-                            player.spawnTurret();
+                            game->spawnTurret(playerId, x, y);
                             break;
                         case OBJECT_TYPE::MINE:
-                            player.spawnMine();
+                            game->spawnMine(playerId, x, y);
                             break;
                         default:
                             break;
@@ -165,19 +199,50 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     break;
                 }
 
-                case MESSAGE::UPDATE:break;
-                case MESSAGE::SELL:break;
-                case MESSAGE::ERROR:break;
-                case MESSAGE::GAMEOVER:break;
-                default:break;
+                case MESSAGE::SELL: {
+                    // get id of player
+                    auto id = extractedPayload->get("id").convert<string>();
+                    // get set of ids to sell
+                    Var toSellIdsVar = extractedPayload->get("toSellIds");
+                    Array::Ptr toSellIds = toSellIdsVar.extract<Array::Ptr>();
+                    unordered_set<string> toSellIdSet;
+                    for (int i = 0; i < toSellIds->size(); i++) {
+                        auto toSellId = toSellIds->getElement<string>(i);
+                        toSellIdSet.insert(toSellId);
+                    }
+                    // it might not be necessary to get the type of the object to sell
+                    auto toSellType = extractedPayload->get("objectType").convert<int>();
+                    OBJECT_TYPE toSellTypeEnum = static_cast<OBJECT_TYPE>(toSellType);
+
+                    // send the ids to sell to the game
+                    game->sellCommand(playerId, toSellIdSet);
+                    break;
+                };
+
+                case MESSAGE::ERROR: {
+                    auto message = extractedPayload->get("message").convert<string>();
+                    app.logger().log(Poco::Message("", message, Poco::Message::Priority::PRIO_ERROR));
+                    break;
+                };
+
+                case MESSAGE::GAMEOVER: {
+                    app.logger().log(Poco::Message("", "A client sent a GAMEOVER message to us", Poco::Message::Priority::PRIO_WARNING));
+                    break;
+                };
+
+                case MESSAGE::TEST: {
+                    auto message = extractedPayload->get("message").convert<string>();
+                    app.logger().log(Poco::Message("", message, Poco::Message::Priority::PRIO_DEBUG));
+                }
+
+                default: {
+                    app.logger().log(Poco::Message("", "An unrecognized message type was sent", Poco::Message::Priority::PRIO_WARNING));
+                };
             }
-
-
-            cout << "type: " << type << endl;
-
-            sendMessage(buffer, n, flags, ws);
         } while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
-    } catch (WebSocketException& exc) {
+    }
+    catch (WebSocketException& exc) {
+        cout << "exception" << endl;
         app.logger().log(exc);
         switch (exc.code())
         {

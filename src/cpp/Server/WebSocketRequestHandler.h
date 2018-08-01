@@ -11,8 +11,8 @@
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
 #include "Poco/Net/WebSocket.h"
 #include "Game.h"
-#include <unordered_set>
-
+#include "GameState.h"
+#include "unordered_map"
 
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
@@ -22,12 +22,15 @@ using Poco::Net::WebSocket;
 
 class WebSocketRequestHandler: public HTTPRequestHandler {
     private:
-        std::unordered_set<std::string> players;
-        Game& game;
+        std::unordered_map<std::string, shared_ptr<WebSocket>> sessions;
+        std::shared_ptr<Game> game;
     public:
-        void sendMessage(char buffer[], int n, int flags, WebSocket ws);
+        void sendMessage(char const * msg, int n, int flags, WebSocket ws);
         void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response) override;
-        explicit WebSocketRequestHandler(Game& newGame) : game(newGame) { }
+        void sendUpdates(const GameState& gameState);
+        void updateSession(std::string playerId, const char* jsonState);
+        WebSocketRequestHandler(std::shared_ptr<Game> newGame) : game(newGame) {}
+        std::unordered_set<std::string> players;
 };
 
 namespace WebSockets{
@@ -36,7 +39,7 @@ namespace WebSockets{
 };
 
 enum class MESSAGE {
-    CONNECT, UPDATE, ATTACK, CREATE, INITIALIZE, SELL, ERROR, GAMEOVER
+    INITIALIZE, UPDATE, ATTACK, SPAWN, SELL, ERROR, GAMEOVER, TEST
 };
 
 enum class OBJECT_TYPE {

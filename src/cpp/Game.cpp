@@ -7,31 +7,55 @@
 #include <iostream>
 #include "unordered_set"
 
-Player Game::getPlayer(std::string id){
-    Player newPlayer = Player();
-    return newPlayer;
+using namespace std;
+
+Player Game::getPlayer(string id) {
+    return players.at(id);
 }
 
-bool Game::attackCommand(Player& player, std::unordered_set<std::string> attackerIdSet) {
-    std::cout << "attack command" << std::endl;
+bool Game::attackCommand(string playerId, unordered_set<string> attackerIdSet) {
+    cout << "attack command" << endl;
     for(auto f : attackerIdSet) {
-        std::cout << f << std::endl;
+        cout << f << endl;
     }
     return false;
 }
 
-bool Game::playerExists(std::string basic_string) {
-    std::cout<< "player exists command" << std::endl;
+bool Game::sellCommand(string playerId, unordered_set<string> toSellIdSet) {
+    cout << "sell command" << endl;
+    for (auto id : toSellIdSet) {
+        cout << id << endl;
+    }
     return false;
 }
 
-Player Game::addPlayer() {
+bool Game::playerExists(string playerId) {
+    return players.find(playerId) != players.end();
+}
+
+Player Game::addPlayer(string name) {
     // TODO: generate a random id for the player here
-    std::cout<< "add player command" << std::endl;
+    cout<< "add player command" << endl;
     return Player();
 }
 
-bool Game::validateCreation(int x, int y, std::string basic_string) {
-    std::cout<< "validate creation command" << std::endl;
+bool Game::validateCreation(int x, int y, string basic_string, int creationType) {
+    cout<< "validate creation command" << endl;
     return false;
+}
+
+void Game::spawnAttacker(string playerId, int x, int y) {
+    cout << "spawn attacker command" << endl;
+}
+
+void Game::spawnWall(string playerId, int x, int y) {
+    cout << "spawn command" << endl;
+}
+
+void Game::spawnMine(string playerId, int x, int y) {
+    cout << "spawn command" << endl;
+}
+
+void Game::spawnTurret(string playerId, int x, int y) {
+    cout << "spawn command" << endl;
 }
