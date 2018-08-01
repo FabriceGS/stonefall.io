@@ -18,7 +18,6 @@ $(document).ready(() => {
     const handlers = Handlers();
     $("#name").html(new URL(window.location.href).searchParams.get("name").replace(lt, "&lt;").replace(gt, "&gt;").replace(ap, "&#39;").replace(ic, "&#34;"));
     sock = WebSockets();
-    sock.setupConnection(initialize);
     $("#game").mousedown(handlers.mousedownHandler);
     $("#game").mousemove(handlers.mousemoveHandler);
     $("#game").mouseup(handlers.mouseupHandler);

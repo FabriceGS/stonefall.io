@@ -14,18 +14,25 @@
 class Game {
 
 public:
-    static bool
-    playerExists(std::string);
+    bool playerExists(string id);
 
-    Player addPlayer();
+    Player addPlayer(string name);
 
-    static bool validateCreation(int x, int y, std::string basic_string, int creationType);
+    bool validateCreation(int x, int y, string playerId, int creationType);
 
-    Player getPlayer(std::string id);
+    Player getPlayer(string id);
 
-    bool attackCommand(shared_ptr<Player> player, std::unordered_set<std::string> attackerIdSet);
+    bool attackCommand(string playerId, unordered_set<string> attackerIdSet);
 
-    bool sellCommand(shared_ptr<Player> player, std::unordered_set<std::string> toSellIdSet);
+    bool sellCommand(string playerId, unordered_set<string> toSellIdSet);
+
+    void spawnAttacker(string playerId, int x, int y);
+
+    void spawnWall(string playerId, int x, int y);
+
+    void spawnMine(string playerId, int x, int y);
+
+    void spawnTurret(string playerId, int x, int y);
 };
 
 

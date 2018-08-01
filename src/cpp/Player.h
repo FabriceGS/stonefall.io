@@ -20,6 +20,7 @@ public:
     string getId();
     void setId(string id);
 private:
+    string id;
 };
 
 

@@ -23,9 +23,8 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
     {
     }
 
-    if(request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0){
-        Game newGame;
-        return new WebSocketRequestHandler(newGame);
+    if (request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0) {
+        return new WebSocketRequestHandler(std::make_shared<Game>());
     } else {
         return new PageRequestHandler;
     }

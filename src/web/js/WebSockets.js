@@ -1,22 +1,24 @@
 const WebSockets = function() {
   const MESSAGE_TYPE = {
-    CONNECT: 0,
+    INITIALIZE: 0,
     UPDATE: 1,
     ATTACK: 2,
     CREATE: 3,
-    INITIALIZE: 4,
-    SELL: 5,
-    ERROR: 6,
-    GAMEOVER: 7,
-    TEST: 8
+    SELL: 4,
+    ERROR: 5,
+    GAMEOVER: 6,
+    TEST: 7
   };
 
   const OBJECT_TYPE = {
     WALL: 0,
     TURRET: 1,
     ATTACKER: 2,
-    MINE: 3
+    MINE: 3,
+    SCAFFOLD: 4
   };
+
+  let id = -1;
 
   const loc = window.location;
   let socketsUri;
@@ -27,60 +29,46 @@ const WebSockets = function() {
   }
   socketsUri += "//" + loc.host;
   socketsUri += "/sockets";
+
   let conn = new WebSocket(socketsUri);
-  let message = "{ \"type\": \"-1\" } \0";
-  console.log(message);
-  conn.onopen = () => { conn.send(message)};
-  let id = -1;
-
-  // Setup the WebSocket connection.
-  const setupConnection = initialize => {
-    let initialized = false;
-    conn.onerror = err => {
-      console.log("Connection error:", err);
-    };
-
-    conn.onmessage = msg => {
-      const data = JSON.parse(msg.data);
-      switch (data.type) {
-        default:
-          console.log("Unknown message type!", data.type);
-          break;
-        case MESSAGE_TYPE.CONNECT:
-          id = data.payload.id;
-          sendInitialize();
-          break;
-        case MESSAGE_TYPE.UPDATE:
-          if (!initialized) {
-            initialized = true;
-            initialize(data.payload.my.base);
-          }
-          game.setObjects(data.payload);
-          game.update();
-          break;
-        case MESSAGE_TYPE.ERROR:
-          console.log(data.payload.message);
-          break;
-        case MESSAGE_TYPE.GAMEOVER:
-          window.location.replace(
-            "/gameover?maxScore=" + data.payload.maxScore
-          );
-          break;
-      }
-    };
+  const initialMessage = JSON.stringify({
+    type: MESSAGE_TYPE.INITIALIZE,
+    payload: {
+      name: $("#name").text()
+    }
+  });
+  conn.onopen = () => { 
+    conn.send(initialMessage)
   };
-
-  const sendInitialize = () => {
-    // there's a little bit of hackiness, we get the name from a hidden <h3> tag
-    conn.send(
-      JSON.stringify({
-        type: MESSAGE_TYPE.INITIALIZE,
-        payload: {
-          id: id,
-          name: $("#name").text()
+  conn.onclose = () => {
+    console.log('websocket closed!');
+  }
+  conn.onerror = err => {
+    console.log("Connection error:", err);
+  };
+  conn.onmessage = msg => {
+    const data = JSON.parse(msg.data);
+    switch (data.type) {
+      default:
+        console.log("Unknown message type!", data.type);
+        break;
+      case MESSAGE_TYPE.UPDATE:
+        if (!initialized) {
+          initialized = true;
+          initialize(data.payload.my.base);
         }
-      })
-    );
+        game.setObjects(data.payload);
+        game.update();
+        break;
+      case MESSAGE_TYPE.ERROR:
+        console.log(data.payload.message);
+        break;
+      case MESSAGE_TYPE.GAMEOVER:
+        window.location.replace(
+          "/gameover?maxScore=" + data.payload.maxScore
+        );
+        break;
+    }
   };
 
   const sendAttack = (attackers, toAttackCoordinates) => {
@@ -90,8 +78,8 @@ const WebSockets = function() {
         payload: {
           id: id,
           attackers: attackers.map(attacker => attacker.id),
-          x1: toAttackCoordinates.x,
-          y1: toAttackCoordinates.y
+          x: toAttackCoordinates.x,
+          y: toAttackCoordinates.y
         }
       })
     );
@@ -103,8 +91,8 @@ const WebSockets = function() {
         type: MESSAGE_TYPE.CREATE,
         payload: {
           id: id,
-          x1: x,
-          y1: y,
+          x: x,
+          y: y,
           objectType: type
         }
       })
@@ -176,7 +164,6 @@ const WebSockets = function() {
   }
 
   return {
-    setupConnection,
     sendAttack,
     sendWallSpawn,
     sendTurretSpawn,
