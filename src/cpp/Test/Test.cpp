@@ -8,4 +8,6 @@ TEST_CASE("This is a test!", "[grid]")
 {
      unique_ptr<Grid> grid = std::make_unique<Grid>();
      grid->buildGrid();
+     auto opt_block = grid->getGridBlock(50, 50);
+     CHECK_FALSE(nullptr == opt_block->get());
 }

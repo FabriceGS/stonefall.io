@@ -9,9 +9,8 @@
 
 using namespace std;
 
-Player Game::getPlayer(string id){
-    Player newPlayer = Player();
-    return newPlayer;
+Player Game::getPlayer(string id) {
+    return players.at(id);
 }
 
 bool Game::attackCommand(string playerId, unordered_set<string> attackerIdSet) {
@@ -31,8 +30,7 @@ bool Game::sellCommand(string playerId, unordered_set<string> toSellIdSet) {
 }
 
 bool Game::playerExists(string playerId) {
-    cout<< "player exists command" << endl;
-    return false;
+    return players.find(playerId) != players.end();
 }
 
 Player Game::addPlayer(string name) {

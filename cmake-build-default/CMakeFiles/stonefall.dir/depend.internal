@@ -324,7 +324,11 @@ CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o
 CMakeFiles/stonefall.dir/src/cpp/Unit/Attacker.cpp.o
  /Users/david.oyeka/dev/stonefall/src/cpp/Unit/Attacker.cpp
 CMakeFiles/stonefall.dir/src/cpp/main.cpp.o
+ ../src/cpp/AbstractClasses/GridEntity.h
+ ../src/cpp/Constants.h
  ../src/cpp/Game.h
+ ../src/cpp/Map/Grid.h
+ ../src/cpp/Map/GridBlock.h
  ../src/cpp/Player.h
  /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/AbstractDelegate.h
  /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/AbstractEvent.h

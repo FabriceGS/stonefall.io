@@ -18,7 +18,8 @@ class Grid {
         static void createNeighbors();
 
     public:
-        Grid() = default;
+        Grid();
+        ~Grid();
         static optional<shared_ptr<GridBlock>> getGridBlock(int x, int y);
         static void buildGrid();
         static bool validateCoordinates(int x, int y);

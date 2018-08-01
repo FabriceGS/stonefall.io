@@ -14,6 +14,8 @@ class Wall : public Killable {
 
     private:
         Wall(GridBlock &block, double hp) : Killable(block, hp) { }
+        GridBlock getBlock() override;
+        int getReward() override;
 };
 
 

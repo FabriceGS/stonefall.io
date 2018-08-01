@@ -22,17 +22,15 @@ using Poco::Net::WebSocket;
 
 class WebSocketRequestHandler: public HTTPRequestHandler {
     private:
-        //maps from player id to player websocket session
         std::unordered_map<std::string, shared_ptr<WebSocket>> sessions;
         std::shared_ptr<Game> game;
     public:
         void sendMessage(char const * msg, int n, int flags, WebSocket ws);
-        void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response);
+        void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response) override;
         void sendUpdates(const GameState& gameState);
         void updateSession(std::string playerId, const char* jsonState);
-        WebSocketRequestHandler(std::shared_ptr<Game> newGame){
-            game = newGame;
-        }
+        WebSocketRequestHandler(std::shared_ptr<Game> newGame) : game(newGame) {}
+        std::unordered_set<std::string> players;
 };
 
 namespace WebSockets{

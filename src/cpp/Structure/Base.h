@@ -9,9 +9,10 @@
 
 class Base : public Killable {
     private:
-
     public:
         Base(GridBlock &block, double hp) : Killable(block, hp) {}
+        GridBlock getBlock() override;
+        int getReward() override;
 };
 
 #endif // STONEFALL_BASE_H
