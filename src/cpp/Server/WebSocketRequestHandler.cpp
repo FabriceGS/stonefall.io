@@ -97,6 +97,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
         ws->setReceiveTimeout(Poco::Timespan(10, 0, 0, 0, 0));
 
         char buffer[1024];
+        memset(buffer, 0, sizeof(buffer));
         int flags;
         int n;
 
