@@ -8,7 +8,7 @@
 #include "GridEntity.h"
 
 class Killable : public GridEntity {
-    private:
+    protected:
         double hp;
 
     public:

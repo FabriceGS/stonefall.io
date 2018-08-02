@@ -4,11 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/david.oyeka/dev/stonefall/src/cpp/Game.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Game.cpp.o"
+  "/Users/david.oyeka/dev/stonefall/src/cpp/Game/Game.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o"
+  "/Users/david.oyeka/dev/stonefall/src/cpp/Game/GameState.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Game/GameState.cpp.o"
+  "/Users/david.oyeka/dev/stonefall/src/cpp/Game/Player.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Game/Player.cpp.o"
+  "/Users/david.oyeka/dev/stonefall/src/cpp/Main/main.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o"
   "/Users/david.oyeka/dev/stonefall/src/cpp/Map/Grid.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o"
   "/Users/david.oyeka/dev/stonefall/src/cpp/Map/GridBlock.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Map/GridBlock.cpp.o"
   "/Users/david.oyeka/dev/stonefall/src/cpp/Pathing/AStar.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o"
-  "/Users/david.oyeka/dev/stonefall/src/cpp/Player.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Player.cpp.o"
   "/Users/david.oyeka/dev/stonefall/src/cpp/Server/PageRequestHandler.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o"
   "/Users/david.oyeka/dev/stonefall/src/cpp/Server/RequestHandlerFactory.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o"
   "/Users/david.oyeka/dev/stonefall/src/cpp/Server/WebSocketRequestHandler.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o"
@@ -18,7 +20,6 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/david.oyeka/dev/stonefall/src/cpp/Structure/Turret.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Structure/Turret.cpp.o"
   "/Users/david.oyeka/dev/stonefall/src/cpp/Structure/Wall.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o"
   "/Users/david.oyeka/dev/stonefall/src/cpp/Unit/Attacker.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/Unit/Attacker.cpp.o"
-  "/Users/david.oyeka/dev/stonefall/src/cpp/main.cpp" "/Users/david.oyeka/dev/stonefall/cmake-build-default/CMakeFiles/stonefall.dir/src/cpp/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 

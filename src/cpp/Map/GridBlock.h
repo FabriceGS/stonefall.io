@@ -36,6 +36,10 @@ class GridBlock {
 
         const shared_ptr<GridEntity> getEntity() {return entity;};
         const bool isFull() {return entity != nullptr;};
+
+        bool operator==(GridBlock const& other) {
+            return x == other.getX() && y == other.getY();
+        }
 };
 
 
