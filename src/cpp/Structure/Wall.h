@@ -6,8 +6,8 @@
 #define STONEFALL_WALL_H
 
 
-#include "../Map/GridBlock.h"
-#include "../AbstractClasses/Killable.h"
+#include "Map/GridBlock.h"
+#include "AbstractClasses/Killable.h"
 
 class Wall : public Killable {
     public:

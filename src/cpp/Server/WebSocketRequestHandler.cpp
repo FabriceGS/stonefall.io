@@ -4,9 +4,9 @@
 
 #include "WebSocketRequestHandler.h"
 #include "PageRequestHandler.h"
-#include "Game.h"
-#include "GameState.h"
-#include "Player.h"
+#include "Game/Game.h"
+#include "Game/GameState.h"
+#include "Game/Player.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
@@ -71,7 +71,7 @@ void WebSocketRequestHandler::sendUpdates(const GameState& gameState)
     const char *jsonState = "you've been updated by a smooth criminal";
 
     // then interpret the game state for each player and update 'em
-    for (auto& session: sessions) {
+    for (auto& session : sessions) {
         updateSession(session.first, jsonState);
     }
 }

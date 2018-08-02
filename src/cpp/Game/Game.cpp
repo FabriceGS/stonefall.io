@@ -2,16 +2,27 @@
 // Created by Fabrice Guyot-Sionnest on 7/2/18.
 //
 
-#include "Game.h"
+#include "Game/Game.h"
 #include "Player.h"
 #include <iostream>
 #include "unordered_set"
 
 using namespace std;
 
+Player Game::addPlayer(string name) {
+    // TODO: generate a random id for the player here
+    cout<< "add player command" << endl;
+    return Player();
+}
+
+bool Game::playerExists(string playerId) {
+    return players.find(playerId) != players.end();
+}
+
 Player Game::getPlayer(string id) {
     return players.at(id);
 }
+
 
 bool Game::attackCommand(string playerId, unordered_set<string> attackerIdSet) {
     cout << "attack command" << endl;
@@ -29,15 +40,6 @@ bool Game::sellCommand(string playerId, unordered_set<string> toSellIdSet) {
     return false;
 }
 
-bool Game::playerExists(string playerId) {
-    return players.find(playerId) != players.end();
-}
-
-Player Game::addPlayer(string name) {
-    // TODO: generate a random id for the player here
-    cout<< "add player command" << endl;
-    return Player();
-}
 
 bool Game::validateCreation(int x, int y, string basic_string, int creationType) {
     cout<< "validate creation command" << endl;

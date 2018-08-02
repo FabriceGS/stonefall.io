@@ -6,8 +6,8 @@
 #define STONEFALL_MINE_H
 
 
-#include "../Map/GridBlock.h"
-#include "../AbstractClasses/Killable.h"
+#include "Map/GridBlock.h"
+#include "AbstractClasses/Killable.h"
 
 class Mine : public Killable {
     private:

@@ -7,8 +7,8 @@
 #include "Poco/Util/ServerApplication.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "RequestHandlerFactory.h"
-#include "Game.h"
-#include "Player.h"
+#include "Game/Game.h"
+#include "Game/Player.h"
 #include "Server/WebSocketRequestHandler.h"
 #include "Server/PageRequestHandler.h"
 
@@ -24,7 +24,8 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
     }
 
     if (request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0) {
-        return new WebSocketRequestHandler(std::make_shared<Game>());
+        shared_ptr<Game> newGame = make_shared<Game>();
+        return new WebSocketRequestHandler(newGame);
     } else {
         return new PageRequestHandler;
     }
