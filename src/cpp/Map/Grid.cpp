@@ -53,7 +53,7 @@ bool Grid::isWithinNBlocks(int n, GridBlock const& source, GridBlock const& targ
 
 optional<shared_ptr<GridBlock>> Grid::getGridBlock(int x, int y) {
     if (x >= 0 && x < BOARD_WIDTH && y>= 0 && y < BOARD_LENGTH) {
-//        return optional(gridBlocks[x][y]);
+       return optional(gridBlocks[x][y]);
     }
     return nullopt;
 }

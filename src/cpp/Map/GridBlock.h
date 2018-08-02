@@ -26,21 +26,38 @@ class GridBlock {
         ~GridBlock();
 
         void setNeighbors(const array<weak_ptr<GridBlock>, 8> &neighbors);
-        array<weak_ptr<GridBlock>, 8> &getNeighbors();
+        const array<weak_ptr<GridBlock>, 8> & getNeighbors() const;
 
         int getX() const {return x;};
         int getY() const {return y;};
 
+        double getDistance(GridBlock const& dest);
+
         void populate(shared_ptr<GridEntity> ent) {entity = ent;};
         void depopulate() {entity = nullptr;};
 
-        const shared_ptr<GridEntity> getEntity() {return entity;};
-        const bool isFull() {return entity != nullptr;};
+        shared_ptr<GridEntity> getEntity() {return entity;};
+        bool isFull() const {return entity != nullptr;};
 
+        // Equals operator overload.
         bool operator==(GridBlock const& other) {
             return x == other.getX() && y == other.getY();
         }
+
 };
+
+// hash function for GridBlock.
+namespace std
+{
+    template <>
+    struct hash<GridBlock>
+    {
+        size_t operator()(GridBlock const& block) const
+        {
+            return ((hash<int>()(block.getY())) ^ (hash<int>()(block.getY()) << 1) >> 1);
+        }
+    };
+}
 
 
 #endif // STONEFALL_GRIDBLOCK_H

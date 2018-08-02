@@ -7,29 +7,30 @@
 #include <queue>
 #include "AStar.h"
 
-template<class V>
-std::list<V> AStar<V>::shortestPath(V const& src, V const& dest) {
-    using heuristic_pair_t = std::pair<V, double>;
-    // The comparison lambda for the pair of a vertex and it's heuristic, calculated by adding
-    // it's path distance from the source vertex and it's straight line distance to the destination vertex.
+std::list<GridBlock> AStar::shortestPath(GridBlock const& src, GridBlock const& dest) {
+    using heuristic_pair_t = std::pair<GridBlock, double>;
+    using heuristic_container_t = std::vector<heuristic_pair_t>;
+    // The comparison lambda for the pair of a GridBlock and it's heuristic, calculated by adding
+    // it's path distance from the source GridBlock and it's straight line distance to the destination GridBlock.
     auto shortest_heuristic_comp =
             [](heuristic_pair_t const& p1, heuristic_pair_t const& p2)
             { return p1.second > p2.second; };
 
-    // The priority queue of a vertex and it's heuristic, where the smallest heuristic has the
+    // The priority queue of a GridBlock and it's heuristic, where the smallest heuristic has the
     // greatest priority.
-    std::priority_queue<heuristic_pair_t> toVisit(shortest_heuristic_comp);
+    std::priority_queue<heuristic_pair_t, heuristic_container_t, decltype(shortest_heuristic_comp)> toVisit(shortest_heuristic_comp);
 
-    // The visited set represents vertexes that have already been 'visited' by the algorithm.
-    std::unordered_set<V> visited;
-    // The distances map represents distance away from the source vertex.
-    std::unordered_map<V, double> distances;
-    // The parents map represents the vertexes and their parents that were the cheapest way to reach them.
-    std::unordered_map<V, V> parents;
+    // The visited set represents GridBlocks that have already been 'visited' by the algorithm.
+    std::unordered_set<GridBlock> visited;
+    // The distances map represents distance away from the source GridBlock.
+    std::unordered_map<GridBlock, double> distances;
+    // The parents map represents the GridBlocks and their parents that were the cheapest way to reach them.
+    std::unordered_map<GridBlock, GridBlock> parents;
     // The path is final path to take.
-    std::list<V> path;
-    // The closest vertex is the vertex we have passed closest to the destination.
-    V closest;
+    std::list<GridBlock> path;
 
-    return std::list<V>();
+    // The GridBlock closest to the destination one can reach.
+    // GridBlock closest = dest.getNeighbors()[0];
+
+    return std::list<GridBlock>();
 }

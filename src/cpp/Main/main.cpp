@@ -22,6 +22,8 @@
 #include <iostream>
 #include <Map/Grid.h>
 #include <memory>
+#include <Map/GridBlock.h>
+
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;

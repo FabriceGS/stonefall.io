@@ -8,17 +8,9 @@
 #include <list>
 #include <Map/GridBlock.h>
 
-template <class V>
 class AStar {
     public:
-        std::list<V> shortestPath(V const& src, V const& dest);
+        std::list<GridBlock> shortestPath(GridBlock const& src, GridBlock const& dest);
 };
-
-//template <>
-//class AStar<GridBlock> {
-//    public:
-//        std::list<GridBlock> shortestPath(GridBlock const& src, GridBlock const& dest);
-//};
-
 
 #endif //STONEFALL_ASTAR_H

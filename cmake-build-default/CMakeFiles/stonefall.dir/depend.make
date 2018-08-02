@@ -28,11 +28,17 @@ CMakeFiles/stonefall.dir/src/cpp/Game/Player.cpp.o: ../src/cpp/Game/Player.cpp
 CMakeFiles/stonefall.dir/src/cpp/Game/Player.cpp.o: ../src/cpp/Game/Player.h
 
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
+CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/AbstractClasses/Killable.h
+CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Config/Constants.h
+CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Game/Game.h
+CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Game/GameState.h
+CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Game/Player.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Map/Grid.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Map/GridBlock.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Server/PageRequestHandler.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Server/RequestHandlerFactory.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Server/WebSocketRequestHandler.h
+CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Structure/Resource.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/AbstractDelegate.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/AbstractEvent.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/ActiveMethod.h
@@ -140,6 +146,7 @@ CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_app
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Util/include/Poco/Util/Util.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Main/main.cpp
 
+CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Config/Constants.h
 CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
 CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Map/Grid.cpp
 CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Map/Grid.h

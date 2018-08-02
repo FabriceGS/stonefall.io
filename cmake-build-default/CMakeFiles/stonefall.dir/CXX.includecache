@@ -12,6 +12,8 @@
 GridEntity.h
 ../src/cpp/AbstractClasses/GridEntity.h
 
+../src/cpp/Config/Constants.h
+
 ../src/cpp/Game/Game.h
 iostream
 -
@@ -32,13 +34,17 @@ Poco/Net/HTTPRequestHandler.h
 
 ../src/cpp/Game/GameState.h
 
+../src/cpp/Game/Player.h
+string
+-
+
 ../src/cpp/Map/Grid.h
 array
 -
 experimental/optional
 -
-../Constants.h
-../src/cpp/Constants.h
+Config/Constants.h
+../src/cpp/Map/Config/Constants.h
 GridBlock.h
 ../src/cpp/Map/GridBlock.h
 
@@ -81,10 +87,12 @@ Poco/Net/HTTPRequestHandlerFactory.h
 ../src/cpp/Server/Poco/Net/HTTPRequestHandlerFactory.h
 Poco/Net/WebSocket.h
 ../src/cpp/Server/Poco/Net/WebSocket.h
-Game.h
-../src/cpp/Server/Game.h
-unordered_set
--
+../Game/Game.h
+../src/cpp/Game/Game.h
+Game/GameState.h
+../src/cpp/Server/Game/GameState.h
+unordered_map
+../src/cpp/Server/unordered_map
 
 ../src/cpp/Structure/Resource.h
 AbstractClasses/Killable.h
@@ -1072,20 +1080,6 @@ Poco/Foundation.h
 
 /Users/david.oyeka/dev/stonefall/src/cpp/AbstractClasses/GridEntity.h
 
-/Users/david.oyeka/dev/stonefall/src/cpp/Game/Game.cpp
-Game/Game.h
-/Users/david.oyeka/dev/stonefall/src/cpp/Game/Game/Game.h
-Player.h
-/Users/david.oyeka/dev/stonefall/src/cpp/Game/Player.h
-iostream
--
-unordered_set
-/Users/david.oyeka/dev/stonefall/src/cpp/Game/unordered_set
-
-/Users/david.oyeka/dev/stonefall/src/cpp/Game/Player.h
-string
--
-
 /Users/david.oyeka/dev/stonefall/src/cpp/Main/main.cpp
 Server/PageRequestHandler.h
 /Users/david.oyeka/dev/stonefall/src/cpp/Main/Server/PageRequestHandler.h
@@ -1131,6 +1125,8 @@ Map/Grid.h
 -
 memory
 -
+Map/GridBlock.h
+-
 
 /Users/david.oyeka/dev/stonefall/src/cpp/Map/Grid.cpp
 Grid.h
@@ -1141,14 +1137,16 @@ array
 -
 experimental/optional
 -
-../Constants.h
-/Users/david.oyeka/dev/stonefall/src/cpp/Constants.h
+Config/Constants.h
+/Users/david.oyeka/dev/stonefall/src/cpp/Map/Config/Constants.h
 GridBlock.h
 /Users/david.oyeka/dev/stonefall/src/cpp/Map/GridBlock.h
 
 /Users/david.oyeka/dev/stonefall/src/cpp/Map/GridBlock.cpp
 GridBlock.h
 /Users/david.oyeka/dev/stonefall/src/cpp/Map/GridBlock.h
+math.h
+-
 
 /Users/david.oyeka/dev/stonefall/src/cpp/Map/GridBlock.h
 memory
