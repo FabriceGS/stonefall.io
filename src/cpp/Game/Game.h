@@ -28,7 +28,7 @@ private:
     int resCollectCounter;
     HTTPRequestHandler *webSocketRequestHandler;
 public:
-    Game() {}
+    Game() = default;
     Player addPlayer(string name);
     bool playerExists(string id);
     Player getPlayer(string id);

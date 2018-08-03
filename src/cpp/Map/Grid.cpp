@@ -6,6 +6,7 @@
 
 array<array<shared_ptr<GridBlock>, BOARD_LENGTH>, BOARD_WIDTH> Grid::gridBlocks;
 
+// 0 - NW, 1 - N, 2 - NE, 3 - W, 4 - E, 5 - SW, 6 - S, 7 - SE
 void Grid::createNeighbors() {
     for (int i = 0; i < BOARD_WIDTH; i++) {
         for (int j = 0; j < BOARD_LENGTH; j++) {
@@ -19,8 +20,8 @@ void Grid::createNeighbors() {
                             continue;
 
                         neighbors[direction] = gridBlocks[m][n];
-                        direction++;
                     }
+                    direction++;
                 }
             }
             gridBlocks[i][j]->setNeighbors(neighbors);
@@ -58,11 +59,10 @@ optional<shared_ptr<GridBlock>> Grid::getGridBlock(int x, int y) {
     return nullopt;
 }
 
-Grid::~Grid() {
+Grid::Grid() {
     cout << std::string("Grid created") << endl;
-
 }
 
-Grid::Grid() {
+Grid::~Grid() {
     cout << std::string("Grid destroyed") << endl;
 }

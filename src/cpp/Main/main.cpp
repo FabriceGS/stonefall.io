@@ -132,6 +132,10 @@ protected:
             HTTPServer srv(new RequestHandlerFactory, svs, new HTTPServerParams);
             // start the HTTPServer
             srv.start();
+
+            unique_ptr<Grid> grid = make_unique<Grid>();
+            grid->buildGrid();
+
             // wait for CTRL-C or kill
             waitForTerminationRequest();
             // Stop the HTTPServer

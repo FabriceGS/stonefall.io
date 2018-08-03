@@ -9,6 +9,7 @@ class GridBlock;
 
 class GridEntity {
     protected:
+        // TODO: May have to change from a reference if copies of GridEntities are going to float around.
         GridBlock& block;
 
     public:

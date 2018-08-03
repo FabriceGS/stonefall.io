@@ -157,9 +157,10 @@ CMakeFiles/stonefall.dir/src/cpp/Map/GridBlock.cpp.o: ../src/cpp/Map/GridBlock.c
 CMakeFiles/stonefall.dir/src/cpp/Map/GridBlock.cpp.o: ../src/cpp/Map/GridBlock.h
 
 CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
+CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/Config/Utility.h
 CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/Map/GridBlock.h
-CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/Pathing/AStar.cpp
 CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/Pathing/AStar.h
+CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/Pathing/AStar.cpp
 
 CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o: ../src/cpp/Server/PageRequestHandler.h
 CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Alignment.h
@@ -205,8 +206,14 @@ CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o: /Users/david.o
 CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Net/include/Poco/Net/SocketDefs.h
 CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o: ../src/cpp/Server/PageRequestHandler.cpp
 
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/AbstractClasses/Killable.h
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/Game/Game.h
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/Game/GameState.h
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/Game/Player.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/Server/PageRequestHandler.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/Server/WebSocketRequestHandler.h
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/Structure/Resource.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/AbstractDelegate.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/AbstractEvent.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/ActiveMethod.h
@@ -306,6 +313,12 @@ CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/davi
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/Server/RequestHandlerFactory.cpp
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: ../src/cpp/Server/RequestHandlerFactory.h
 
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/AbstractClasses/Killable.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/Game/Game.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/Game/GameState.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/Game/Player.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/Structure/Resource.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/AbstractDelegate.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/AbstractEvent.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/ActiveMethod.h
@@ -347,7 +360,10 @@ CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/da
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/FPEnvironment_WIN32.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Format.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Foundation.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Hash.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/HashMap.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/JSONString.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/LinearHashTable.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/ListMap.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/LocalDateTime.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Logger.h
@@ -446,18 +462,39 @@ CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/da
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Util/include/Poco/Util/ServerApplication.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Util/include/Poco/Util/Subsystem.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Util/include/Poco/Util/Util.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/Game/Game.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/Server/PageRequestHandler.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/Server/WebSocketRequestHandler.cpp
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: ../src/cpp/Server/WebSocketRequestHandler.h
 
+CMakeFiles/stonefall.dir/src/cpp/Structure/Base.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Base.cpp.o: ../src/cpp/AbstractClasses/Killable.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Base.cpp.o: ../src/cpp/Map/GridBlock.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Base.cpp.o: ../src/cpp/Structure/Base.h
 CMakeFiles/stonefall.dir/src/cpp/Structure/Base.cpp.o: ../src/cpp/Structure/Base.cpp
 
+CMakeFiles/stonefall.dir/src/cpp/Structure/Mine.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Mine.cpp.o: ../src/cpp/AbstractClasses/Killable.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Mine.cpp.o: ../src/cpp/Map/GridBlock.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Mine.cpp.o: ../src/cpp/Structure/Mine.h
 CMakeFiles/stonefall.dir/src/cpp/Structure/Mine.cpp.o: ../src/cpp/Structure/Mine.cpp
 
+CMakeFiles/stonefall.dir/src/cpp/Structure/Resource.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Resource.cpp.o: ../src/cpp/AbstractClasses/Killable.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Resource.cpp.o: ../src/cpp/Map/GridBlock.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Resource.cpp.o: ../src/cpp/Structure/Resource.h
 CMakeFiles/stonefall.dir/src/cpp/Structure/Resource.cpp.o: ../src/cpp/Structure/Resource.cpp
 
+CMakeFiles/stonefall.dir/src/cpp/Structure/Turret.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Turret.cpp.o: ../src/cpp/AbstractClasses/Killable.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Turret.cpp.o: ../src/cpp/Map/GridBlock.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Turret.cpp.o: ../src/cpp/Structure/Turret.h
 CMakeFiles/stonefall.dir/src/cpp/Structure/Turret.cpp.o: ../src/cpp/Structure/Turret.cpp
 
+CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o: ../src/cpp/AbstractClasses/Killable.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o: ../src/cpp/Map/GridBlock.h
+CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o: ../src/cpp/Structure/Wall.h
 CMakeFiles/stonefall.dir/src/cpp/Structure/Wall.cpp.o: ../src/cpp/Structure/Wall.cpp
 
 CMakeFiles/stonefall.dir/src/cpp/Unit/Attacker.cpp.o: ../src/cpp/Unit/Attacker.cpp

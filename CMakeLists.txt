@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.8)
 project(stonefall)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_FLAGS "${CMAKE_CFLAGS} -fopenmp")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
 set(SOURCE_FILES
         src/cpp/AbstractClasses/GridEntity.h src/cpp/Map/GridBlock.cpp src/cpp/Map/GridBlock.h
@@ -13,7 +15,7 @@ set(SOURCE_FILES
         src/cpp/Unit/Attacker.cpp src/cpp/Unit/Attacker.h src/cpp/Map/Grid.cpp src/cpp/Game/Game.cpp src/cpp/Game/Game.h
         src/cpp/Game/Player.cpp src/cpp/Game/Player.h src/cpp/Server/RequestHandlerFactory.cpp
         src/cpp/Game/GameState.cpp src/cpp/Game/GameState.h
-        src/cpp/Server/RequestHandlerFactory.h src/cpp/Map/Grid.h src/cpp/Pathing/AStar.cpp src/cpp/Pathing/AStar.h)
+        src/cpp/Server/RequestHandlerFactory.h src/cpp/Map/Grid.h src/cpp/Pathing/AStar.cpp src/cpp/Pathing/AStar.h src/cpp/Config/Utility.h)
 
 set(Poco_DIR ~/dev/dev_apps/poco-1.9.0/cmake_build/Poco/)
 
