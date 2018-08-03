@@ -13,10 +13,9 @@ using namespace std;
 class Crypto {
 public:
     string randomId() {
-        char id[17];
-        randombytes_buf(id, 16);
-        id[16] = '\0';
-        return id;
+        uint32_t myInt;
+        myInt = randombytes_uniform(999999999);
+        return to_string(myInt);
     }
 
     string randomSecret() {
