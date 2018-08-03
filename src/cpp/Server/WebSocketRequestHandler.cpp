@@ -71,7 +71,7 @@ void WebSocketRequestHandler::sendUpdates(const GameState& gameState)
     const char *jsonState = "you've been updated by a smooth criminal";
 
     // then interpret the game state for each player and update 'em
-    for (auto& session : sessions) {
+    for (auto session : sessions) {
         updateSession(session.first, jsonState);
     }
 }
@@ -130,115 +130,119 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
             // the current player, either to be added or found from the id
             string playerId;
 
-            switch (typeEnum) {
+            // acquire the game shared_ptr
+            if (auto lockedGame = game.lock()) {
+                switch (typeEnum) {
+                    case MESSAGE::INITIALIZE: {
+                        // get name
+                        Var nameVar = extractedPayload->get("name");
+                        string name = nameVar.convert<string>();
 
-                case MESSAGE::INITIALIZE: {
-                    // get name
-                    Var nameVar = extractedPayload->get("name");
-                    string name = nameVar.convert<string>();
+                        // add a new player to the game
+                        Player player = lockedGame->addPlayer(name);
+                        sessions.insert(make_pair(player.getId(), ws));
 
-                    // add a new player to the game
-                    Player player = game->addPlayer(name);
-                    sessions.insert(make_pair(player.getId(), ws));
-
-                    break;
-                }
-
-                case MESSAGE::ATTACK: {
-                    // get coordinates of objective
-                    int x = extractedPayload->get("x").convert<int>();
-                    int y = extractedPayload->get("y").convert<int>();
-                    // get playerId
-                    playerId = extractedPayload->get("id").convert<string>();
-                    // get set of attacker ids
-                    Var attackerIdsVar = extractedPayload->get("attackers");
-                    Array::Ptr attackerIds = attackerIdsVar.extract<Array::Ptr>();
-                    unordered_set<string> attackerIdSet;
-                    for (int i = 0; i < attackerIds->size(); i++) {
-                        string attackerId = attackerIds->getElement<string>(i);
-                        attackerIdSet.insert(attackerId);
-                    }
-
-                    // send the attacker ids to the game
-                    game->attackCommand(playerId, attackerIdSet);
-
-                    break;
-                }
-
-                case MESSAGE::SPAWN: {
-                    // get coordinates of creation
-                    auto x = extractedPayload->get("x").convert<int>();
-                    auto y = extractedPayload->get("y").convert<int>();
-                    // get creation type enum
-                    auto spawnType = extractedPayload->get("objectType").convert<int>();
-                    // get id of player
-                    playerId = extractedPayload->get("id").convert<string>();
-
-                    if (!game->validateCreation(x, y, playerId, spawnType)) {
-                        // we don't need to send an error message here, just return
                         break;
                     }
 
-                    OBJECT_TYPE spawnTypeEnum = static_cast<OBJECT_TYPE>(spawnType);
+                    case MESSAGE::ATTACK: {
+                        // get coordinates of objective
+                        int x = extractedPayload->get("x").convert<int>();
+                        int y = extractedPayload->get("y").convert<int>();
+                        // get playerId
+                        playerId = extractedPayload->get("id").convert<string>();
+                        // get set of attacker ids
+                        Var attackerIdsVar = extractedPayload->get("attackers");
+                        Array::Ptr attackerIds = attackerIdsVar.extract<Array::Ptr>();
+                        unordered_set<string> attackerIdSet;
+                        for (int i = 0; i < attackerIds->size(); i++) {
+                            string attackerId = attackerIds->getElement<string>(i);
+                            attackerIdSet.insert(attackerId);
+                        }
 
-                    switch (spawnTypeEnum) {
-                        case OBJECT_TYPE::ATTACKER:
-                            game->spawnAttacker(playerId, x, y);
-                            break;
-                        case OBJECT_TYPE::WALL:
-                            game->spawnWall(playerId, x, y);
-                            break;
-                        case OBJECT_TYPE::TURRET:
-                            game->spawnTurret(playerId, x, y);
-                            break;
-                        case OBJECT_TYPE::MINE:
-                            game->spawnMine(playerId, x, y);
-                            break;
-                        default:
-                            break;
+                        // send the attacker ids to the game
+                        lockedGame->attackCommand(playerId, attackerIdSet);
+
+                        break;
                     }
-                    break;
-                }
 
-                case MESSAGE::SELL: {
-                    // get id of player
-                    auto id = extractedPayload->get("id").convert<string>();
-                    // get set of ids to sell
-                    Var toSellIdsVar = extractedPayload->get("toSellIds");
-                    Array::Ptr toSellIds = toSellIdsVar.extract<Array::Ptr>();
-                    unordered_set<string> toSellIdSet;
-                    for (int i = 0; i < toSellIds->size(); i++) {
-                        auto toSellId = toSellIds->getElement<string>(i);
-                        toSellIdSet.insert(toSellId);
+                    case MESSAGE::SPAWN: {
+                        // get coordinates of creation
+                        auto x = extractedPayload->get("x").convert<int>();
+                        auto y = extractedPayload->get("y").convert<int>();
+                        // get creation type enum
+                        auto spawnType = extractedPayload->get("objectType").convert<int>();
+                        // get id of player
+                        playerId = extractedPayload->get("id").convert<string>();
+
+                        if (!lockedGame->validateCreation(x, y, playerId, spawnType)) {
+                            // we don't need to send an error message here, just return
+                            break;
+                        }
+
+                        OBJECT_TYPE spawnTypeEnum = static_cast<OBJECT_TYPE>(spawnType);
+
+                        switch (spawnTypeEnum) {
+                            case OBJECT_TYPE::ATTACKER:
+                                lockedGame->spawnAttacker(playerId, x, y);
+                                break;
+                            case OBJECT_TYPE::WALL:
+                                lockedGame->spawnWall(playerId, x, y);
+                                break;
+                            case OBJECT_TYPE::TURRET:
+                                lockedGame->spawnTurret(playerId, x, y);
+                                break;
+                            case OBJECT_TYPE::MINE:
+                                lockedGame->spawnMine(playerId, x, y);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
                     }
-                    // it might not be necessary to get the type of the object to sell
-                    auto toSellType = extractedPayload->get("objectType").convert<int>();
-                    OBJECT_TYPE toSellTypeEnum = static_cast<OBJECT_TYPE>(toSellType);
 
-                    // send the ids to sell to the game
-                    game->sellCommand(playerId, toSellIdSet);
-                    break;
-                };
+                    case MESSAGE::SELL: {
+                        // get id of player
+                        auto id = extractedPayload->get("id").convert<string>();
+                        // get set of ids to sell
+                        Var toSellIdsVar = extractedPayload->get("toSellIds");
+                        Array::Ptr toSellIds = toSellIdsVar.extract<Array::Ptr>();
+                        unordered_set<string> toSellIdSet;
+                        for (int i = 0; i < toSellIds->size(); i++) {
+                            auto toSellId = toSellIds->getElement<string>(i);
+                            toSellIdSet.insert(toSellId);
+                        }
+                        // it might not be necessary to get the type of the object to sell
+                        auto toSellType = extractedPayload->get("objectType").convert<int>();
+                        OBJECT_TYPE toSellTypeEnum = static_cast<OBJECT_TYPE>(toSellType);
 
-                case MESSAGE::ERROR: {
-                    auto message = extractedPayload->get("message").convert<string>();
-                    app.logger().log(Poco::Message("", message, Poco::Message::Priority::PRIO_ERROR));
-                    break;
-                };
+                        // send the ids to sell to the game
+                        lockedGame->sellCommand(playerId, toSellIdSet);
+                        break;
+                    };
 
-                case MESSAGE::GAMEOVER: {
-                    app.logger().log(Poco::Message("", "A client sent a GAMEOVER message to us", Poco::Message::Priority::PRIO_WARNING));
-                    break;
-                };
+                    case MESSAGE::ERROR: {
+                        auto message = extractedPayload->get("message").convert<string>();
+                        app.logger().log(Poco::Message("", message, Poco::Message::Priority::PRIO_ERROR));
+                        break;
+                    };
 
-                case MESSAGE::TEST: {
-                    auto message = extractedPayload->get("message").convert<string>();
-                    app.logger().log(Poco::Message("", message, Poco::Message::Priority::PRIO_DEBUG));
+                    case MESSAGE::GAMEOVER: {
+                        app.logger().log(Poco::Message("", "A client sent a GAMEOVER message to us", Poco::Message::Priority::PRIO_WARNING));
+                        break;
+                    };
+
+                    case MESSAGE::TEST: {
+                        auto message = extractedPayload->get("message").convert<string>();
+                        app.logger().log(Poco::Message("", message, Poco::Message::Priority::PRIO_DEBUG));
+                    }
+
+                    default: {
+                        app.logger().log(Poco::Message("", "An unrecognized message type was sent", Poco::Message::Priority::PRIO_WARNING));
+                    };
                 }
-
-                default: {
-                    app.logger().log(Poco::Message("", "An unrecognized message type was sent", Poco::Message::Priority::PRIO_WARNING));
-                };
+            } else {
+                app.logger().log(Poco::Message("", "The game pointer has expired", Poco::Message::Priority::PRIO_CRITICAL));
             }
         } while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
     }

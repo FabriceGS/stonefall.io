@@ -26,7 +26,7 @@ private:
     int resourceIdNum;
     int resSpawnCounter;
     int resCollectCounter;
-    HTTPRequestHandler *webSocketRequestHandler;
+    weak_ptr<HTTPRequestHandler> webSocketRequestHandler;
 public:
     Game() {}
     Player addPlayer(string name);
@@ -39,7 +39,7 @@ public:
     void spawnWall(string playerId, int x, int y);
     void spawnMine(string playerId, int x, int y);
     void spawnTurret(string playerId, int x, int y);
-    void setSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler) {
+    void setSocketHandler(shared_ptr<HTTPRequestHandler> newWebSocketRequestHandler) {
         webSocketRequestHandler = newWebSocketRequestHandler;
     }
 };
