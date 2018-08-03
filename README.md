@@ -2,7 +2,7 @@
 The repository for the stonefall.io game.
 
 ## Building
-To build, first [install cmake](https://cmake.org/install/) (either `sudo apt-get install cmake` or `brew install cmake`). Then, [download the poco source](https://pocoproject.org/download/index.html) and move the folder you've just downloaded, `poco-1.9.0` to `~/dev/dev_apps/`. Then, move into the poco folder and build poco by running
+To build, first [install cmake](https://cmake.org/install/) (either `sudo apt-get install cmake` or `brew install cmake`). Then, [install libsodium](https://download.libsodium.org/doc/installation/). Then, [download the poco source](https://pocoproject.org/download/index.html) and move the folder you've just downloaded, `poco-1.9.0` to `~/dev/dev_apps/`. Then, move into the poco folder and build poco by running
 ```
 mkdir cmake_build
 cd cmake_build
