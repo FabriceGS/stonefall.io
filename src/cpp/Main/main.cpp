@@ -23,6 +23,7 @@
 #include <Map/Grid.h>
 #include <memory>
 #include <Map/GridBlock.h>
+#include <Pathing/AStar.h>
 
 
 using Poco::Net::ServerSocket;
@@ -42,8 +43,6 @@ using Poco::Util::Application;
 using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
-
-int GridBlock::stat = 0;
 
 class WebSocketServer: public Poco::Util::ServerApplication
     /// The main application class.
@@ -132,10 +131,6 @@ protected:
             HTTPServer srv(new RequestHandlerFactory, svs, new HTTPServerParams);
             // start the HTTPServer
             srv.start();
-
-            unique_ptr<Grid> grid = make_unique<Grid>();
-            grid->buildGrid();
-
             // wait for CTRL-C or kill
             waitForTerminationRequest();
             // Stop the HTTPServer

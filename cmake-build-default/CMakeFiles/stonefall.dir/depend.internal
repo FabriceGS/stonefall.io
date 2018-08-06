@@ -36,6 +36,7 @@ CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o
  ../src/cpp/Game/Player.h
  ../src/cpp/Map/Grid.h
  ../src/cpp/Map/GridBlock.h
+ ../src/cpp/Pathing/AStar.h
  ../src/cpp/Server/PageRequestHandler.h
  ../src/cpp/Server/RequestHandlerFactory.h
  ../src/cpp/Server/WebSocketRequestHandler.h
@@ -162,6 +163,7 @@ CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o
  ../src/cpp/Map/GridBlock.h
  ../src/cpp/Pathing/AStar.h
  /Users/david.oyeka/dev/stonefall/src/cpp/Pathing/AStar.cpp
+ /Users/david.oyeka/dev/stonefall/src/cpp/Pathing/AStar.h
 CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o
  ../src/cpp/Server/PageRequestHandler.h
  /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Alignment.h

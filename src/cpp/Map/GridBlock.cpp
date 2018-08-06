@@ -5,12 +5,14 @@
 #include "GridBlock.h"
 #include <math.h>
 
+int GridBlock::stat = 0;
+
 double GridBlock::getDistance(GridBlock const &dest) {
     return sqrt(pow(dest.getX() - x, 2) + pow(dest.getY() - y, 2));
 }
 
 GridBlock::GridBlock(int x, int y) : x(x), y(y) {
-    cout << std::string("GridBlock ") + std::to_string(stat) + std::string(" created") << endl;
+    // cout << std::string("GridBlock ") + std::to_string(stat) + std::string(" created") << endl;
     stat++;
 }
 
@@ -23,6 +25,11 @@ void GridBlock::setNeighbors(const array<weak_ptr<GridBlock>, 8> &neighbors) {
 }
 
 GridBlock::~GridBlock() {
-    cout << std::string("GridBlock ") + std::to_string(stat) + std::string(" destroyed") << endl;
+    // cout << std::string("GridBlock ") + std::to_string(stat) + std::string(" destroyed") << endl;
     stat--;
+}
+
+// << operator overload.
+std::ostream& operator<<(std::ostream &strm, const GridBlock &block) {
+    return strm << "(" << block.getX() << ", " << block.getY() << ")";
 }

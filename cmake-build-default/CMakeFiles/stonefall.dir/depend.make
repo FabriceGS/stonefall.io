@@ -35,6 +35,7 @@ CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Game/GameState.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Game/Player.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Map/Grid.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Map/GridBlock.h
+CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Pathing/AStar.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Server/PageRequestHandler.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Server/RequestHandlerFactory.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Server/WebSocketRequestHandler.h
@@ -161,6 +162,7 @@ CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/Config/Utility.
 CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/Map/GridBlock.h
 CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/Pathing/AStar.h
 CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/Pathing/AStar.cpp
+CMakeFiles/stonefall.dir/src/cpp/Pathing/AStar.cpp.o: ../src/cpp/Pathing/AStar.h
 
 CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o: ../src/cpp/Server/PageRequestHandler.h
 CMakeFiles/stonefall.dir/src/cpp/Server/PageRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Alignment.h

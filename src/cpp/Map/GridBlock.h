@@ -39,7 +39,7 @@ class GridBlock {
         weak_ptr<GridEntity> getEntity() {return entity; };
         bool isFull() const {return !entity.expired();};
 
-        // Equals operator overload.
+        // == and !- operator overload.
         bool operator==(GridBlock const& other) const {
             return x == other.getX() && y == other.getY();
         }
@@ -47,7 +47,8 @@ class GridBlock {
         bool operator!=(GridBlock const& other) const {
             return !(*this == other);
         }
-
+        // << operator overload.
+       friend std::ostream& operator<<(std::ostream &strm, const GridBlock &block);
 };
 
 // hash function for GridBlock.
@@ -58,7 +59,7 @@ namespace std
     {
         size_t operator()(GridBlock const& block) const
         {
-            return ((hash<int>()(block.getY())) ^ (hash<int>()(block.getY()) << 1) >> 1);
+            return ((hash<int>()(block.getX())) ^ (hash<int>()(block.getY()) << 1) >> 1);
         }
     };
 }
