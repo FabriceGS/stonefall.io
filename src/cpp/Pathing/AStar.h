@@ -10,7 +10,7 @@
 
 class AStar {
     public:
-        std::list<GridBlock> shortestPath(GridBlock const& src, GridBlock const& dest);
+        std::list<GridBlock> shortestPath(GridBlock* const& src, GridBlock* const& dest);
 };
 
 #endif //STONEFALL_ASTAR_H

@@ -11,6 +11,12 @@
 ../src/cpp/Config/Utility.h
 memory
 -
+math.h
+-
+unordered_map
+-
+unordered_set
+-
 
 ../src/cpp/Map/GridBlock.h
 memory
