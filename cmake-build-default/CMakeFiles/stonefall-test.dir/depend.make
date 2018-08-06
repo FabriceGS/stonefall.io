@@ -27,7 +27,7 @@ CMakeFiles/stonefall-test.dir/src/cpp/Game/GameState.cpp.o: ../src/cpp/Game/Game
 CMakeFiles/stonefall-test.dir/src/cpp/Game/Player.cpp.o: ../src/cpp/Game/Player.cpp
 CMakeFiles/stonefall-test.dir/src/cpp/Game/Player.cpp.o: ../src/cpp/Game/Player.h
 
-CMakeFiles/stonefall-test.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Config/Constants.h
+CMakeFiles/stonefall-test.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Config/ReleaseConstants.h
 CMakeFiles/stonefall-test.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
 CMakeFiles/stonefall-test.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Map/Grid.cpp
 CMakeFiles/stonefall-test.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Map/Grid.h
@@ -379,7 +379,7 @@ CMakeFiles/stonefall-test.dir/src/cpp/Structure/Wall.cpp.o: ../src/cpp/Map/GridB
 CMakeFiles/stonefall-test.dir/src/cpp/Structure/Wall.cpp.o: ../src/cpp/Structure/Wall.h
 CMakeFiles/stonefall-test.dir/src/cpp/Structure/Wall.cpp.o: ../src/cpp/Structure/Wall.cpp
 
-CMakeFiles/stonefall-test.dir/src/cpp/Test/Test.cpp.o: ../src/cpp/Config/Constants.h
+CMakeFiles/stonefall-test.dir/src/cpp/Test/Test.cpp.o: ../src/cpp/Config/ReleaseConstants.h
 CMakeFiles/stonefall-test.dir/src/cpp/Test/Test.cpp.o: ../src/cpp/Map/GridBlock.h
 CMakeFiles/stonefall-test.dir/src/cpp/Test/Test.cpp.o: ../src/cpp/Pathing/AStar.h
 CMakeFiles/stonefall-test.dir/src/cpp/Test/Test.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h

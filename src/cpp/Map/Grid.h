@@ -7,7 +7,7 @@
 
 #include <array>
 #include <experimental/optional>
-#include "Config/Constants.h"
+#include "Config/ReleaseConstants.h"
 #include "GridBlock.h"
 
 using namespace std::experimental;

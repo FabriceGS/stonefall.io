@@ -1,4 +1,16 @@
 /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE= -G "CodeBlocks - Unix Makefiles" /Users/david.oyeka/dev/stonefall
 -- Configuring done
--- Generating done
+CMake Error at CMakeLists.txt:28 (add_executable):
+  Cannot find source file:
+
+    src/cpp/Config/TestConstants.h
+
+  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .m .M .mm .h .hh .h++ .hm
+  .hpp .hxx .in .txx
+
+
+CMake Error at CMakeLists.txt:28 (add_executable):
+  No SOURCES given to target: stonefall-test
+
+
 -- Build files have been written to: /Users/david.oyeka/dev/stonefall/cmake-build-default
