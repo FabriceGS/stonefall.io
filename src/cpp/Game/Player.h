@@ -11,16 +11,21 @@
 using namespace std;
 
 class Player {
+    private:
+        string name;
+        string id;
+        int resourceCount;
 
-public:
-    void spawnAttacker();
-    void spawnWall();
-    void spawnMine();
-    void spawnTurret();
-    string getId();
-    void setId(string id);
-private:
-    string id;
+    public:
+        Player(string name, string id);
+        void spawnAttacker();
+        void spawnWall();
+        void spawnMine();
+        void spawnTurret();
+        string getId();
+        void setId(string id);
+        int getResourceCount();
+        void setResourceCount(int newCount);
 };
 
 

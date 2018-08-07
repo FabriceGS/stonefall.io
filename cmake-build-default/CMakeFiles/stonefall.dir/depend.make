@@ -7,18 +7,43 @@ CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: ../src/cpp/Game/Game.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: ../src/cpp/Game/GameState.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: ../src/cpp/Structure/Resource.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Alignment.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/AtomicCounter.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/AutoPtr.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Bugcheck.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Clock.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Config.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Event.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Event_POSIX.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Event_VX.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Event_WIN32.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Exception.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Foundation.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Mutex.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Mutex_POSIX.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Mutex_VX.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Mutex_WIN32.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Mutex_WINCE.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Platform.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Platform_POSIX.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Platform_VX.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Platform_WIN32.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/RefCountedObject.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Runnable.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/ScopedLock.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/SharedPtr.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/SignalHandler.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_POSIX.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_VX.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_WIN32.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_WINCE.h
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Timer.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Types.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/UnWindows.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Net/include/Poco/Net/HTTPRequestHandler.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Net/include/Poco/Net/Net.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: ../src/cpp/Game/Game.cpp
+CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: ../src/cpp/Game/Game.h
 CMakeFiles/stonefall.dir/src/cpp/Game/Game.cpp.o: ../src/cpp/Game/Player.h
 
 CMakeFiles/stonefall.dir/src/cpp/Game/GameState.cpp.o: ../src/cpp/Game/GameState.cpp
@@ -29,13 +54,9 @@ CMakeFiles/stonefall.dir/src/cpp/Game/Player.cpp.o: ../src/cpp/Game/Player.h
 
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/AbstractClasses/Killable.h
-CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Config/Constants.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Game/Game.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Game/GameState.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Game/Player.h
-CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Map/Grid.h
-CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Map/GridBlock.h
-CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Pathing/AStar.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Server/PageRequestHandler.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Server/RequestHandlerFactory.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Server/WebSocketRequestHandler.h
@@ -55,6 +76,7 @@ CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_app
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Buffer.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Bugcheck.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Channel.h
+CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Clock.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Config.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Configurable.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/DefaultStrategy.h
@@ -99,6 +121,7 @@ CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_app
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_VX.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_WIN32.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_WINCE.h
+CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Timer.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Timespan.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Timestamp.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Types.h
@@ -147,7 +170,7 @@ CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_app
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Util/include/Poco/Util/Util.h
 CMakeFiles/stonefall.dir/src/cpp/Main/main.cpp.o: ../src/cpp/Main/main.cpp
 
-CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Config/Constants.h
+CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Config/ReleaseConstants.h
 CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/AbstractClasses/GridEntity.h
 CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Map/Grid.cpp
 CMakeFiles/stonefall.dir/src/cpp/Map/Grid.cpp.o: ../src/cpp/Map/Grid.h
@@ -231,6 +254,7 @@ CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/davi
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Buffer.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Bugcheck.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Channel.h
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Clock.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Config.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Configurable.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/DefaultStrategy.h
@@ -275,6 +299,7 @@ CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/davi
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_VX.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_WIN32.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_WINCE.h
+CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Timer.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Timespan.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Timestamp.h
 CMakeFiles/stonefall.dir/src/cpp/Server/RequestHandlerFactory.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Types.h
@@ -336,6 +361,7 @@ CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/da
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Buffer.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Bugcheck.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Channel.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Clock.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Config.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Configurable.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/DateTime.h
@@ -405,6 +431,7 @@ CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/da
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_VX.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_WIN32.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Thread_WINCE.h
+CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Timer.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Timespan.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Timestamp.h
 CMakeFiles/stonefall.dir/src/cpp/Server/WebSocketRequestHandler.cpp.o: /Users/david.oyeka/dev/dev_apps/poco-1.9.0/Foundation/include/Poco/Types.h

@@ -5,6 +5,12 @@
 #ifndef STONEFALL_CONSTANTS_H
 #define STONEFALL_CONSTANTS_H
 
+// Logistical constants
+#define MIN_THREADS 2
+
+// Resource Constants
+#define RESOURCE_COLLECT_FREQ 15
+
 #define BOARD_WIDTH 200
 #define BOARD_LENGTH 100
 

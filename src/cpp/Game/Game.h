@@ -13,6 +13,8 @@
 #include "Game/GameState.h"
 #include "Structure/Resource.h"
 #include "Poco/Net/HTTPRequestHandler.h"
+#include "Poco/Runnable.h"
+#include "Poco/Timer.h"
 
 using Poco::Net::HTTPRequestHandler;
 
@@ -20,7 +22,7 @@ using namespace std;
 
 class Game {
 private:
-    unordered_map<string, Player> players;
+    unordered_map<string, shared_ptr<Player>> players;
     unordered_map<string, Resource> resources;
     GameState gameState;
     int resourceIdNum;
@@ -29,9 +31,10 @@ private:
     HTTPRequestHandler *webSocketRequestHandler;
 public:
     Game() = default;
-    Player addPlayer(string name);
+    void onTimer(Poco::Timer& timer);
+    weak_ptr<Player> addPlayer(string name);
+    weak_ptr<Player> getPlayer(string id);
     bool playerExists(string id);
-    Player getPlayer(string id);
     bool validateCreation(int x, int y, string playerId, int creationType);
     bool attackCommand(string playerId, unordered_set<string> attackerIdSet);
     bool sellCommand(string playerId, unordered_set<string> toSellIdSet);
@@ -42,6 +45,7 @@ public:
     void setSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler) {
         webSocketRequestHandler = newWebSocketRequestHandler;
     }
+    void updateResources();
 };
 
 #endif //STONEFALL_GAME_H

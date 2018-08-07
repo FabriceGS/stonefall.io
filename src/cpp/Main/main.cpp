@@ -18,12 +18,11 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Format.h"
+#include "Poco/Thread.h"
+#include "Poco/ThreadPool.h"
+#include "Poco/Timer.h"
 
 #include <iostream>
-#include <Map/Grid.h>
-#include <memory>
-#include <Map/GridBlock.h>
-#include <Pathing/AStar.h>
 
 
 using Poco::Net::ServerSocket;
@@ -95,8 +94,7 @@ protected:
                         .repeatable(false));
     }
 
-    void handleOption(const std::string& name, const std::string& value)
-    {
+    void handleOption(const std::string& name, const std::string& value) override {
         std::cout << "method called: handleOption(); of class WebSocketServer" << std::endl;
 
         ServerApplication::handleOption(name, value);
@@ -114,8 +112,7 @@ protected:
         helpFormatter.format(std::cout);
     }
 
-    int main(const std::vector<std::string>& args)
-    {
+    int main(const std::vector<std::string>& args) override {
         if (_helpRequested)
         {
             displayHelp();
@@ -124,7 +121,6 @@ protected:
         {
             // get parameters from configuration file
             unsigned short port = (unsigned short) config().getInt("WebSocketServer.port", 4567);
-
             // set-up a server socket
             ServerSocket svs(port);
             // set-up a HTTPServer instance
