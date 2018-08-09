@@ -7,6 +7,7 @@
 #include "Game/Game.h"
 #include "Player.h"
 #include <iostream>
+#include <Map/Grid.h>
 #include "unordered_set"
 #include "Game.h"
 #include "Config/ReleaseConstants.h"
@@ -21,6 +22,7 @@ weak_ptr<Player> Game::addPlayer(string name) {
     // TODO: generate a random id for the player here
     string playerId = "q";
     shared_ptr<Player> newPlayer = make_shared<Player>(std::move(name), playerId);
+    // TODO: Surround critical section with thread safe mechanism as insertions (players map) invalidate iterators.
     players.insert(make_pair(playerId, newPlayer));
     return weak_ptr<Player>(newPlayer);
 }
@@ -42,6 +44,7 @@ bool Game::attackCommand(string playerId, unordered_set<string> attackerIdSet) {
 }
 
 bool Game::sellCommand(string playerId, unordered_set<string> toSellIdSet) {
+    // TODO: Surround section with thread safe mechanism as deletions (resources map) invalidate iterators.
     cout << "sell command" << endl;
     for (auto id : toSellIdSet) {
         cout << id << endl;
@@ -56,29 +59,38 @@ bool Game::validateCreation(int x, int y, string basic_string, int creationType)
 }
 
 void Game::spawnAttacker(string playerId, int x, int y) {
+    // TODO: Surround with thread safe mechanism as insertions (attackers map) invalidate iterators.
     cout << "spawn attacker command" << endl;
 }
 
 void Game::spawnWall(string playerId, int x, int y) {
+    // TODO: Surround with thread safe mechanism as insertions (walls map) invalidate iterators.
     cout << "spawn command" << endl;
 }
 
 void Game::spawnMine(string playerId, int x, int y) {
+    // TODO: Surround with thread safe mechanism as insertions (mines map) invalidate iterators.
     cout << "spawn command" << endl;
 }
 
 void Game::spawnTurret(string playerId, int x, int y) {
+    // TODO: Surround with thread safe mechanism as insertions (turrets map) invalidate iterators.
     cout << "spawn command" << endl;
 }
 
 void Game::updateResources() {
+    // TODO: Surround with thread safe mechanism as deletions (resources map) invalidate iterators.
     resCollectCounter++;
 
     if (resCollectCounter == RESOURCE_COLLECT_FREQ) {
-        for (auto mapping : players) {
-            mapping.second->setResourceCount(mapping.second->getResourceCount() + 2);
-            for (auto resource : resources) {
-                // TODO: Do it...
+        for (auto &playerMapping : players) {
+            playerMapping.second->incrementResourceCount(2);
+            for (auto &resourceMapping : resources) {
+                for (auto &mineMapping : mines) {
+                    if (Grid::isWithinNBlocks(1, mineMapping.second.getBlock(), resourceMapping.second.getBlock())) {
+                        playerMapping.second->incrementResourceCount(2);
+                    }
+                }
             }
         }
     }

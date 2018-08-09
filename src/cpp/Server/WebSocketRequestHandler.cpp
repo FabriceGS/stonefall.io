@@ -135,11 +135,11 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                 case MESSAGE::INITIALIZE: {
                     // get name
                     Var nameVar = extractedPayload->get("name");
-                    string name = nameVar.convert<string>();
+                    auto name = nameVar.convert<string>();
 
                     // add a new player to the game
-                    Player player = game->addPlayer(name);
-                    sessions.insert(make_pair(player.getId(), ws));
+                    weak_ptr<Player> player = game->addPlayer(name);
+                    sessions.insert(make_pair(player.lock()->getId(), ws));
 
                     break;
                 }

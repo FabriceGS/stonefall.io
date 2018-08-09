@@ -4,7 +4,7 @@
 #include <Structure/Turret.h>
 #include <Map/GridBlock.h>
 
-GridBlock Turret::getBlock() {
+GridBlock& Turret::getBlock() {
     return block;
 }
 

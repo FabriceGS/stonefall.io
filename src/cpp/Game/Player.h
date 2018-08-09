@@ -26,6 +26,7 @@ class Player {
         void setId(string id);
         int getResourceCount();
         void setResourceCount(int newCount);
+        void incrementResourceCount(int amount);
 };
 
 

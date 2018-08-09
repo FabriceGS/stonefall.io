@@ -72,18 +72,18 @@ public:
     }
 
 protected:
-    void initialize(Application& self)
+    void initialize(Application& self) override
     {
         loadConfiguration(); // load default configuration files, if present
         ServerApplication::initialize(self);
     }
 
-    void uninitialize()
+    void uninitialize() override
     {
         ServerApplication::uninitialize();
     }
 
-    void defineOptions(OptionSet& options)
+    void defineOptions(OptionSet& options) override
     {
 
         ServerApplication::defineOptions(options);

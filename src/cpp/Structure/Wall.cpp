@@ -4,7 +4,7 @@
 #include <Structure/Wall.h>
 #include <Map/GridBlock.h>
 
-GridBlock Wall::getBlock() {
+GridBlock& Wall::getBlock() {
     return block;
 }
 

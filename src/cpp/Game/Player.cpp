@@ -45,3 +45,7 @@ int Player::getResourceCount() {
 void Player::setResourceCount(int newCount) {
     resourceCount = newCount;
 }
+
+void Player::incrementResourceCount(int amount) {
+    resourceCount += amount;
+}

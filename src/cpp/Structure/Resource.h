@@ -11,7 +11,7 @@
 class Resource : public Killable {
     public:
         Resource(GridBlock &block, double hp) : Killable(block, hp) { }
-        GridBlock getBlock() override;
+        GridBlock & getBlock() override;
         int getReward() override;
 };
 
