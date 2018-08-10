@@ -8,6 +8,7 @@
 
 #include "Map/GridBlock.h"
 #include "AbstractClasses/Killable.h"
+#include "Resource.h"
 
 class Mine : public Killable {
     private:
@@ -16,6 +17,7 @@ class Mine : public Killable {
         Mine(GridBlock &block, double hp) : Killable(block, hp) { }
         GridBlock& getBlock() override;
         int getReward() override;
+        void collect(Resource& resource);
 };
 
 

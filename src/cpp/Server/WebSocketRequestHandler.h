@@ -41,7 +41,7 @@ public:
     unordered_set<string> players;
 };
 
-namespace WebSockets{
+namespace WebSockets {
     void sendMessage(char buffer[], int n, int flags, WebSocket ws);
 };
 

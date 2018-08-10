@@ -179,7 +179,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                         break;
                     }
 
-                    OBJECT_TYPE spawnTypeEnum = static_cast<OBJECT_TYPE>(spawnType);
+                    auto spawnTypeEnum = static_cast<OBJECT_TYPE>(spawnType);
 
                     switch (spawnTypeEnum) {
                         case OBJECT_TYPE::ATTACKER:

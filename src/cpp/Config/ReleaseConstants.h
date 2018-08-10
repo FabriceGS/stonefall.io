@@ -5,29 +5,37 @@
 #ifndef STONEFALL_CONSTANTS_H
 #define STONEFALL_CONSTANTS_H
 
-// Logistical constants
-#define MIN_THREADS 2
+namespace Constants {
+    // Logistical Constants
+    int const MIN_THREADS = 2;
 
-// Resource Constants
-#define RESOURCE_COLLECT_FREQ 15
+    // Grid Constants
+    int const BOARD_WIDTH = 200;
+    int const BOARD_LENGTH = 100;
 
-#define BOARD_WIDTH 200
-#define BOARD_LENGTH 100
+    int const MINE_COLLECT_RATE = 5;
+    int const RESOURCE_COLLECT_TIME = 15;
+    int const RESOURCE_SPAWN_TIME = 100;
+    int const RESOURCE_MAX = 280;
 
-#define BASE_HP 200000
-#define MINE_HP 2000
-#define TURRET_HP 500
-#define WALL_HP 4000
-#define RESOURCE_HP 5000
-#define ATTACKER_HP 3000
+    // Health Constants
+    int const BASE_HP = 200000;
+    int const MINE_HP = 2000;
+    int const TURRET_HP = 500;
+    int const WALL_HP = 4000;
+    int const RESOURCE_HP = 5000;
+    int const ATTACKER_HP = 3000;
+}
 
-#define NW 0
-#define N 1
-#define NE 2
-#define E 3
-#define W 4
-#define SE 5
-#define S 6
-#define SW 7
+enum Direction {
+    NW = 0,
+    N = 1,
+    NE = 2,
+    E = 3,
+    W = 4,
+    SE = 5,
+    S = 6,
+    SW = 7
+};
 
 #endif // STONEFALL_CONSTANTS_H

@@ -2,8 +2,13 @@ cmake_minimum_required(VERSION 3.8)
 project(stonefall)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_C_FLAGS "${CMAKE_CFLAGS} -fopenmp")
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
+
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(DEBUG_OPTIONS "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG -O0")
+set(RELEASE_OPTIONS "${CMAKE_CFLAGS} -fopenmp -O3")
 
 set(SOURCE_FILES
         src/cpp/AbstractClasses/GridEntity.h src/cpp/Map/GridBlock.cpp src/cpp/Map/GridBlock.h
@@ -25,6 +30,13 @@ include_directories(~/dev/dev_apps/poco-1.9.0 src/cpp)
 link_libraries(${Poco_LIBRARIES})
 
 add_executable(stonefall src/cpp/Main/main.cpp src/cpp/Config/ReleaseConstants.h ${SOURCE_FILES})
+add_executable(stonefall-debug src/cpp/Main/main.cpp src/cpp/Config/ReleaseConstants.h ${SOURCE_FILES})
 add_executable(stonefall-test src/cpp/Test/Catch.h src/cpp/Config/TestConstants.h src/cpp/Test/Test.cpp ${SOURCE_FILES})
 
 target_link_libraries(stonefall)
+target_link_libraries(stonefall-debug)
+target_link_libraries(stonefall-test)
+
+add_compile_options(stonefall-debug PUBLIC "$<$<CONFIG:DEBUG>:${DEBUG_OPTIONS}>")
+add_compile_options(stonefall PUBLIC "$<$<CONFIG:RELEASE>:${RELEASE_OPTIONS}>")
+

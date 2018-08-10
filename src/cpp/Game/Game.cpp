@@ -11,15 +11,17 @@
 #include "unordered_set"
 #include "Game.h"
 #include "Config/ReleaseConstants.h"
+#include <forward_list>
 
 using namespace std;
 
+// NOTE: These methods can ignore thread safety, as only the Timer thread will ever have access
+// to them, and they'll all be called sequentially.
 void Game::onTimer(Poco::Timer& timer) {
     updateResources();
 }
 
 weak_ptr<Player> Game::addPlayer(string name) {
-    // TODO: generate a random id for the player here
     string playerId = "q";
     shared_ptr<Player> newPlayer = make_shared<Player>(std::move(name), playerId);
     // TODO: Surround critical section with thread safe mechanism as insertions (players map) invalidate iterators.
@@ -29,6 +31,10 @@ weak_ptr<Player> Game::addPlayer(string name) {
 
 weak_ptr<Player> Game::getPlayer(string id) {
     return weak_ptr<Player>(players.at(id));
+}
+
+void Game::removePlayer(string id) {
+    // TODO: See try_once flag of C++ to ensure a player is only removed once.
 }
 
 bool Game::playerExists(string playerId) {
@@ -53,9 +59,10 @@ bool Game::sellCommand(string playerId, unordered_set<string> toSellIdSet) {
 }
 
 
-bool Game::validateCreation(int x, int y, string basic_string, int creationType) {
-    cout<< "validate creation command" << endl;
-    return false;
+bool Game::validateCreation(int x, int y, string playerId, int creationType) {
+    if (Grid::validateCoordinates(x, y)) {
+
+    }
 }
 
 void Game::spawnAttacker(string playerId, int x, int y) {
@@ -78,20 +85,55 @@ void Game::spawnTurret(string playerId, int x, int y) {
     cout << "spawn command" << endl;
 }
 
-void Game::updateResources() {
-    // TODO: Surround with thread safe mechanism as deletions (resources map) invalidate iterators.
-    resCollectCounter++;
+void Game::spawnResource() {
+    Poco::Random random;
+    int x = random.next(Constants::BOARD_WIDTH);
+    int y = random.next(Constants::BOARD_LENGTH);
 
-    if (resCollectCounter == RESOURCE_COLLECT_FREQ) {
+    shared_ptr<Resource> resource = std::make_shared<Resource>(*(Grid::getGridBlock(x, y)->get()));
+    Grid::getGridBlock(x, y)->get()->populate(resource);
+
+    string resourceId = "/r/" + to_string(resourceIdNum);
+    resources.insert(make_pair(std::move(resourceId), resource));
+    resourceIdNum++;
+}
+
+void Game::updateResources() {
+    resCollectCounter++;
+    std::forward_list<std::string> resourcesToDelete;
+
+    if (resCollectCounter == Constants::RESOURCE_COLLECT_TIME) {
         for (auto &playerMapping : players) {
             playerMapping.second->incrementResourceCount(2);
             for (auto &resourceMapping : resources) {
                 for (auto &mineMapping : mines) {
-                    if (Grid::isWithinNBlocks(1, mineMapping.second.getBlock(), resourceMapping.second.getBlock())) {
+                    if (Grid::isWithinNBlocks(1, mineMapping.second->getBlock(), resourceMapping.second->getBlock())) {
+                        mineMapping.second->collect(*(resourceMapping.second));
                         playerMapping.second->incrementResourceCount(2);
+
+                        if (resourceMapping.second->getHealth() <= 0) {
+                            Grid::getGridBlock(
+                                    resourceMapping.second->getBlock().getX(),
+                                    resourceMapping.second->getBlock().getY())->get()->depopulate();
+                            resourcesToDelete.push_front(resourceMapping.first);
+                        }
                     }
                 }
             }
         }
+
+        resCollectCounter = 0;
+        // Safely deleting resources.
+        for (auto &resourceId : resourcesToDelete) {
+            resources.erase(resourceId);
+        }
+    }
+
+    resSpawnCounter++;
+    if (resSpawnCounter == Constants::RESOURCE_SPAWN_TIME) {
+        if (resources.size() <= Constants::RESOURCE_MAX) {
+            spawnResource();
+        }
+        resSpawnCounter = 0;
     }
 }

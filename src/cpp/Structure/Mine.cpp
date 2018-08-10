@@ -3,6 +3,9 @@
 //
 #include <Structure/Mine.h>
 #include <Map/GridBlock.h>
+#include <Config/ReleaseConstants.h>
+#include "Mine.h"
+
 
 GridBlock& Mine::getBlock() {
     return block;
@@ -10,4 +13,8 @@ GridBlock& Mine::getBlock() {
 
 int Mine::getReward() {
     return 0;
+}
+
+void Mine::collect(Resource &resource) {
+    resource.decrementHealth(Constants::MINE_COLLECT_RATE);
 }

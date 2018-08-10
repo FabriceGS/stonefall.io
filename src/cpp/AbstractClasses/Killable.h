@@ -5,16 +5,19 @@
 #ifndef STONEFALL_KILLABLE_H
 #define STONEFALL_KILLABLE_H
 
+#include <atomic>
 #include "GridEntity.h"
 
 class Killable : public GridEntity {
     protected:
-        double hp;
+        std::atomic_int hp;
 
     public:
-        Killable(GridBlock& block, double hp) : GridEntity(block), hp(hp) {}
-        const double getHealth() {return hp;};
-        void setHealth(double newHp) {hp = newHp;};
+        Killable(GridBlock& block, int hp) : GridEntity(block), hp(hp) {}
+        double getHealth() const {return hp;};
+        void setHealth(int newHp) {hp = newHp;};
+        void incrementHealth(int amount) {hp += amount;};
+        void decrementHealth(int amount) {hp -= amount;};
         const bool isDead() {return hp <= 0;};
         virtual int getReward() = 0;
 };

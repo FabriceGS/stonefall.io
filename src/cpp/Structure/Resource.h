@@ -6,12 +6,13 @@
 #define STONEFALL_RESOURCE_H
 
 
+#include <Config/ReleaseConstants.h>
 #include "AbstractClasses/Killable.h"
 
 class Resource : public Killable {
     public:
-        Resource(GridBlock &block, double hp) : Killable(block, hp) { }
-        GridBlock & getBlock() override;
+        explicit Resource(GridBlock &block) : Killable(block, Constants::RESOURCE_HP) { }
+        GridBlock& getBlock() override;
         int getReward() override;
 };
 
