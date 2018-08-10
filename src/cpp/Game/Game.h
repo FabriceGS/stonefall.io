@@ -8,6 +8,8 @@
 #include <iostream>
 #include <memory>
 #include <Structure/Mine.h>
+#include <Structure/Turret.h>
+#include <Structure/Wall.h>
 #include "unordered_set"
 #include "unordered_map"
 #include "Player.h"
@@ -27,7 +29,12 @@ class Game {
     // TODO: May change structure maps to pointers..
         unordered_map<string, shared_ptr<Player>> players;
         unordered_map<string, shared_ptr<Resource>> resources;
-        unordered_map<string, shared_ptr<Mine>> mines;
+        unordered_map<string, unordered_set<shared_ptr<Mine>>> mines;
+        unordered_map<string, unordered_set<shared_ptr<Turret>>> turrets;
+        unordered_map<string, unordered_set<shared_ptr<Wall>>> walls;
+        // scaffolds
+        // attackers
+
         int resourceIdNum{};
         int resSpawnCounter{};
         int resCollectCounter{};
