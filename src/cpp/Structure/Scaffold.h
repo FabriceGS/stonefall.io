@@ -5,14 +5,22 @@
 #ifndef STONEFALL_SCAFFOLD_H
 #define STONEFALL_SCAFFOLD_H
 
-
 #include "AbstractClasses/Killable.h"
+#include <Config/ReleaseConstants.h>
+#include <string>
 
 class Scaffold : public Killable {
     private:
+        int maxHp;
+        std::string id;
+        int type;
 
     public:
-        Scaffold(GridBlock &block, int hp) : Killable(block, hp) { }
+        Scaffold(GridBlock &block, int type, std::string id);
+        GridBlock& getBlock() override;
+        int getReward() override;
+        void update();
+        bool readyToUpgrade();
 };
 
 

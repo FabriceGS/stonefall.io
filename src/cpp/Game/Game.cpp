@@ -1,5 +1,3 @@
-#include <utility>
-
 //
 // Created by Fabrice Guyot-Sionnest on 7/2/18.
 //
@@ -12,6 +10,8 @@
 #include "Game.h"
 #include "Config/ReleaseConstants.h"
 #include <forward_list>
+#include <math.h>
+#include <utility>
 
 using namespace std;
 
@@ -59,44 +59,33 @@ bool Game::sellCommand(string playerId, unordered_set<string> toSellIdSet) {
 }
 
 
-bool Game::validateCreation(int x, int y, string playerId, int creationType) {
+bool Game::validateCreation(string playerId, int x, int y) {
     if (Grid::validateCoordinates(x, y)) {
-        auto player = players.find(playerId);
-        if (player != players.end()) {
-            // if (Grid::isWithinNBlocks(3, ))
-        }
-        return true;
+        auto prospectBlock = *(Grid::getGridBlock(x, y)->get());
+         if (Grid::isWithinNBlocks(3, bases[playerId]->getBlock(), prospectBlock)) {
+             return true;
+         }
+
+         for (const auto &wallMapping : walls[playerId]) {
+             if (Grid::isWithinNBlocks(3, wallMapping.second->getBlock(), prospectBlock)) {
+                 return true;
+             }
+         }
+
+         for (const auto &mineMapping : mines[playerId]) {
+             if (Grid::isWithinNBlocks(3, mineMapping.second->getBlock(), prospectBlock)) {
+                 return true;
+             }
+         }
+
+         for (const auto &turretMapping : turrets[playerId]) {
+             if (Grid::isWithinNBlocks(3, turretMapping.second->getBlock(), prospectBlock)) {
+                 return true;
+             }
+         }
     }
     return false;
 }
-
-//public synchronized boolean validateSpawn(int x, int y) {
-//  if (Grid.isWithinNBlocks(3, base.getBlock(),
-//      Grid.getGridBlock(x, y).get())) {
-//    return true;
-//  }
-//
-//  for (Wall wall : walls.values()) {
-//    if (Grid.isWithinNBlocks(3, wall.getBlock(),
-//        Grid.getGridBlock(x, y).get())) {
-//      return true;
-//    }
-//  }
-//  for (Mine mine : mines.values()) {
-//    if (Grid.isWithinNBlocks(3, mine.getBlock(),
-//        Grid.getGridBlock(x, y).get())) {
-//      return true;
-//    }
-//  }
-//  for (Turret turret : turrets.values()) {
-//    if (Grid.isWithinNBlocks(3, turret.getBlock(),
-//        Grid.getGridBlock(x, y).get())) {
-//      return true;
-//    }
-//  }
-//
-//  return false;
-//}
 
 void Game::spawnResource() {
     Poco::Random random;
@@ -117,33 +106,50 @@ void Game::spawnAttacker(string playerId, int x, int y) {
 }
 
 void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
-    if (validateCreation(x, y, playerId, scaffoldType))
-}
+    auto const &playerMapping = players.find(playerId);
+    if (playerMapping != players.end()) {
+        int adjustedCost;
 
-//public synchronized void spawnScaffold(int x, int y, int scaffoldType) {
-//  if (Grid.validateCoordinates(x, y)) {
-//    String scaffoldId = "/f/" + scaffoldIdNum;
-//    Scaffold scaffold = new Scaffold(Grid.getGridBlock(x, y).get(), this,
-//        scaffoldType, scaffoldId);
-//
-//    if (scaffoldType == Constants.OBJECT_TYPE.MINE.ordinal()
-//        && resourceCount >= multiplyByScoreLogistically(
-//            Constants.MINE_COST)) {
-//      resourceCount -= multiplyByScoreLogistically(Constants.MINE_COST);
-//    } else if (scaffoldType == Constants.OBJECT_TYPE.TURRET.ordinal()
-//        && resourceCount >= multiplyByScoreLogistically(
-//            Constants.TURRET_COST)) {
-//      resourceCount -= multiplyByScoreLogistically(Constants.TURRET_COST);
-//    } else if (scaffoldType == Constants.OBJECT_TYPE.WALL.ordinal()
-//        && resourceCount >= multiplyByScoreLogistically(
-//            Constants.WALL_COST)) {
-//      resourceCount -= multiplyByScoreLogistically(Constants.WALL_COST);
-//    }
-//
-//    scaffolds.put(scaffoldId, scaffold);
-//    scaffoldIdNum++;
-//  }
-//}
+        switch (scaffoldType) {
+            case STRUCTURE_TYPE::MINE: {
+                adjustedCost = multiplyByScoreLogistically(Constants::MINE_COST, playerMapping->second->getScore());
+                if (playerMapping->second->getResourceCount() >= adjustedCost) {
+                    if (validateCreation(playerId, x, y)) {
+                        playerMapping->second->decrementResourceCount(adjustedCost);
+                    }
+                }
+                break;
+            }
+
+            case STRUCTURE_TYPE::TURRET: {
+
+
+                break;
+            }
+
+            case STRUCTURE_TYPE::WALL: {
+
+                break;
+            }
+            default:
+                break;
+        }
+
+        // TODO: Critical Section for retrieving and incrementing scaffoldIdNum.
+        string scaffoldId = "/f/" + to_string(scaffoldIdNum);
+        scaffoldIdNum++;
+
+        shared_ptr<Scaffold> scaffold =
+                std::make_shared<Scaffold>(*(Grid::getGridBlock(x, y)->get()),
+                        scaffoldType, scaffoldId);
+
+        // TODO: Critical section for inserting into scaffolds map.
+        auto playerScaffolds = scaffolds.find(playerId);
+        if (playerScaffolds != scaffolds.end()) {
+            playerScaffolds->second.insert(std::make_pair(scaffoldId, scaffold));
+        }
+    }
+}
 
 void Game::spawnWall(string playerId, int x, int y) {
     // TODO: Surround with thread safe mechanism as insertions (walls map) invalidate iterators.
@@ -170,9 +176,9 @@ void Game::updateResources() {
             playerMapping.second->incrementResourceCount(2);
             for (auto &resourceMapping : resources) {
                 for (auto &mineMapping : mines) {
-                    for (auto &mineSetElement : mineMapping.second) {
-                        if (Grid::isWithinNBlocks(1, mineSetElement->getBlock(), resourceMapping.second->getBlock())) {
-                            mineSetElement->collect(*(resourceMapping.second));
+                    for (auto &playerMineMapping : mineMapping.second) {
+                        if (Grid::isWithinNBlocks(1, playerMineMapping.second->getBlock(), resourceMapping.second->getBlock())) {
+                            playerMineMapping.second->collect(*(resourceMapping.second));
                             playerMapping.second->incrementResourceCount(2);
 
                             // Marking the resource as dead.
@@ -203,3 +209,14 @@ void Game::updateResources() {
         resSpawnCounter = 0;
     }
 }
+
+int Game::multiplyByScoreLogistically(int cost, int score) {
+    double exponent = std::exp((0.0001 * score));
+    double newMultiplier = (((10 * 1.001) * exponent)
+            / (10 + 1.001 * (exponent) - 1));
+    double newCost = newMultiplier * cost;
+    int intCost = static_cast<int>(std::round(newCost));
+    return std::round((intCost + 99) / 100) * 100;
+}
+
+

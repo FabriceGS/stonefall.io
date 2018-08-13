@@ -174,11 +174,6 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                     // get id of player
                     playerId = extractedPayload->get("id").convert<string>();
 
-                    if (!game->validateCreation(x, y, playerId, spawnType)) {
-                        // we don't need to send an error message here, just return
-                        break;
-                    }
-
                     auto spawnTypeEnum = static_cast<OBJECT_TYPE>(spawnType);
 
                     switch (spawnTypeEnum) {

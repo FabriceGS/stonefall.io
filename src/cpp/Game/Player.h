@@ -15,18 +15,17 @@ class Player {
         string name;
         string id;
         atomic_int resourceCount;
+        atomic_int score;
 
     public:
         Player(string name, string id);
-        void spawnAttacker();
-        void spawnWall();
-        void spawnMine();
-        void spawnTurret();
         string getId();
         void setId(string id);
         int getResourceCount();
         void setResourceCount(int newCount);
         void incrementResourceCount(int amount);
+        void decrementResourceCount(int amount);
+        int getScore();
 };
 
 

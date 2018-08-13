@@ -11,8 +11,6 @@
 
 class Wall : public Killable {
     public:
-
-    private:
         Wall(GridBlock &block) : Killable(block, Constants::WALL_HP) { }
         GridBlock& getBlock() override;
         int getReward() override;

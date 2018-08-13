@@ -11,8 +11,6 @@
 #include "AbstractClasses/Killable.h"
 
 class Turret : public Killable {
-    private:
-
     public:
         Turret(GridBlock &block) : Killable(block, Constants::TURRET_HP) { }
         GridBlock& getBlock() override;

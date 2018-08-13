@@ -14,22 +14,6 @@ Player::Player(string name, string id) : name(std::move(name)), id(std::move(id)
 
 }
 
-void Player::spawnAttacker() {
-
-}
-
-void Player::spawnWall() {
-
-}
-
-void Player::spawnTurret() {
-
-}
-
-void Player::spawnMine() {
-
-}
-
 string Player::getId() {
     return id;
 }
@@ -48,4 +32,12 @@ void Player::setResourceCount(int newCount) {
 
 void Player::incrementResourceCount(int amount) {
     resourceCount += amount;
+}
+
+void Player::decrementResourceCount(int amount) {
+    resourceCount -= amount;
+}
+
+int Player::getScore() {
+    return score;
 }
