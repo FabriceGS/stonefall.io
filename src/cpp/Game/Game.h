@@ -12,6 +12,7 @@
 #include <Structure/Wall.h>
 #include <Structure/Scaffold.h>
 #include <Structure/Base.h>
+#include <shared_mutex>
 #include "unordered_set"
 #include "unordered_map"
 #include "Player.h"
@@ -35,8 +36,9 @@ class Game {
         unordered_map<string, unordered_map<string, shared_ptr<Mine>>> mines;
         unordered_map<string, unordered_map<string, shared_ptr<Turret>>> turrets;
         unordered_map<string, unordered_map<string, shared_ptr<Wall>>> walls;
+
+        std::shared_mutex scaffoldsMutex;
         unordered_map<string, unordered_map<string, shared_ptr<Scaffold>>> scaffolds;
-        // attackers
 
         int resourceIdNum{};
         int resSpawnCounter{};

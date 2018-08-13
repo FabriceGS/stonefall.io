@@ -12,7 +12,6 @@
 #include <forward_list>
 #include <math.h>
 #include <utility>
-
 using namespace std;
 
 // NOTE: These methods can ignore thread safety, as only the Timer thread will ever have access
@@ -113,40 +112,43 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
         switch (scaffoldType) {
             case STRUCTURE_TYPE::MINE: {
                 adjustedCost = multiplyByScoreLogistically(Constants::MINE_COST, playerMapping->second->getScore());
-                if (playerMapping->second->getResourceCount() >= adjustedCost) {
-                    if (validateCreation(playerId, x, y)) {
-                        playerMapping->second->decrementResourceCount(adjustedCost);
-                    }
-                }
                 break;
             }
 
             case STRUCTURE_TYPE::TURRET: {
-
-
+                adjustedCost = multiplyByScoreLogistically(Constants::TURRET_COST, playerMapping->second->getScore());
                 break;
             }
 
             case STRUCTURE_TYPE::WALL: {
-
+                adjustedCost = multiplyByScoreLogistically(Constants::WALL_COST, playerMapping->second->getScore());
                 break;
             }
             default:
-                break;
+                return;
         }
 
-        // TODO: Critical Section for retrieving and incrementing scaffoldIdNum.
-        string scaffoldId = "/f/" + to_string(scaffoldIdNum);
-        scaffoldIdNum++;
+        if (playerMapping->second->getResourceCount() >= adjustedCost) {
+            if (validateCreation(playerId, x, y)) {
+                playerMapping->second->decrementResourceCount(adjustedCost);
+                // Critical Section for incrementing scaffoldIdNum and storing the scaffold.
+                {
+                    std::unique_lock<std::shared_mutex> readLock(scaffoldsMutex);
+                    scaffoldIdNum++;
+                    string scaffoldId = "/f/" + to_string(scaffoldIdNum);
 
-        shared_ptr<Scaffold> scaffold =
-                std::make_shared<Scaffold>(*(Grid::getGridBlock(x, y)->get()),
-                        scaffoldType, scaffoldId);
+                    shared_ptr<Scaffold> scaffold =
+                            std::make_shared<Scaffold>(*(Grid::getGridBlock(x, y)->get()),
+                                                       scaffoldType, scaffoldId);
 
-        // TODO: Critical section for inserting into scaffolds map.
-        auto playerScaffolds = scaffolds.find(playerId);
-        if (playerScaffolds != scaffolds.end()) {
-            playerScaffolds->second.insert(std::make_pair(scaffoldId, scaffold));
+                    Grid::getGridBlock(x, y)->get()->populate(scaffold);
+
+                    auto playerScaffolds = scaffolds.find(playerId);
+                    if (playerScaffolds != scaffolds.end()) {
+                        playerScaffolds->second.insert(std::make_pair(scaffoldId, scaffold));
+                    }
+                }
+            }
         }
     }
 }
