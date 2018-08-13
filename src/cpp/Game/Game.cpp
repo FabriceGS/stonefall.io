@@ -61,14 +61,89 @@ bool Game::sellCommand(string playerId, unordered_set<string> toSellIdSet) {
 
 bool Game::validateCreation(int x, int y, string playerId, int creationType) {
     if (Grid::validateCoordinates(x, y)) {
-
+        auto player = players.find(playerId);
+        if (player != players.end()) {
+            // if (Grid::isWithinNBlocks(3, ))
+        }
+        return true;
     }
+    return false;
+}
+
+//public synchronized boolean validateSpawn(int x, int y) {
+//  if (Grid.isWithinNBlocks(3, base.getBlock(),
+//      Grid.getGridBlock(x, y).get())) {
+//    return true;
+//  }
+//
+//  for (Wall wall : walls.values()) {
+//    if (Grid.isWithinNBlocks(3, wall.getBlock(),
+//        Grid.getGridBlock(x, y).get())) {
+//      return true;
+//    }
+//  }
+//  for (Mine mine : mines.values()) {
+//    if (Grid.isWithinNBlocks(3, mine.getBlock(),
+//        Grid.getGridBlock(x, y).get())) {
+//      return true;
+//    }
+//  }
+//  for (Turret turret : turrets.values()) {
+//    if (Grid.isWithinNBlocks(3, turret.getBlock(),
+//        Grid.getGridBlock(x, y).get())) {
+//      return true;
+//    }
+//  }
+//
+//  return false;
+//}
+
+void Game::spawnResource() {
+    Poco::Random random;
+    int x = random.next(Constants::BOARD_WIDTH);
+    int y = random.next(Constants::BOARD_LENGTH);
+
+    shared_ptr<Resource> resource = std::make_shared<Resource>(*(Grid::getGridBlock(x, y)->get()));
+    Grid::getGridBlock(x, y)->get()->populate(resource);
+
+    string resourceId = "/r/" + to_string(resourceIdNum);
+    resources.insert(make_pair(std::move(resourceId), resource));
+    resourceIdNum++;
 }
 
 void Game::spawnAttacker(string playerId, int x, int y) {
     // TODO: Surround with thread safe mechanism as insertions (attackers map) invalidate iterators.
     cout << "spawn attacker command" << endl;
 }
+
+void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
+    if (validateCreation(x, y, playerId, scaffoldType))
+}
+
+//public synchronized void spawnScaffold(int x, int y, int scaffoldType) {
+//  if (Grid.validateCoordinates(x, y)) {
+//    String scaffoldId = "/f/" + scaffoldIdNum;
+//    Scaffold scaffold = new Scaffold(Grid.getGridBlock(x, y).get(), this,
+//        scaffoldType, scaffoldId);
+//
+//    if (scaffoldType == Constants.OBJECT_TYPE.MINE.ordinal()
+//        && resourceCount >= multiplyByScoreLogistically(
+//            Constants.MINE_COST)) {
+//      resourceCount -= multiplyByScoreLogistically(Constants.MINE_COST);
+//    } else if (scaffoldType == Constants.OBJECT_TYPE.TURRET.ordinal()
+//        && resourceCount >= multiplyByScoreLogistically(
+//            Constants.TURRET_COST)) {
+//      resourceCount -= multiplyByScoreLogistically(Constants.TURRET_COST);
+//    } else if (scaffoldType == Constants.OBJECT_TYPE.WALL.ordinal()
+//        && resourceCount >= multiplyByScoreLogistically(
+//            Constants.WALL_COST)) {
+//      resourceCount -= multiplyByScoreLogistically(Constants.WALL_COST);
+//    }
+//
+//    scaffolds.put(scaffoldId, scaffold);
+//    scaffoldIdNum++;
+//  }
+//}
 
 void Game::spawnWall(string playerId, int x, int y) {
     // TODO: Surround with thread safe mechanism as insertions (walls map) invalidate iterators.
@@ -85,19 +160,7 @@ void Game::spawnTurret(string playerId, int x, int y) {
     cout << "spawn command" << endl;
 }
 
-void Game::spawnResource() {
-    Poco::Random random;
-    int x = random.next(Constants::BOARD_WIDTH);
-    int y = random.next(Constants::BOARD_LENGTH);
-
-    shared_ptr<Resource> resource = std::make_shared<Resource>(*(Grid::getGridBlock(x, y)->get()));
-    Grid::getGridBlock(x, y)->get()->populate(resource);
-
-    string resourceId = "/r/" + to_string(resourceIdNum);
-    resources.insert(make_pair(std::move(resourceId), resource));
-    resourceIdNum++;
-}
-
+// Could be paralleled.
 void Game::updateResources() {
     resCollectCounter++;
     std::forward_list<std::string> resourcesToDelete;
@@ -107,15 +170,18 @@ void Game::updateResources() {
             playerMapping.second->incrementResourceCount(2);
             for (auto &resourceMapping : resources) {
                 for (auto &mineMapping : mines) {
-                    if (Grid::isWithinNBlocks(1, mineMapping.second->getBlock(), resourceMapping.second->getBlock())) {
-                        mineMapping.second->collect(*(resourceMapping.second));
-                        playerMapping.second->incrementResourceCount(2);
+                    for (auto &mineSetElement : mineMapping.second) {
+                        if (Grid::isWithinNBlocks(1, mineSetElement->getBlock(), resourceMapping.second->getBlock())) {
+                            mineSetElement->collect(*(resourceMapping.second));
+                            playerMapping.second->incrementResourceCount(2);
 
-                        if (resourceMapping.second->getHealth() <= 0) {
-                            Grid::getGridBlock(
-                                    resourceMapping.second->getBlock().getX(),
-                                    resourceMapping.second->getBlock().getY())->get()->depopulate();
-                            resourcesToDelete.push_front(resourceMapping.first);
+                            // Marking the resource as dead.
+                            if (resourceMapping.second->getHealth() <= 0) {
+                                Grid::getGridBlock(
+                                        resourceMapping.second->getBlock().getX(),
+                                        resourceMapping.second->getBlock().getY())->get()->depopulate();
+                                resourcesToDelete.push_front(resourceMapping.first);
+                            }
                         }
                     }
                 }

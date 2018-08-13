@@ -27,7 +27,7 @@ namespace Constants {
     int const ATTACKER_HP = 3000;
 }
 
-enum Direction {
+enum DIRECTION {
     NW = 0,
     N = 1,
     NE = 2,
@@ -36,6 +36,10 @@ enum Direction {
     SE = 5,
     S = 6,
     SW = 7
+};
+
+enum STRUCTURE_TYPE {
+    WALL, TURRET, ATTACKER, MINE, SCAFFOLD
 };
 
 #endif // STONEFALL_CONSTANTS_H

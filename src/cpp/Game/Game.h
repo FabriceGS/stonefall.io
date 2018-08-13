@@ -10,6 +10,7 @@
 #include <Structure/Mine.h>
 #include <Structure/Turret.h>
 #include <Structure/Wall.h>
+#include <Structure/Scaffold.h>
 #include "unordered_set"
 #include "unordered_map"
 #include "Player.h"
@@ -32,6 +33,7 @@ class Game {
         unordered_map<string, unordered_set<shared_ptr<Mine>>> mines;
         unordered_map<string, unordered_set<shared_ptr<Turret>>> turrets;
         unordered_map<string, unordered_set<shared_ptr<Wall>>> walls;
+        unordered_map<string, unordered_set<shared_ptr<Scaffold>>> scaffolds;
         // scaffolds
         // attackers
 

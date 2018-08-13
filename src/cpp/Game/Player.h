@@ -14,7 +14,7 @@ class Player {
     private:
         string name;
         string id;
-        int resourceCount;
+        atomic_int resourceCount;
 
     public:
         Player(string name, string id);

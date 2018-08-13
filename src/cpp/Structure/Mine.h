@@ -14,7 +14,7 @@ class Mine : public Killable {
     private:
 
     public:
-        Mine(GridBlock &block, double hp) : Killable(block, hp) { }
+        Mine(GridBlock &block) : Killable(block, Constants::MINE_HP) { }
         GridBlock& getBlock() override;
         int getReward() override;
         void collect(Resource& resource);
