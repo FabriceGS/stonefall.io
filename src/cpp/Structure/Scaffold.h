@@ -17,10 +17,13 @@ class Scaffold : public Killable {
 
     public:
         Scaffold(GridBlock &block, int type, std::string id);
+        ~Scaffold();
         GridBlock& getBlock() override;
         int getReward() override;
+        int getType();
         void update();
-        bool readyToUpgrade();
+        bool readyToUpgrade() const;
+        bool isDead() const override;
 };
 
 

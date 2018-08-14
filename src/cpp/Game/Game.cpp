@@ -9,10 +9,16 @@
 #include "unordered_set"
 #include "Game.h"
 #include "Config/ReleaseConstants.h"
-#include <forward_list>
 #include <math.h>
 #include <utility>
 using namespace std;
+
+Game::Game() {
+    // Set players map to size MAX_PLAYERS to prevent rehashing. We'll have to manage not allowing more than
+    // MAX_PLAYERS in a game.
+    players.reserve(Constants::MAX_PLAYERS);
+    bases.reserve(Constants::MAX_PLAYERS);
+}
 
 // NOTE: These methods can ignore thread safety, as only the Timer thread will ever have access
 // to them, and they'll all be called sequentially.
@@ -21,19 +27,39 @@ void Game::onTimer(Poco::Timer& timer) {
 }
 
 weak_ptr<Player> Game::addPlayer(string name) {
+    // Adding the player.
+    // TODO: Randomly generate playerId.
     string playerId = "q";
     shared_ptr<Player> newPlayer = make_shared<Player>(std::move(name), playerId);
-    // TODO: Surround critical section with thread safe mechanism as insertions (players map) invalidate iterators.
     players.insert(make_pair(playerId, newPlayer));
+
+    // Adding their base.
+    Poco::Random random;
+    int x = random.next(Constants::BOARD_WIDTH);
+    int y = random.next(Constants::BOARD_LENGTH);
+
+    while (!Grid::validateCoordinates(x, y)) {
+        x = random.next(Constants::BOARD_WIDTH);
+        y = random.next(Constants::BOARD_LENGTH);
+    }
+
+    shared_ptr<Base> newBase = make_shared<Base>(*(Grid::getGridBlock(x, y)->get()));
+    bases.insert(make_pair(playerId, newBase));
     return weak_ptr<Player>(newPlayer);
 }
 
-weak_ptr<Player> Game::getPlayer(string id) {
-    return weak_ptr<Player>(players.at(id));
+weak_ptr<Player> Game::getPlayer(string playerId) {
+    return weak_ptr<Player>(players.at(playerId));
 }
 
-void Game::removePlayer(string id) {
-    // TODO: See try_once flag of C++ to ensure a player is only removed once.
+void Game::removePlayer(string playerId) {
+    players.erase(playerId);
+    bases.erase(playerId);
+    mines.erase(playerId);
+    turrets.erase(playerId);
+    walls.erase(playerId);
+    scaffolds.erase(playerId);
+    // attackers.erase(playerId);
 }
 
 bool Game::playerExists(string playerId) {
@@ -91,6 +117,11 @@ void Game::spawnResource() {
     int x = random.next(Constants::BOARD_WIDTH);
     int y = random.next(Constants::BOARD_LENGTH);
 
+    while (!Grid::validateCoordinates(x, y)) {
+        x = random.next(Constants::BOARD_WIDTH);
+        y = random.next(Constants::BOARD_LENGTH);
+    }
+
     shared_ptr<Resource> resource = std::make_shared<Resource>(*(Grid::getGridBlock(x, y)->get()));
     Grid::getGridBlock(x, y)->get()->populate(resource);
 
@@ -132,10 +163,11 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
             if (validateCreation(playerId, x, y)) {
                 playerMapping->second->decrementResourceCount(adjustedCost);
                 // Critical Section for incrementing scaffoldIdNum and storing the scaffold.
+                // NOTE: Any lag with scaffold spawning will come from here.
                 {
-                    std::unique_lock<std::shared_mutex> readLock(scaffoldsMutex);
-                    scaffoldIdNum++;
+                    std::unique_lock<std::shared_mutex> writeLock(scaffoldsMutex);
                     string scaffoldId = "/f/" + to_string(scaffoldIdNum);
+                    scaffoldIdNum++;
 
                     shared_ptr<Scaffold> scaffold =
                             std::make_shared<Scaffold>(*(Grid::getGridBlock(x, y)->get()),
@@ -143,10 +175,11 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
 
                     Grid::getGridBlock(x, y)->get()->populate(scaffold);
 
-                    auto playerScaffolds = scaffolds.find(playerId);
+                    const auto &playerScaffolds = scaffolds.find(playerId);
                     if (playerScaffolds != scaffolds.end()) {
                         playerScaffolds->second.insert(std::make_pair(scaffoldId, scaffold));
                     }
+                    writeLock.unlock();
                 }
             }
         }
@@ -154,21 +187,66 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
 }
 
 void Game::spawnWall(string playerId, int x, int y) {
-    // TODO: Surround with thread safe mechanism as insertions (walls map) invalidate iterators.
-    cout << "spawn command" << endl;
+    if (Grid::validateCoordinates(x, y)) {
+        shared_ptr<Wall> wall = make_shared<Wall>(*(Grid::getGridBlock(x, y)->get()));
+
+        {
+            std::unique_lock<std::shared_mutex> writeLock(wallsMutex);
+            string wallId = "/s/" + to_string(structureIdNum);
+            structureIdNum++;
+
+            const auto &playerWalls = walls.find(playerId);
+            if (playerWalls != walls.end()) {
+                playerWalls->second.insert(std::make_pair(wallId, wall));
+            }
+            writeLock.unlock();
+        }
+
+        // TODO: Adjust score info..
+    }
 }
 
 void Game::spawnMine(string playerId, int x, int y) {
-    // TODO: Surround with thread safe mechanism as insertions (mines map) invalidate iterators.
-    cout << "spawn command" << endl;
+    if (Grid::validateCoordinates(x, y)) {
+        shared_ptr<Mine> mine = make_shared<Mine>(*(Grid::getGridBlock(x, y)->get()));
+
+        {
+            std::unique_lock<std::shared_mutex> writeLock(minesMutex);
+            string mineId = "/s/" + to_string(structureIdNum);
+            structureIdNum++;
+
+            const auto &playerMines = mines.find(playerId);
+            if (playerMines != mines.end()) {
+                playerMines->second.insert(std::make_pair(mineId, mine));
+            }
+            writeLock.unlock();
+        }
+
+        // TODO: Adjust score info..
+    }
 }
 
 void Game::spawnTurret(string playerId, int x, int y) {
-    // TODO: Surround with thread safe mechanism as insertions (turrets map) invalidate iterators.
-    cout << "spawn command" << endl;
+    if (Grid::validateCoordinates(x, y)) {
+        shared_ptr<Mine> mine = make_shared<Mine>(*(Grid::getGridBlock(x, y)->get()));
+
+        {
+            std::unique_lock<std::shared_mutex> writeLock(minesMutex);
+            string mineId = "/s/" + to_string(structureIdNum);
+            structureIdNum++;
+
+            const auto &playerMines = mines.find(playerId);
+            if (playerMines != mines.end()) {
+                playerMines->second.insert(std::make_pair(mineId, mine));
+            }
+            writeLock.unlock();
+        }
+
+        // TODO: Adjust score info..
+    }
 }
 
-// Could be paralleled.
+// No need for thread safety as only one thread will execute this code.
 void Game::updateResources() {
     resCollectCounter++;
     std::forward_list<std::string> resourcesToDelete;
@@ -177,6 +255,7 @@ void Game::updateResources() {
         for (auto &playerMapping : players) {
             playerMapping.second->incrementResourceCount(2);
             for (auto &resourceMapping : resources) {
+                std::shared_lock<std::shared_mutex> mineReadLock(minesMutex);
                 for (auto &mineMapping : mines) {
                     for (auto &playerMineMapping : mineMapping.second) {
                         if (Grid::isWithinNBlocks(1, playerMineMapping.second->getBlock(), resourceMapping.second->getBlock())) {
@@ -193,6 +272,7 @@ void Game::updateResources() {
                         }
                     }
                 }
+                mineReadLock.unlock();
             }
         }
 
@@ -209,6 +289,60 @@ void Game::updateResources() {
             spawnResource();
         }
         resSpawnCounter = 0;
+    }
+}
+
+void Game::updateBases() {
+    for (auto &baseMapping : bases) {
+        if (baseMapping.second->isDead()) {
+            // TODO: Call equivalent of Websockets.gameover(baseMapping.first);
+            removePlayer(baseMapping.first);
+        }
+    }
+}
+
+void Game::updateScaffolds() {
+    for (auto &playerScaffolds : scaffolds) {
+        std::forward_list<string> scaffoldsToUpgrade;
+
+        for (auto &scaffoldMapping : playerScaffolds.second) {
+            scaffoldMapping.second->update();
+            if (scaffoldMapping.second->readyToUpgrade()) {
+                scaffoldsToUpgrade.push_front(scaffoldMapping.first);
+            }
+        }
+
+        if (!scaffoldsToUpgrade.empty()) {
+            upgradeScaffolds(playerScaffolds.first, scaffoldsToUpgrade);
+        }
+    }
+}
+
+// NOTE: Any lag with scaffold upgrading will come from here.
+void Game::upgradeScaffolds(string playerId, std::forward_list<string> scaffoldsToUpgrade) {
+    for (auto &scaffoldId : scaffoldsToUpgrade) {
+        auto playerScaffolds = scaffolds.find(playerId);
+        if (playerScaffolds != scaffolds.end()) {
+            // Creating the new structure.
+            const auto &scaffoldRef = playerScaffolds->second[scaffoldId];
+            int structureType = scaffoldRef->getType();
+            int x = scaffoldRef->getBlock().getX();
+            int y = scaffoldRef->getBlock().getY();
+
+            // Removing old scaffold.
+            std::unique_lock<std::shared_mutex> readLock(scaffoldsMutex);
+            playerScaffolds->second.erase(scaffoldId);
+            readLock.unlock();
+
+            // Spawning new structure.
+            if (structureType == STRUCTURE_TYPE::MINE) {
+                spawnMine(playerId, x, y);
+            } else if (structureType == STRUCTURE_TYPE::TURRET) {
+                spawnTurret(playerId, x, y);
+            } else if (structureType == STRUCTURE_TYPE::WALL) {
+                spawnWall(playerId, x, y);
+            }
+        }
     }
 }
 

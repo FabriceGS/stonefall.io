@@ -22,6 +22,8 @@
 #include "Poco/ThreadPool.h"
 #include "Poco/Timer.h"
 
+#include <Map/Grid.h>
+#include <Game/Game.h>
 #include <iostream>
 
 

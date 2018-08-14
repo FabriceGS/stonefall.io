@@ -12,6 +12,7 @@
 class Resource : public Killable {
     public:
         explicit Resource(GridBlock &block) : Killable(block, Constants::RESOURCE_HP) { }
+        ~Resource();
         GridBlock& getBlock() override;
         int getReward() override;
 };

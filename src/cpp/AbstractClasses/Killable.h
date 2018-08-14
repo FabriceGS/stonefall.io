@@ -18,7 +18,8 @@ class Killable : public GridEntity {
         void setHealth(int newHp) {hp = newHp;};
         void incrementHealth(int amount) {hp += amount;};
         void decrementHealth(int amount) {hp -= amount;};
-        const bool isDead() {return hp <= 0;};
+
+        virtual bool isDead() const {return hp <= 0;};
         virtual int getReward() = 0;
 };
 

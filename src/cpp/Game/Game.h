@@ -7,17 +7,20 @@
 
 #include <iostream>
 #include <memory>
+#include <forward_list>
+#include <shared_mutex>
+#include <unordered_set>
+#include <unordered_map>
+
 #include <Structure/Mine.h>
 #include <Structure/Turret.h>
 #include <Structure/Wall.h>
 #include <Structure/Scaffold.h>
 #include <Structure/Base.h>
-#include <shared_mutex>
-#include "unordered_set"
-#include "unordered_map"
-#include "Player.h"
-#include "Game/GameState.h"
-#include "Structure/Resource.h"
+#include <Structure/Resource.h>
+#include <Game/Player.h>
+#include <Game/GameState.h>
+
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Runnable.h"
 #include "Poco/Timer.h"
@@ -29,12 +32,20 @@ using namespace std;
 
 class Game {
     private:
-    // TODO: May change structure maps to pointers..
+        // NOTE: I'm just going to build these maps with mutexes for now, but there are some
+        // pretty cool & tested concurrent map libraries out there that we can import in later.
         unordered_map<string, shared_ptr<Player>> players;
+
         unordered_map<string, shared_ptr<Resource>> resources;
         unordered_map<string, shared_ptr<Base>> bases;
+
+        std::shared_mutex minesMutex;
         unordered_map<string, unordered_map<string, shared_ptr<Mine>>> mines;
+
+        std::shared_mutex turretsMutex;
         unordered_map<string, unordered_map<string, shared_ptr<Turret>>> turrets;
+
+        std::shared_mutex wallsMutex;
         unordered_map<string, unordered_map<string, shared_ptr<Wall>>> walls;
 
         std::shared_mutex scaffoldsMutex;
@@ -44,17 +55,22 @@ class Game {
         int resSpawnCounter{};
         int resCollectCounter{};
         atomic_int scaffoldIdNum{};
+        atomic_int structureIdNum{};
+
         HTTPRequestHandler *webSocketRequestHandler{};
-        void updateResources();
         void spawnResource();
+        void updateResources();
+        void updateBases();
+        void updateScaffolds();
+        void upgradeScaffolds(string playerId, std::forward_list<string> scaffoldsToUpgrade);
 
     public:
-        Game() = default;
+        Game();
         void onTimer(Poco::Timer& timer);
         weak_ptr<Player> addPlayer(string name);
-        weak_ptr<Player> getPlayer(string id);
-        void removePlayer(string id);
-        bool playerExists(string id);
+        weak_ptr<Player> getPlayer(string playerId);
+        void removePlayer(string playerId);
+        bool playerExists(string playerId);
         bool validateCreation(string playerId, int x, int y);
         bool attackCommand(string playerId, unordered_set<string> attackerIdSet);
         bool sellCommand(string playerId, unordered_set<string> toSellIdSet);

@@ -1,9 +1,10 @@
 #define CATCH_CONFIG_MAIN
 
 #include "Catch.h"
-#include "../Map/Grid.h"
 #include <memory>
 #include <Pathing/AStar.h>
+#include <Map/Grid.h>
+#include <Structure/Base.h>
 
 // NOTE: To run tests faster, change grid length/width constants.
 TEST_CASE("Necessary Navigation")
@@ -49,4 +50,25 @@ TEST_CASE("Necessary Navigation")
 
         CHECK(path == correctPath2);
     }
+}
+
+TEST_CASE("GridBlock Expected Behavior", "[grid]")
+{
+    Grid::buildGrid();
+    auto block = Grid::getGridBlock(0, 0)->get();
+    CHECK_FALSE(block->isFull());
+
+    weak_ptr<GridEntity> weakEntity;
+    block->populate(weakEntity);
+    CHECK_FALSE(block->isFull());
+    block->depopulate();
+    CHECK_FALSE(block->isFull());
+
+    auto sharedEntity = make_shared<Base>(*(Grid::getGridBlock(0, 0)->get()));
+    weakEntity = sharedEntity;
+    block->populate(weakEntity);
+    CHECK(block->isFull());
+
+    block->depopulate();
+    CHECK_FALSE(block->isFull());
 }

@@ -6,6 +6,9 @@
 #include <Config/ReleaseConstants.h>
 #include "Mine.h"
 
+Mine::~Mine() {
+    block.depopulate();
+}
 
 GridBlock& Mine::getBlock() {
     return block;

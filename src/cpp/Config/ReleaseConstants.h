@@ -7,6 +7,7 @@
 
 namespace Constants {
     // Logistical Constants
+    int const MAX_PLAYERS = 50;
     int const MIN_THREADS = 2;
     int const TICK_PERIOD = 20;
     int const SCAFFOLD_GENERATION_RATE = TICK_PERIOD / 2;

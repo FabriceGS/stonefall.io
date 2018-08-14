@@ -16,7 +16,7 @@ class GridBlock {
 
     private:
         static int stat;
-        shared_ptr<GridEntity> entity;
+        weak_ptr<GridEntity> entity;
         array<weak_ptr<GridBlock>, 8> neighbors;
         const int x;
         const int y;
@@ -33,11 +33,11 @@ class GridBlock {
 
         double getDistance(GridBlock const& dest);
 
-        void populate(const shared_ptr<GridEntity> &ent) {entity = ent;};
-        void depopulate() { entity = nullptr;};
+        void populate(const weak_ptr<GridEntity> &ent) {entity = ent;};
+        void depopulate() { entity.reset(); };
 
         weak_ptr<GridEntity> getEntity() {return entity; };
-        bool isFull() const {return entity != nullptr;};
+        bool isFull() const {return !entity.expired();};
 
         // == and !- operator overload.
         bool operator==(GridBlock const& other) const {

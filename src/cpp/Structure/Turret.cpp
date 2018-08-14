@@ -4,6 +4,10 @@
 #include <Structure/Turret.h>
 #include <Map/GridBlock.h>
 
+Turret::~Turret() {
+    block.depopulate();
+}
+
 GridBlock& Turret::getBlock() {
     return block;
 }

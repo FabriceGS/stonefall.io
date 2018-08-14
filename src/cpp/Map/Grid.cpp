@@ -44,7 +44,8 @@ bool Grid::validateCoordinates(int x, int y) {
     return x >= 0
            && x < Constants::BOARD_WIDTH
            && y >= 0
-           && y < Constants::BOARD_LENGTH;
+           && y < Constants::BOARD_LENGTH
+           && !getGridBlock(x, y)->get()->isFull();
 }
 
 bool Grid::isWithinNBlocks(int n, GridBlock const& source, GridBlock const& target) {

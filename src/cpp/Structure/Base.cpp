@@ -4,6 +4,11 @@
 #include <Structure/Base.h>
 #include <Map/GridBlock.h>
 
+Base::~Base() {
+    block.depopulate();
+    cout << string("block (") << block.getX() << string(",") << block.getY() << string(") depopulated");
+}
+
 GridBlock& Base::getBlock() {
     return block;
 }

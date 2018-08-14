@@ -4,6 +4,7 @@
 
 #include "Scaffold.h"
 #include <utility>
+#include <Map/GridBlock.h>
 
 Scaffold::Scaffold(GridBlock &block, int type, std::string id)
 : Killable(block, 0), type(type), id(std::move(id)) {
@@ -25,6 +26,10 @@ Scaffold::Scaffold(GridBlock &block, int type, std::string id)
     }
 }
 
+Scaffold::~Scaffold() {
+    block.depopulate();
+}
+
 GridBlock& Scaffold::getBlock() {
     return block;
 }
@@ -33,15 +38,23 @@ int Scaffold::getReward() {
     return 0;
 }
 
+int Scaffold::getType() {
+    return type;
+}
+
 void Scaffold::update() {
     if (hp >= 0) {
         hp += Constants::SCAFFOLD_GENERATION_RATE;
     }
 }
 
-bool Scaffold::readyToUpgrade() {
+bool Scaffold::readyToUpgrade() const {
     if (hp >= maxHp) {
         return true;
     }
     return false;
+}
+
+bool Scaffold::isDead() const {
+    return hp < 0;
 }

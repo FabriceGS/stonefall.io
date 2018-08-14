@@ -13,6 +13,7 @@
 class Turret : public Killable {
     public:
         Turret(GridBlock &block) : Killable(block, Constants::TURRET_HP) { }
+        ~Turret();
         GridBlock& getBlock() override;
         int getReward() override;
 };

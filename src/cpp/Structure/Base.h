@@ -11,7 +11,8 @@
 class Base : public Killable {
     private:
     public:
-        Base(GridBlock &block) : Killable(block, Constants::BASE_HP) {}
+        explicit Base(GridBlock &block) : Killable(block, Constants::BASE_HP) {}
+        ~Base();
         GridBlock& getBlock() override;
         int getReward() override;
 };

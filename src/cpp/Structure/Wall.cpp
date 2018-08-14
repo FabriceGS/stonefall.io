@@ -4,6 +4,10 @@
 #include <Structure/Wall.h>
 #include <Map/GridBlock.h>
 
+Wall::~Wall() {
+    block.depopulate();
+}
+
 GridBlock& Wall::getBlock() {
     return block;
 }
