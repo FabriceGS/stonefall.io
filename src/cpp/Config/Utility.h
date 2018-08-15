@@ -17,6 +17,15 @@ namespace util {
         return !weak.owner_before(wt{}) && !wt{}.owner_before(weak);
     }
 
+    inline int multiplyByScoreLogistically(int cost, int score) {
+        double exponent = std::exp((0.0001 * score));
+        double newMultiplier = (((10 * 1.001) * exponent)
+                                / (10 + 1.001 * (exponent) - 1));
+        double newCost = newMultiplier * cost;
+        int intCost = static_cast<int>(std::round(newCost));
+        return std::round((intCost + 99) / 100) * 100;
+    }
+
     /*
      * High performing pointer hash for varying block sizes.
      * https://stackoverflow.com/questions/20953390/what-is-the-fastest-hash-function-for-pointers

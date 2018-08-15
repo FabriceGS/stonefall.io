@@ -3,14 +3,9 @@
 //
 
 #include "Game/Game.h"
-#include "Player.h"
-#include <iostream>
 #include <Map/Grid.h>
-#include "unordered_set"
-#include "Game.h"
-#include "Config/ReleaseConstants.h"
-#include <math.h>
-#include <utility>
+#include "Config/Utility.h"
+
 using namespace std;
 
 Game::Game() {
@@ -24,6 +19,10 @@ Game::Game() {
 // to them, and they'll all be called sequentially.
 void Game::onTimer(Poco::Timer& timer) {
     updateResources();
+}
+
+void Game::setSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler)  {
+    webSocketRequestHandler = newWebSocketRequestHandler;
 }
 
 weak_ptr<Player> Game::addPlayer(string name) {
@@ -142,17 +141,17 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
 
         switch (scaffoldType) {
             case STRUCTURE_TYPE::MINE: {
-                adjustedCost = multiplyByScoreLogistically(Constants::MINE_COST, playerMapping->second->getScore());
+                adjustedCost = util::multiplyByScoreLogistically(Constants::MINE_COST, playerMapping->second->getScore());
                 break;
             }
 
             case STRUCTURE_TYPE::TURRET: {
-                adjustedCost = multiplyByScoreLogistically(Constants::TURRET_COST, playerMapping->second->getScore());
+                adjustedCost = util::multiplyByScoreLogistically(Constants::TURRET_COST, playerMapping->second->getScore());
                 break;
             }
 
             case STRUCTURE_TYPE::WALL: {
-                adjustedCost = multiplyByScoreLogistically(Constants::WALL_COST, playerMapping->second->getScore());
+                adjustedCost = util::multiplyByScoreLogistically(Constants::WALL_COST, playerMapping->second->getScore());
                 break;
             }
             default:
@@ -228,16 +227,16 @@ void Game::spawnMine(string playerId, int x, int y) {
 
 void Game::spawnTurret(string playerId, int x, int y) {
     if (Grid::validateCoordinates(x, y)) {
-        shared_ptr<Mine> mine = make_shared<Mine>(*(Grid::getGridBlock(x, y)->get()));
+        shared_ptr<Turret> turret = make_shared<Turret>(*(Grid::getGridBlock(x, y)->get()));
 
         {
-            std::unique_lock<std::shared_mutex> writeLock(minesMutex);
-            string mineId = "/s/" + to_string(structureIdNum);
+            std::unique_lock<std::shared_mutex> writeLock(turretsMutex);
+            string turretId = "/s/" + to_string(structureIdNum);
             structureIdNum++;
 
-            const auto &playerMines = mines.find(playerId);
-            if (playerMines != mines.end()) {
-                playerMines->second.insert(std::make_pair(mineId, mine));
+            const auto &playerTurrets = turrets.find(playerId);
+            if (playerTurrets != turrets.end()) {
+                playerTurrets->second.insert(std::make_pair(turretId, turret));
             }
             writeLock.unlock();
         }
@@ -345,14 +344,4 @@ void Game::upgradeScaffolds(string playerId, std::forward_list<string> scaffolds
         }
     }
 }
-
-int Game::multiplyByScoreLogistically(int cost, int score) {
-    double exponent = std::exp((0.0001 * score));
-    double newMultiplier = (((10 * 1.001) * exponent)
-            / (10 + 1.001 * (exponent) - 1));
-    double newCost = newMultiplier * cost;
-    int intCost = static_cast<int>(std::round(newCost));
-    return std::round((intCost + 99) / 100) * 100;
-}
-
 

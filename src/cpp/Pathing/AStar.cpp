@@ -2,13 +2,9 @@
 // Created by David Oyeka on 7/25/18.
 //
 
-#include <unordered_set>
-#include <unordered_map>
 #include <queue>
 #include "Pathing/AStar.h"
 #include "Config/Utility.h"
-#include "AStar.h"
-#include <iostream>
 
 
 std::list<GridBlock*> AStar::shortestPath(GridBlock* const& src, GridBlock* const& dest) {

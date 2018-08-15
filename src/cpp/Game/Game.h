@@ -67,6 +67,7 @@ class Game {
     public:
         Game();
         void onTimer(Poco::Timer& timer);
+        void setSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler);
         weak_ptr<Player> addPlayer(string name);
         weak_ptr<Player> getPlayer(string playerId);
         void removePlayer(string playerId);
@@ -79,10 +80,6 @@ class Game {
         void spawnWall(string playerId, int x, int y);
         void spawnMine(string playerId, int x, int y);
         void spawnTurret(string playerId, int x, int y);
-        void setSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler) {
-            webSocketRequestHandler = newWebSocketRequestHandler;
-        }
-        int multiplyByScoreLogistically(int cost, int score);
 };
 
 #endif //STONEFALL_GAME_H

@@ -22,11 +22,6 @@
 #include "Poco/ThreadPool.h"
 #include "Poco/Timer.h"
 
-#include <Map/Grid.h>
-#include <Game/Game.h>
-#include <iostream>
-
-
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
 using Poco::Net::WebSocketException;

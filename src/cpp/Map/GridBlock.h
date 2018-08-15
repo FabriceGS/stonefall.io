@@ -8,7 +8,7 @@
 #include <memory>
 #include <array>
 #include <iostream>
-#include "../AbstractClasses/GridEntity.h"
+#include <AbstractClasses/GridEntity.h>
 
 using namespace std;
 
