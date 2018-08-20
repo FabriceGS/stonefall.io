@@ -39,16 +39,16 @@ class Game {
         unordered_map<string, shared_ptr<Resource>> resources;
         unordered_map<string, shared_ptr<Base>> bases;
 
-        std::shared_mutex minesMutex;
+        std::shared_timed_mutex minesMutex;
         unordered_map<string, unordered_map<string, shared_ptr<Mine>>> mines;
 
-        std::shared_mutex turretsMutex;
+        std::shared_timed_mutex turretsMutex;
         unordered_map<string, unordered_map<string, shared_ptr<Turret>>> turrets;
 
-        std::shared_mutex wallsMutex;
+        std::shared_timed_mutex wallsMutex;
         unordered_map<string, unordered_map<string, shared_ptr<Wall>>> walls;
 
-        std::shared_mutex scaffoldsMutex;
+        std::shared_timed_mutex scaffoldsMutex;
         unordered_map<string, unordered_map<string, shared_ptr<Scaffold>>> scaffolds;
 
         int resourceIdNum{};

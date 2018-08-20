@@ -164,7 +164,7 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
                 // Critical Section for incrementing scaffoldIdNum and storing the scaffold.
                 // NOTE: Any lag with scaffold spawning will come from here.
                 {
-                    std::unique_lock<std::shared_mutex> writeLock(scaffoldsMutex);
+                    std::unique_lock<std::shared_timed_mutex> writeLock(scaffoldsMutex);
                     string scaffoldId = "/f/" + to_string(scaffoldIdNum);
                     scaffoldIdNum++;
 
@@ -190,7 +190,7 @@ void Game::spawnWall(string playerId, int x, int y) {
         shared_ptr<Wall> wall = make_shared<Wall>(*(Grid::getGridBlock(x, y)->get()));
 
         {
-            std::unique_lock<std::shared_mutex> writeLock(wallsMutex);
+            std::unique_lock<std::shared_timed_mutex> writeLock(wallsMutex);
             string wallId = "/s/" + to_string(structureIdNum);
             structureIdNum++;
 
@@ -210,7 +210,7 @@ void Game::spawnMine(string playerId, int x, int y) {
         shared_ptr<Mine> mine = make_shared<Mine>(*(Grid::getGridBlock(x, y)->get()));
 
         {
-            std::unique_lock<std::shared_mutex> writeLock(minesMutex);
+            std::unique_lock<std::shared_timed_mutex> writeLock(minesMutex);
             string mineId = "/s/" + to_string(structureIdNum);
             structureIdNum++;
 
@@ -230,7 +230,7 @@ void Game::spawnTurret(string playerId, int x, int y) {
         shared_ptr<Turret> turret = make_shared<Turret>(*(Grid::getGridBlock(x, y)->get()));
 
         {
-            std::unique_lock<std::shared_mutex> writeLock(turretsMutex);
+            std::unique_lock<std::shared_timed_mutex> writeLock(turretsMutex);
             string turretId = "/s/" + to_string(structureIdNum);
             structureIdNum++;
 
@@ -254,7 +254,7 @@ void Game::updateResources() {
         for (auto &playerMapping : players) {
             playerMapping.second->incrementResourceCount(2);
             for (auto &resourceMapping : resources) {
-                std::shared_lock<std::shared_mutex> mineReadLock(minesMutex);
+                std::shared_lock<std::shared_timed_mutex> mineReadLock(minesMutex);
                 for (auto &mineMapping : mines) {
                     for (auto &playerMineMapping : mineMapping.second) {
                         if (Grid::isWithinNBlocks(1, playerMineMapping.second->getBlock(), resourceMapping.second->getBlock())) {
@@ -329,7 +329,7 @@ void Game::upgradeScaffolds(string playerId, std::forward_list<string> scaffolds
             int y = scaffoldRef->getBlock().getY();
 
             // Removing old scaffold.
-            std::unique_lock<std::shared_mutex> readLock(scaffoldsMutex);
+            std::unique_lock<std::shared_timed_mutex> readLock(scaffoldsMutex);
             playerScaffolds->second.erase(scaffoldId);
             readLock.unlock();
 
