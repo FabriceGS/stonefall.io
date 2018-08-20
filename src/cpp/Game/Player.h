@@ -7,6 +7,7 @@
 
 
 #include <string>
+#include <atomic>
 
 using namespace std;
 
