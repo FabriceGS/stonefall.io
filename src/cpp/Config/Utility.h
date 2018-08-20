@@ -6,9 +6,9 @@
 #define STONEFALL_UTILITY_H
 
 #include <memory>
-#include <math.h>
 #include <unordered_map>
 #include <unordered_set>
+#include <cmath>
 
 namespace util {
     template <typename T>
