@@ -8,7 +8,7 @@
 #include <memory>
 #include <array>
 #include <iostream>
-#include "../AbstractClasses/GridEntity.h"
+#include <AbstractClasses/GridEntity.h>
 
 using namespace std;
 
@@ -16,7 +16,7 @@ class GridBlock {
 
     private:
         static int stat;
-        shared_ptr<GridEntity> entity;
+        weak_ptr<GridEntity> entity;
         array<weak_ptr<GridBlock>, 8> neighbors;
         const int x;
         const int y;
@@ -26,17 +26,43 @@ class GridBlock {
         ~GridBlock();
 
         void setNeighbors(const array<weak_ptr<GridBlock>, 8> &neighbors);
-        array<weak_ptr<GridBlock>, 8> &getNeighbors();
+        const array<weak_ptr<GridBlock>, 8> & getNeighbors() const;
 
         int getX() const {return x;};
         int getY() const {return y;};
 
-        void populate(shared_ptr<GridEntity> ent) {entity = ent;};
-        void depopulate() {entity = nullptr;};
+        double getDistance(GridBlock const& dest);
 
-        const shared_ptr<GridEntity> getEntity() {return entity;};
-        const bool isFull() {return entity != nullptr;};
+        void populate(const weak_ptr<GridEntity> &ent) {entity = ent;};
+        void depopulate() { entity.reset(); };
+
+        weak_ptr<GridEntity> getEntity() {return entity; };
+        bool isFull() const {return !entity.expired();};
+
+        // == and !- operator overload.
+        bool operator==(GridBlock const& other) const {
+            return x == other.getX() && y == other.getY();
+        }
+
+        bool operator!=(GridBlock const& other) const {
+            return !(*this == other);
+        }
+        // << operator overload.
+       friend std::ostream& operator<<(std::ostream &strm, const GridBlock &block);
 };
+
+// hash function for GridBlock.
+namespace std
+{
+    template <>
+    struct hash<GridBlock>
+    {
+        size_t operator()(GridBlock const& block) const
+        {
+            return ((hash<int>()(block.getX())) ^ (hash<int>()(block.getY()) << 1) >> 1);
+        }
+    };
+}
 
 
 #endif // STONEFALL_GRIDBLOCK_H

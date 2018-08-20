@@ -1,0 +1,8 @@
+//
+// Created by David Oyeka on 8/6/18.
+//
+
+#ifndef STONEFALL_TESTCONSTANTS_H
+#define STONEFALL_TESTCONSTANTS_H
+
+#endif //STONEFALL_TESTCONSTANTS_H

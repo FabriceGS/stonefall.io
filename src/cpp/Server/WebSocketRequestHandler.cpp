@@ -175,7 +175,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                         // get id of player
                         playerId = extractedPayload->get("id").convert<string>();
 
-                        if (!lockedGame->validateCreation(x, y, playerId, spawnType)) {
+                        if (!lockedGame->validateCreation(playerId, x, y, spawnType)) {
                             // we don't need to send an error message here, just return
                             break;
                         }

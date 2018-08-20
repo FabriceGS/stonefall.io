@@ -7,14 +7,14 @@
 
 #include <array>
 #include <experimental/optional>
-#include "Config/Constants.h"
+#include "Config/ReleaseConstants.h"
 #include "GridBlock.h"
 
 using namespace std::experimental;
 
 class Grid {
     private:
-        static array<array<shared_ptr<GridBlock>, BOARD_LENGTH>, BOARD_WIDTH> gridBlocks;
+        static array<array<shared_ptr<GridBlock>, Constants::BOARD_LENGTH>, Constants::BOARD_WIDTH> gridBlocks;
         static void createNeighbors();
 
     public:

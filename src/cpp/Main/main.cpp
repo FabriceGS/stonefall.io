@@ -18,10 +18,9 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Format.h"
-
-#include <iostream>
-#include <Map/Grid.h>
-#include <memory>
+#include "Poco/Thread.h"
+#include "Poco/ThreadPool.h"
+#include "Poco/Timer.h"
 
 using Poco::Net::ServerSocket;
 using Poco::Net::WebSocket;
@@ -40,8 +39,6 @@ using Poco::Util::Application;
 using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::HelpFormatter;
-
-int GridBlock::stat = 0;
 
 class WebSocketServer: public Poco::Util::ServerApplication
     /// The main application class.
@@ -72,18 +69,18 @@ public:
     }
 
 protected:
-    void initialize(Application& self)
+    void initialize(Application& self) override
     {
         loadConfiguration(); // load default configuration files, if present
         ServerApplication::initialize(self);
     }
 
-    void uninitialize()
+    void uninitialize() override
     {
         ServerApplication::uninitialize();
     }
 
-    void defineOptions(OptionSet& options)
+    void defineOptions(OptionSet& options) override
     {
 
         ServerApplication::defineOptions(options);
@@ -94,8 +91,7 @@ protected:
                         .repeatable(false));
     }
 
-    void handleOption(const std::string& name, const std::string& value)
-    {
+    void handleOption(const std::string& name, const std::string& value) override {
         std::cout << "method called: handleOption(); of class WebSocketServer" << std::endl;
 
         ServerApplication::handleOption(name, value);
@@ -113,8 +109,7 @@ protected:
         helpFormatter.format(std::cout);
     }
 
-    int main(const std::vector<std::string>& args)
-    {
+    int main(const std::vector<std::string>& args) override {
         if (_helpRequested)
         {
             displayHelp();
@@ -123,7 +118,6 @@ protected:
         {
             // get parameters from configuration file
             unsigned short port = (unsigned short) config().getInt("WebSocketServer.port", 4567);
-
             // set-up a server socket
             ServerSocket svs(port);
             // set-up a HTTPServer instance

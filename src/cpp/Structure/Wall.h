@@ -5,16 +5,15 @@
 #ifndef STONEFALL_WALL_H
 #define STONEFALL_WALL_H
 
-
+#include <Config/ReleaseConstants.h>
 #include "Map/GridBlock.h"
 #include "AbstractClasses/Killable.h"
 
 class Wall : public Killable {
     public:
-
-    private:
-        Wall(GridBlock &block, double hp) : Killable(block, hp) { }
-        GridBlock getBlock() override;
+        Wall(GridBlock &block) : Killable(block, Constants::WALL_HP) { }
+        ~Wall();
+        GridBlock& getBlock() override;
         int getReward() override;
 };
 

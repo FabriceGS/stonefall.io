@@ -1,8 +1,10 @@
 ################################
 # Build target and CMake files #
 ################################
-/cmake-build-debug/
-/CMakeFiles/
+**/cmake-build-default
+**/cmake-build-debug
+**/cmake-build-release
+**/CMakeFiles
 CMakeCache.txt
 Makefile
 cmake_install.cmake

@@ -4,7 +4,11 @@
 #include <Structure/Turret.h>
 #include <Map/GridBlock.h>
 
-GridBlock Turret::getBlock() {
+Turret::~Turret() {
+    block.depopulate();
+}
+
+GridBlock& Turret::getBlock() {
     return block;
 }
 

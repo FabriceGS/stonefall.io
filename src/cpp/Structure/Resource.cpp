@@ -4,7 +4,11 @@
 #include <Structure/Resource.h>
 #include <Map/GridBlock.h>
 
-GridBlock Resource::getBlock() {
+Resource::~Resource() {
+    block.depopulate();
+}
+
+GridBlock& Resource::getBlock() {
     return block;
 }
 

@@ -6,15 +6,15 @@
 #define STONEFALL_TURRET_H
 
 
+#include <Config/ReleaseConstants.h>
 #include "Map/GridBlock.h"
 #include "AbstractClasses/Killable.h"
 
 class Turret : public Killable {
-    private:
-
     public:
-        Turret(GridBlock &block, double hp) : Killable(block, hp) { }
-        GridBlock getBlock() override;
+        Turret(GridBlock &block) : Killable(block, Constants::TURRET_HP) { }
+        ~Turret();
+        GridBlock& getBlock() override;
         int getReward() override;
 };
 
