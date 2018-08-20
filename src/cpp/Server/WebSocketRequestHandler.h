@@ -33,7 +33,6 @@ private:
 public:
     WebSocketRequestHandler() = default;
     explicit WebSocketRequestHandler(const shared_ptr<Game>& newGame) {
-        newGame->setSocketHandler(make_shared<WebSocketRequestHandler>(this));
         game = newGame;
     }
     void sendMessage(char const * msg, int n, int flags, WebSocket ws);

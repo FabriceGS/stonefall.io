@@ -24,7 +24,8 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
     }
 
     if (request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0) {
-        shared_ptr<Game> newGame = make_shared<Game>();
+        // defer the allocation to the game manager
+        return gameManager->
         return new WebSocketRequestHandler(newGame);
     } else {
         return new PageRequestHandler;

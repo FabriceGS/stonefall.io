@@ -26,7 +26,7 @@ private:
     int resourceIdNum;
     int resSpawnCounter;
     int resCollectCounter;
-    weak_ptr<HTTPRequestHandler> webSocketRequestHandler;
+    std::unordered_set<weak_ptr<HTTPRequestHandler>> webSocketRequestHandlers;
 public:
     Game() {}
     Player addPlayer(string name);
@@ -39,8 +39,9 @@ public:
     void spawnWall(string playerId, int x, int y);
     void spawnMine(string playerId, int x, int y);
     void spawnTurret(string playerId, int x, int y);
-    void setSocketHandler(shared_ptr<HTTPRequestHandler> newWebSocketRequestHandler) {
-        webSocketRequestHandler = newWebSocketRequestHandler;
+    void addSocketHandler(shared_ptr<HTTPRequestHandler> newWebSocketRequestHandler) {
+        weak_ptr<HTTPRequestHandler> ptr = newWebSocketRequestHandler;
+        webSocketRequestHandlers.insert(ptr);
     }
 };
 
