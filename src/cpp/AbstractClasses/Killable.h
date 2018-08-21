@@ -13,7 +13,7 @@ class Killable : public GridEntity {
         std::atomic_int hp;
 
     public:
-        Killable(GridBlock& block, int hp) : GridEntity(block), hp(hp) {}
+        Killable(std::shared_ptr<GridBlock> block, int hp) : GridEntity(block), hp(hp) {}
         double getHealth() const {return hp;};
         void setHealth(int newHp) {hp = newHp;};
         void incrementHealth(int amount) {hp += amount;};

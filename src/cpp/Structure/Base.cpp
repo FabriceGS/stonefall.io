@@ -3,13 +3,16 @@
 //
 #include <Structure/Base.h>
 #include <Map/GridBlock.h>
+#include <vector>
+#include <algorithm>
 
 Base::~Base() {
-    block.depopulate();
-    cout << string("block (") << block.getX() << string(",") << block.getY() << string(") depopulated");
+    if (auto sharedBlock = block.lock()) {
+        sharedBlock->depopulate();
+    }
 }
 
-GridBlock& Base::getBlock() {
+std::weak_ptr<GridBlock> Base::getBlock() {
     return block;
 }
 

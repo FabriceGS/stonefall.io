@@ -6,7 +6,7 @@
 #include <utility>
 #include <Map/GridBlock.h>
 
-Scaffold::Scaffold(GridBlock &block, int type, std::string id)
+Scaffold::Scaffold(std::shared_ptr<GridBlock> block, int type, std::string id)
 : Killable(block, 0), type(type), id(std::move(id)) {
     switch (type) {
         case STRUCTURE_TYPE::MINE: {
@@ -27,10 +27,12 @@ Scaffold::Scaffold(GridBlock &block, int type, std::string id)
 }
 
 Scaffold::~Scaffold() {
-    block.depopulate();
+    if (auto sharedBlock = block.lock()) {
+        sharedBlock->depopulate();
+    }
 }
 
-GridBlock& Scaffold::getBlock() {
+std::weak_ptr<GridBlock> Scaffold::getBlock() {
     return block;
 }
 

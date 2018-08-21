@@ -45,18 +45,22 @@ bool Grid::validateCoordinates(int x, int y) {
            && x < Constants::BOARD_WIDTH
            && y >= 0
            && y < Constants::BOARD_LENGTH
-           && !getGridBlock(x, y)->get()->isFull();
+           && !getGridBlock(x, y)->isFull();
 }
 
-bool Grid::isWithinNBlocks(int n, GridBlock const& source, GridBlock const& target) {
-    return (source.getX() - target.getX()) <= n && (source.getY() - target.getY()) <= n;
+bool Grid::isWithinNBlocks(int n, std::shared_ptr<GridBlock> const& source, std::shared_ptr<GridBlock> const& target) {
+    return (source->getX() - target->getX()) <= n && (source->getY() - target->getY()) <= n;
 }
 
-optional<shared_ptr<GridBlock>> Grid::getGridBlock(int x, int y) {
+bool Grid::isWithinNBlocks(int n, std::weak_ptr<GridBlock> const& source, std::weak_ptr<GridBlock> const& target) {
+    return (source.lock()->getX() - target.lock()->getX()) <= n && (source.lock()->getY() - target.lock()->getY()) <= n;
+}
+
+shared_ptr<GridBlock> Grid::getGridBlock(int x, int y) {
     if (x >= 0 && x < Constants::BOARD_WIDTH && y>= 0 && y < Constants::BOARD_LENGTH) {
-       return optional(gridBlocks[x][y]);
+       return gridBlocks[x][y];
     }
-    return nullopt;
+    return nullptr;
 }
 
 Grid::Grid() {

@@ -16,9 +16,9 @@ class Scaffold : public Killable {
         int type;
 
     public:
-        Scaffold(GridBlock &block, int type, std::string id);
+        Scaffold(std::shared_ptr<GridBlock> block, int type, std::string id);
         ~Scaffold();
-        GridBlock& getBlock() override;
+        std::weak_ptr<GridBlock> getBlock() override;
         int getReward() override;
         int getType();
         void update();

@@ -7,10 +7,12 @@
 #include "Mine.h"
 
 Mine::~Mine() {
-    block.depopulate();
+    if (auto sharedBlock = block.lock()) {
+        sharedBlock->depopulate();
+    }
 }
 
-GridBlock& Mine::getBlock() {
+std::weak_ptr<GridBlock> Mine::getBlock() {
     return block;
 }
 

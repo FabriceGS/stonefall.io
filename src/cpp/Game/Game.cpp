@@ -6,8 +6,6 @@
 #include <Map/Grid.h>
 #include "Config/Utility.h"
 
-using namespace std;
-
 Game::Game() {
     // Set players map to size MAX_PLAYERS to prevent rehashing. We'll have to manage not allowing more than
     // MAX_PLAYERS in a game.
@@ -25,7 +23,7 @@ void Game::setSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler)  {
     webSocketRequestHandler = newWebSocketRequestHandler;
 }
 
-weak_ptr<Player> Game::addPlayer(string name) {
+std::weak_ptr<Player> Game::addPlayer(std::string name) {
     // Adding the player.
     // TODO: Randomly generate playerId.
     string playerId = "q";
@@ -42,16 +40,17 @@ weak_ptr<Player> Game::addPlayer(string name) {
         y = random.next(Constants::BOARD_LENGTH);
     }
 
-    shared_ptr<Base> newBase = make_shared<Base>(*(Grid::getGridBlock(x, y)->get()));
+    std::shared_ptr<Base> newBase = make_shared<Base>(Grid::getGridBlock(x, y));
+    Grid::getGridBlock(x, y)->populate(std::weak_ptr<Base>(newBase));
     bases.insert(make_pair(playerId, newBase));
-    return weak_ptr<Player>(newPlayer);
+    return std::weak_ptr<Player>(newPlayer);
 }
 
-weak_ptr<Player> Game::getPlayer(string playerId) {
-    return weak_ptr<Player>(players.at(playerId));
+std::weak_ptr<Player> Game::getPlayer(std::string playerId) {
+    return std::weak_ptr<Player>(players.at(playerId));
 }
 
-void Game::removePlayer(string playerId) {
+void Game::removePlayer(std::string playerId) {
     players.erase(playerId);
     bases.erase(playerId);
     mines.erase(playerId);
@@ -61,11 +60,11 @@ void Game::removePlayer(string playerId) {
     // attackers.erase(playerId);
 }
 
-bool Game::playerExists(string playerId) {
+bool Game::playerExists(std::string playerId) {
     return players.find(playerId) != players.end();
 }
 
-bool Game::attackCommand(string playerId, unordered_set<string> attackerIdSet) {
+bool Game::attackCommand(std::string playerId, unordered_set<string> attackerIdSet) {
     cout << "attack command" << endl;
     for(auto f : attackerIdSet) {
         cout << f << endl;
@@ -73,7 +72,7 @@ bool Game::attackCommand(string playerId, unordered_set<string> attackerIdSet) {
     return false;
 }
 
-bool Game::sellCommand(string playerId, unordered_set<string> toSellIdSet) {
+bool Game::sellCommand(std::string playerId, unordered_set<string> toSellIdSet) {
     // TODO: Surround section with thread safe mechanism as deletions (resources map) invalidate iterators.
     cout << "sell command" << endl;
     for (auto id : toSellIdSet) {
@@ -83,27 +82,27 @@ bool Game::sellCommand(string playerId, unordered_set<string> toSellIdSet) {
 }
 
 
-bool Game::validateCreation(string playerId, int x, int y) {
+bool Game::validateCreation(std::string playerId, int x, int y) {
     if (Grid::validateCoordinates(x, y)) {
-        auto prospectBlock = *(Grid::getGridBlock(x, y)->get());
-         if (Grid::isWithinNBlocks(3, bases[playerId]->getBlock(), prospectBlock)) {
+        auto prospectBlock = Grid::getGridBlock(x, y);
+         if (Grid::isWithinNBlocks(3, bases[playerId]->getBlock().lock(), prospectBlock)) {
              return true;
          }
 
          for (const auto &wallMapping : walls[playerId]) {
-             if (Grid::isWithinNBlocks(3, wallMapping.second->getBlock(), prospectBlock)) {
+             if (Grid::isWithinNBlocks(3, wallMapping.second->getBlock().lock(), prospectBlock)) {
                  return true;
              }
          }
 
          for (const auto &mineMapping : mines[playerId]) {
-             if (Grid::isWithinNBlocks(3, mineMapping.second->getBlock(), prospectBlock)) {
+             if (Grid::isWithinNBlocks(3, mineMapping.second->getBlock().lock(), prospectBlock)) {
                  return true;
              }
          }
 
          for (const auto &turretMapping : turrets[playerId]) {
-             if (Grid::isWithinNBlocks(3, turretMapping.second->getBlock(), prospectBlock)) {
+             if (Grid::isWithinNBlocks(3, turretMapping.second->getBlock().lock(), prospectBlock)) {
                  return true;
              }
          }
@@ -121,20 +120,20 @@ void Game::spawnResource() {
         y = random.next(Constants::BOARD_LENGTH);
     }
 
-    shared_ptr<Resource> resource = std::make_shared<Resource>(*(Grid::getGridBlock(x, y)->get()));
-    Grid::getGridBlock(x, y)->get()->populate(resource);
+    std::shared_ptr<Resource> resource = std::make_shared<Resource>(Grid::getGridBlock(x, y));
+    Grid::getGridBlock(x, y)->populate(resource);
 
     string resourceId = "/r/" + to_string(resourceIdNum);
     resources.insert(make_pair(std::move(resourceId), resource));
     resourceIdNum++;
 }
 
-void Game::spawnAttacker(string playerId, int x, int y) {
+void Game::spawnAttacker(std::string playerId, int x, int y) {
     // TODO: Surround with thread safe mechanism as insertions (attackers map) invalidate iterators.
     cout << "spawn attacker command" << endl;
 }
 
-void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
+void Game::spawnScaffold(std::string playerId, int x, int y, int scaffoldType) {
     auto const &playerMapping = players.find(playerId);
     if (playerMapping != players.end()) {
         int adjustedCost;
@@ -168,11 +167,11 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
                     string scaffoldId = "/f/" + to_string(scaffoldIdNum);
                     scaffoldIdNum++;
 
-                    shared_ptr<Scaffold> scaffold =
-                            std::make_shared<Scaffold>(*(Grid::getGridBlock(x, y)->get()),
+                    std::shared_ptr<Scaffold> scaffold =
+                            std::make_shared<Scaffold>(Grid::getGridBlock(x, y),
                                                        scaffoldType, scaffoldId);
 
-                    Grid::getGridBlock(x, y)->get()->populate(scaffold);
+                    Grid::getGridBlock(x, y)->populate(scaffold);
 
                     const auto &playerScaffolds = scaffolds.find(playerId);
                     if (playerScaffolds != scaffolds.end()) {
@@ -185,9 +184,9 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
     }
 }
 
-void Game::spawnWall(string playerId, int x, int y) {
+void Game::spawnWall(std::string playerId, int x, int y) {
     if (Grid::validateCoordinates(x, y)) {
-        shared_ptr<Wall> wall = make_shared<Wall>(*(Grid::getGridBlock(x, y)->get()));
+        std::shared_ptr<Wall> wall = make_shared<Wall>(Grid::getGridBlock(x, y));
 
         {
             std::unique_lock<std::shared_timed_mutex> writeLock(wallsMutex);
@@ -205,9 +204,9 @@ void Game::spawnWall(string playerId, int x, int y) {
     }
 }
 
-void Game::spawnMine(string playerId, int x, int y) {
+void Game::spawnMine(std::string playerId, int x, int y) {
     if (Grid::validateCoordinates(x, y)) {
-        shared_ptr<Mine> mine = make_shared<Mine>(*(Grid::getGridBlock(x, y)->get()));
+        std::shared_ptr<Mine> mine = make_shared<Mine>(Grid::getGridBlock(x, y));
 
         {
             std::unique_lock<std::shared_timed_mutex> writeLock(minesMutex);
@@ -225,9 +224,9 @@ void Game::spawnMine(string playerId, int x, int y) {
     }
 }
 
-void Game::spawnTurret(string playerId, int x, int y) {
+void Game::spawnTurret(std::string playerId, int x, int y) {
     if (Grid::validateCoordinates(x, y)) {
-        shared_ptr<Turret> turret = make_shared<Turret>(*(Grid::getGridBlock(x, y)->get()));
+        std::shared_ptr<Turret> turret = make_shared<Turret>(Grid::getGridBlock(x, y));
 
         {
             std::unique_lock<std::shared_timed_mutex> writeLock(turretsMutex);
@@ -264,8 +263,8 @@ void Game::updateResources() {
                             // Marking the resource as dead.
                             if (resourceMapping.second->getHealth() <= 0) {
                                 Grid::getGridBlock(
-                                        resourceMapping.second->getBlock().getX(),
-                                        resourceMapping.second->getBlock().getY())->get()->depopulate();
+                                        resourceMapping.second->getBlock().lock()->getX(),
+                                        resourceMapping.second->getBlock().lock()->getY())->depopulate();
                                 resourcesToDelete.push_front(resourceMapping.first);
                             }
                         }
@@ -318,15 +317,15 @@ void Game::updateScaffolds() {
 }
 
 // NOTE: Any lag with scaffold upgrading will come from here.
-void Game::upgradeScaffolds(string playerId, std::forward_list<string> scaffoldsToUpgrade) {
+void Game::upgradeScaffolds(std::string playerId, std::forward_list<string> scaffoldsToUpgrade) {
     for (auto &scaffoldId : scaffoldsToUpgrade) {
         auto playerScaffolds = scaffolds.find(playerId);
         if (playerScaffolds != scaffolds.end()) {
             // Creating the new structure.
             const auto &scaffoldRef = playerScaffolds->second[scaffoldId];
             int structureType = scaffoldRef->getType();
-            int x = scaffoldRef->getBlock().getX();
-            int y = scaffoldRef->getBlock().getY();
+            int x = scaffoldRef->getBlock().lock()->getX();
+            int y = scaffoldRef->getBlock().lock()->getY();
 
             // Removing old scaffold.
             std::unique_lock<std::shared_timed_mutex> readLock(scaffoldsMutex);

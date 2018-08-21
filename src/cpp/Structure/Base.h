@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by Theodore Tsivranidis on 6/13/18.
 //
@@ -11,9 +13,10 @@
 class Base : public Killable {
     private:
     public:
-        explicit Base(GridBlock &block) : Killable(block, Constants::BASE_HP) {}
+        explicit Base(std::shared_ptr<GridBlock> block) :
+            Killable(std::move(block), Constants::BASE_HP) {}
         ~Base();
-        GridBlock& getBlock() override;
+        std::weak_ptr<GridBlock> getBlock() override;
         int getReward() override;
 };
 

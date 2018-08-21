@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by David Oyeka on 6/25/18.
 //
@@ -11,9 +13,10 @@
 
 class Wall : public Killable {
     public:
-        Wall(GridBlock &block) : Killable(block, Constants::WALL_HP) { }
+        Wall(std::shared_ptr<GridBlock> block) :
+            Killable(std::move(block), Constants::WALL_HP) { }
         ~Wall();
-        GridBlock& getBlock() override;
+        std::weak_ptr<GridBlock> getBlock() override;
         int getReward() override;
 };
 

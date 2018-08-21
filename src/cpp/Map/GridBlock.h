@@ -48,7 +48,7 @@ class GridBlock {
             return !(*this == other);
         }
         // << operator overload.
-       friend std::ostream& operator<<(std::ostream &strm, const GridBlock &block);
+       friend std::ostream& operator<<(std::ostream &strm, const std::shared_ptr<GridBlock> block);
 };
 
 // hash function for GridBlock.

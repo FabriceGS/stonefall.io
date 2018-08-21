@@ -15,37 +15,37 @@ TEST_CASE("Necessary Navigation")
 
      SECTION("getGridBlock retrieves valid GridBlock", "[grid]") {
           auto opt_block = grid->getGridBlock(10, 10);
-          CHECK_FALSE(nullptr == opt_block->get());
+          CHECK_FALSE(nullptr == opt_block);
      }
 
     SECTION("Simple Pathing Works", "[pathing]") {
-        auto path = AStar::shortestPath(grid->getGridBlock(1, 1)->get(),
-                                        grid->getGridBlock(5, 5)->get());
+        auto path = AStar::shortestPath(grid->getGridBlock(1, 1),
+                                        grid->getGridBlock(5, 5));
         std::list<GridBlock*> correctPath = {
-                grid->getGridBlock(1, 1)->get(),
-                grid->getGridBlock(2, 2)->get(),
-                grid->getGridBlock(3, 3)->get(),
-                grid->getGridBlock(4, 4)->get(),
-                grid->getGridBlock(5, 5)->get()
+                grid->getGridBlock(1, 1),
+                grid->getGridBlock(2, 2),
+                grid->getGridBlock(3, 3),
+                grid->getGridBlock(4, 4),
+                grid->getGridBlock(5, 5)
         };
         CHECK(path == correctPath);
     }
 
     SECTION("Edge Pathing Works", "[pathing]") {
-        auto path = AStar::shortestPath(grid->getGridBlock(18, 6)->get(),
-                                        grid->getGridBlock(19, 9)->get());
+        auto path = AStar::shortestPath(grid->getGridBlock(18, 6),
+                                        grid->getGridBlock(19, 9));
         std::list<GridBlock*> correctPath1 = {
-                grid->getGridBlock(18, 6)->get(),
-                grid->getGridBlock(18, 7)->get(),
-                grid->getGridBlock(18, 8)->get(),
-                grid->getGridBlock(19, 9)->get()
+                grid->getGridBlock(18, 6),
+                grid->getGridBlock(18, 7),
+                grid->getGridBlock(18, 8),
+                grid->getGridBlock(19, 9)
         };
 
         std::list<GridBlock*> correctPath2 = {
-                grid->getGridBlock(18, 6)->get(),
-                grid->getGridBlock(19, 7)->get(),
-                grid->getGridBlock(19, 8)->get(),
-                grid->getGridBlock(19, 9)->get()
+                grid->getGridBlock(18, 6),
+                grid->getGridBlock(19, 7),
+                grid->getGridBlock(19, 8),
+                grid->getGridBlock(19, 9)
         };
 
         CHECK(path == correctPath2);
@@ -55,7 +55,7 @@ TEST_CASE("Necessary Navigation")
 TEST_CASE("GridBlock Expected Behavior", "[grid]")
 {
     Grid::buildGrid();
-    auto block = Grid::getGridBlock(0, 0)->get();
+    auto block = Grid::getGridBlock(0, 0);
     CHECK_FALSE(block->isFull());
 
     weak_ptr<GridEntity> weakEntity;
@@ -64,7 +64,7 @@ TEST_CASE("GridBlock Expected Behavior", "[grid]")
     block->depopulate();
     CHECK_FALSE(block->isFull());
 
-    auto sharedEntity = make_shared<Base>(*(Grid::getGridBlock(0, 0)->get()));
+    auto sharedEntity = make_shared<Base>(*(Grid::getGridBlock(0, 0)));
     weakEntity = sharedEntity;
     block->populate(weakEntity);
     CHECK(block->isFull());

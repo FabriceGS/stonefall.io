@@ -5,10 +5,12 @@
 #include <Map/GridBlock.h>
 
 Wall::~Wall() {
-    block.depopulate();
+    if (auto sharedBlock = block.lock()) {
+        sharedBlock->depopulate();
+    }
 }
 
-GridBlock& Wall::getBlock() {
+std::weak_ptr<GridBlock> Wall::getBlock() {
     return block;
 }
 

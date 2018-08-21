@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by David Oyeka on 6/25/18.
 //
@@ -11,9 +13,10 @@
 
 class Resource : public Killable {
     public:
-        explicit Resource(GridBlock &block) : Killable(block, Constants::RESOURCE_HP) { }
+        explicit Resource(std::shared_ptr<GridBlock> block) :
+            Killable(std::move(block), Constants::RESOURCE_HP) { }
         ~Resource();
-        GridBlock& getBlock() override;
+        std::weak_ptr<GridBlock> getBlock() override;
         int getReward() override;
 };
 

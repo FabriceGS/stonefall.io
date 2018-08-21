@@ -30,6 +30,6 @@ GridBlock::~GridBlock() {
 }
 
 // << operator overload.
-std::ostream& operator<<(std::ostream &strm, const GridBlock &block) {
-    return strm << "(" << block.getX() << ", " << block.getY() << ")";
+std::ostream& operator<<(std::ostream &strm, const std::shared_ptr<GridBlock> block) {
+    return strm << "(" << block->getX() << ", " << block->getY() << ")";
 }

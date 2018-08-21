@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by David Oyeka on 6/25/18.
 //
@@ -12,9 +14,10 @@
 
 class Turret : public Killable {
     public:
-        Turret(GridBlock &block) : Killable(block, Constants::TURRET_HP) { }
+        explicit Turret(std::shared_ptr<GridBlock> block) :
+            Killable(std::move(block), Constants::TURRET_HP) { }
         ~Turret();
-        GridBlock& getBlock() override;
+        std::weak_ptr<GridBlock> getBlock() override;
         int getReward() override;
 };
 

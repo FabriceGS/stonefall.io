@@ -5,10 +5,12 @@
 #include <Map/GridBlock.h>
 
 Turret::~Turret() {
-    block.depopulate();
+    if (auto sharedBlock = block.lock()) {
+        sharedBlock->depopulate();
+    }
 }
 
-GridBlock& Turret::getBlock() {
+std::weak_ptr<GridBlock> Turret::getBlock() {
     return block;
 }
 

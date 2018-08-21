@@ -13,7 +13,7 @@ class Attacker : Killable {
     private:
 
     public:
-        Attacker(GridBlock &block, double hp) : Killable(block, hp) { }
+        Attacker(std::shared_ptr<GridBlock> block, double hp) : Killable(block, hp) { }
 };
 
 

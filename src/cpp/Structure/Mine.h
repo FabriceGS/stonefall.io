@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by David Oyeka on 6/25/18.
 //
@@ -14,9 +16,10 @@ class Mine : public Killable {
     private:
 
     public:
-        explicit Mine(GridBlock &block) : Killable(block, Constants::MINE_HP) { }
+        explicit Mine(std::shared_ptr<GridBlock> block) :
+            Killable(std::move(block), Constants::MINE_HP) { }
         ~Mine();
-        GridBlock& getBlock() override;
+        std::weak_ptr<GridBlock> getBlock() override;
         int getReward() override;
         void collect(Resource& resource);
 };

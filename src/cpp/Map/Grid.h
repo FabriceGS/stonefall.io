@@ -20,10 +20,15 @@ class Grid {
     public:
         Grid();
         ~Grid();
-        static optional<shared_ptr<GridBlock>> getGridBlock(int x, int y);
+        static std::shared_ptr<GridBlock> getGridBlock(int x, int y);
         static void buildGrid();
         static bool validateCoordinates(int x, int y);
-        static bool isWithinNBlocks(int n, GridBlock const& source, GridBlock const& target);
+        static bool isWithinNBlocks(int n,
+                                    std::shared_ptr<GridBlock> const& source,
+                                    std::shared_ptr<GridBlock> const& target);
+        static bool isWithinNBlocks(int n,
+                                    std::weak_ptr<GridBlock> const& source,
+                                    std::weak_ptr<GridBlock> const& target);
 };
 
 
