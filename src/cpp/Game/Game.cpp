@@ -28,7 +28,7 @@ void Game::setSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler)  {
 Player Game::addPlayer(string name) {
     // Adding the player.
     // TODO: Randomly generate playerId.
-    string playerId = "q";
+    string playerId = crypto.id();
     shared_ptr<Player> newPlayer = make_shared<Player>(std::move(name), playerId);
     players.insert(make_pair(playerId, newPlayer));
 

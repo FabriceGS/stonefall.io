@@ -116,12 +116,13 @@ protected:
         }
         else
         {
+            GameManager gameManager;
             // get parameters from configuration file
             unsigned short port = (unsigned short) config().getInt("WebSocketServer.port", 4567);
             // set-up a server socket
             ServerSocket svs(port);
             // set-up a HTTPServer instance
-            HTTPServer srv(new RequestHandlerFactory, svs, new HTTPServerParams);
+            HTTPServer srv(new RequestHandlerFactory(gameManager), svs, new HTTPServerParams);
             // start the HTTPServer
             srv.start();
             // wait for CTRL-C or kill

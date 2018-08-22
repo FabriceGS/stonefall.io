@@ -20,6 +20,7 @@
 #include <Structure/Resource.h>
 #include <Game/Player.h>
 #include <Game/GameState.h>
+#include <Crypto/Crypto.h>
 
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Runnable.h"
@@ -56,8 +57,9 @@ private:
     int resCollectCounter{};
     atomic_int scaffoldIdNum{};
     atomic_int structureIdNum{};
-
+    Crypto crypto;
     HTTPRequestHandler *webSocketRequestHandler{};
+
     void spawnResource();
     void updateResources();
     void updateBases();

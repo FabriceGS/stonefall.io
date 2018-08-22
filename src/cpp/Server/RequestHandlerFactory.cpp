@@ -25,8 +25,7 @@ HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const HTTPServer
 
     if (request.find("Upgrade") != request.end() && Poco::icompare(request["Upgrade"], "websocket") == 0) {
         // defer the allocation to the game manager
-        return gameManager->
-        return new WebSocketRequestHandler(newGame);
+        return gameManager->createWebSocketRequestHandler();
     } else {
         return new PageRequestHandler;
     }
