@@ -139,8 +139,8 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                         string name = nameVar.convert<string>();
 
                         // add a new player to the game
-                        Player player = lockedGame->addPlayer(name);
-                        sessions.insert(make_pair(player.getId(), ws));
+                        shared_ptr<Player> player = lockedGame->addPlayer(name);
+                        sessions.insert(make_pair(player->getId(), ws));
 
                         break;
                     }

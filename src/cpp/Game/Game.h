@@ -70,8 +70,8 @@ public:
     Game();
     void onTimer(Poco::Timer& timer);
     void setSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler);
-    Player addPlayer(string name);
-    Player getPlayer(string playerId);
+    shared_ptr<Player> addPlayer(string name);
+    shared_ptr<Player> getPlayer(string playerId);
     void removePlayer(string playerId);
     bool playerExists(string playerId);
     bool validateCreation(string playerId, int x, int y, int spawnType);

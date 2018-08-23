@@ -25,7 +25,7 @@ void Game::setSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler)  {
     webSocketRequestHandler = newWebSocketRequestHandler;
 }
 
-Player Game::addPlayer(string name) {
+shared_ptr<Player> Game::addPlayer(string name) {
     // Adding the player.
     // TODO: Randomly generate playerId.
     string playerId = crypto.id();
@@ -47,7 +47,7 @@ Player Game::addPlayer(string name) {
     return newPlayer;
 }
 
-Player Game::getPlayer(string playerId) {
+shared_ptr<Player> Game::getPlayer(string playerId) {
     return players.at(playerId);
 }
 
@@ -160,12 +160,12 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
         }
 
         if (playerMapping->second->getResourceCount() >= adjustedCost) {
-            if (validateCreation(playerId, x, y)) {
+            if (validateCreation(playerId, x, y, scaffoldType)) {
                 playerMapping->second->decrementResourceCount(adjustedCost);
                 // Critical Section for incrementing scaffoldIdNum and storing the scaffold.
                 // NOTE: Any lag with scaffold spawning will come from here.
                 {
-                    std::unique_lock<std::shared_mutex> writeLock(scaffoldsMutex);
+                    std::unique_lock<std::shared_timed_mutex> writeLock(scaffoldsMutex);
                     string scaffoldId = "/f/" + to_string(scaffoldIdNum);
                     scaffoldIdNum++;
 
@@ -177,7 +177,7 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
 
                     const auto &playerScaffolds = scaffolds.find(playerId);
                     if (playerScaffolds != scaffolds.end()) {
-                        playerScaffolds->second.insert(std::make_pair(scaffoldId, scaffold));
+                        playerScaffolds.second.insert(std::make_pair(scaffoldId, scaffold));
                     }
                     writeLock.unlock();
                 }
