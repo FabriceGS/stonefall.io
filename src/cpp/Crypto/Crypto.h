@@ -11,18 +11,11 @@
 using namespace std;
 
 class Crypto {
-public:
+private:
     static int currentId;
-    string id() {
-        currentId++;
-        return to_string(currentId);
-    }
-
-    string randomSecret() {
-        uint32_t myInt;
-        myInt = randombytes_uniform(999999999);
-        return to_string(myInt);
-    }
+public:
+    static string id();
+    static string randomSecret();
 };
 
 #endif //STONEFALL_CRYPTO_H

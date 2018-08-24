@@ -3,6 +3,8 @@ project(stonefall)
 
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_EXE_LINKER_FLAGS "-lsodium")
+
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -19,7 +21,7 @@ set(SOURCE_FILES
         src/cpp/Structure/Turret.cpp src/cpp/Structure/Turret.h src/cpp/Structure/Wall.cpp src/cpp/Structure/Wall.h
         src/cpp/Unit/Attacker.cpp src/cpp/Unit/Attacker.h src/cpp/Map/Grid.cpp src/cpp/Game/Game.cpp src/cpp/Game/Game.h
         src/cpp/Game/Player.cpp src/cpp/Game/Player.h src/cpp/Server/RequestHandlerFactory.cpp
-        src/cpp/Game/GameState.cpp src/cpp/Game/GameState.h src/cpp/Crypto/Crypto.h
+        src/cpp/Game/GameState.cpp src/cpp/Game/GameState.h src/cpp/Crypto/Crypto.h src/cpp/Crypto/Crypto.cpp
         src/cpp/Server/RequestHandlerFactory.h src/cpp/Map/Grid.h src/cpp/Pathing/AStar.cpp src/cpp/Pathing/AStar.h
         src/cpp/Main/GameManager.cpp src/cpp/Main/GameManager.h src/cpp/Main/main.cpp src/cpp/Config/Utility.h
         src/cpp/Structure/Scaffold.cpp src/cpp/Structure/Scaffold.h)

@@ -60,28 +60,21 @@ class WebSocketServer: public Poco::Util::ServerApplication
     /// To test the WebSocketServer you can use any web browser (http://localhost:9980/).
 {
 public:
-    WebSocketServer(): _helpRequested(false)
-    {
-    }
+    WebSocketServer(): _helpRequested(false) {}
 
-    ~WebSocketServer()
-    {
-    }
+    ~WebSocketServer() {}
 
 protected:
-    void initialize(Application& self) override
-    {
+    void initialize(Application& self) override {
         loadConfiguration(); // load default configuration files, if present
         ServerApplication::initialize(self);
     }
 
-    void uninitialize() override
-    {
+    void uninitialize() override {
         ServerApplication::uninitialize();
     }
 
-    void defineOptions(OptionSet& options) override
-    {
+    void defineOptions(OptionSet& options) override {
 
         ServerApplication::defineOptions(options);
 
@@ -100,8 +93,7 @@ protected:
             _helpRequested = true;
     }
 
-    void displayHelp()
-    {
+    void displayHelp() {
         HelpFormatter helpFormatter(options());
         helpFormatter.setCommand(commandName());
         helpFormatter.setUsage("OPTIONS");
@@ -110,12 +102,12 @@ protected:
     }
 
     int main(const std::vector<std::string>& args) override {
-        if (_helpRequested)
-        {
+        if (_helpRequested) {
             displayHelp();
-        }
-        else
-        {
+        } else {
+            if (sodium_init() == 1) {
+                return 1;
+            }
             GameManager gameManager;
             // get parameters from configuration file
             unsigned short port = (unsigned short) config().getInt("WebSocketServer.port", 4567);
@@ -125,6 +117,13 @@ protected:
             HTTPServer srv(new RequestHandlerFactory(gameManager), svs, new HTTPServerParams);
             // start the HTTPServer
             srv.start();
+            cout << "----------------------------------------------" << endl;
+            cout << "         __                   ____      ____" << endl;
+            cout << "   _____/ /_____  ____  ___  / __/___ _/ / /" << endl;
+            cout << "  / ___/ __/ __ \\/ __ \\/ _ \\/ /_/ __ `/ / /" << endl;
+            cout << " (__  ) /_/ /_/ / / / /  __/ __/ /_/ / / /" << endl;
+            cout << "/____/\\__/\\____/_/ /_/\\___/_/  \\__,_/_/_/" << endl;
+            cout << "______________________________________________" << endl;
             // wait for CTRL-C or kill
             waitForTerminationRequest();
             // Stop the HTTPServer

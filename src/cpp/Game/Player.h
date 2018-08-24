@@ -15,8 +15,8 @@ class Player {
     private:
         string name;
         string id;
-        std::atomic_int resourceCount();
-        std::atomic_int score();
+        std::atomic_int resourceCount;
+        std::atomic_int score;
 
     public:
         Player(string name, string id);
