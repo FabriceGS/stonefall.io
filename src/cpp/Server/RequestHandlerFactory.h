@@ -13,12 +13,13 @@
 using Poco::Net::HTTPRequestHandlerFactory;
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPServerRequest;
+using namespace std;
 
 class RequestHandlerFactory: public HTTPRequestHandlerFactory {
 private:
-    std::shared_ptr<GameManager> gameManager;
+    shared_ptr<GameManager> gameManager;
 public:
-    RequestHandlerFactory(GameManager gameManager) { gameManager = std::move(gameManager); }
+    RequestHandlerFactory(shared_ptr<GameManager> newGameManager) { gameManager = newGameManager; }
     HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request);
 };
 

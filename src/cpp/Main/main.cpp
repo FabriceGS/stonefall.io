@@ -108,7 +108,7 @@ protected:
             if (sodium_init() == 1) {
                 return 1;
             }
-            GameManager gameManager;
+            shared_ptr<GameManager> gameManager = make_shared<GameManager>();
             // get parameters from configuration file
             unsigned short port = (unsigned short) config().getInt("WebSocketServer.port", 4567);
             // set-up a server socket

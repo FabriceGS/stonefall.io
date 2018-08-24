@@ -37,12 +37,12 @@ shared_ptr<Player> Game::addPlayer(string name) {
     int x = random.next(Constants::BOARD_WIDTH);
     int y = random.next(Constants::BOARD_LENGTH);
 
-    while (!Grid::validateCoordinates(x, y)) {
+    while (!grid->validateCoordinates(x, y)) {
         x = random.next(Constants::BOARD_WIDTH);
         y = random.next(Constants::BOARD_LENGTH);
     }
 
-    shared_ptr<Base> newBase = make_shared<Base>(*(Grid::getGridBlock(x, y)->get()));
+    shared_ptr<Base> newBase = make_shared<Base>(*(grid->getGridBlock(x, y)->get()));
     bases.insert(make_pair(playerId, newBase));
     return newPlayer;
 }
@@ -85,26 +85,26 @@ bool Game::sellCommand(string playerId, unordered_set<string> toSellIdSet) {
 
 bool Game::validateCreation(string playerId, int x, int y, int spawnType) {
     // TODO: validate that the player has enough resources for the spawn type
-    if (Grid::validateCoordinates(x, y)) {
-        auto prospectBlock = *(Grid::getGridBlock(x, y)->get());
-         if (Grid::isWithinNBlocks(3, bases[playerId]->getBlock(), prospectBlock)) {
+    if (grid->validateCoordinates(x, y)) {
+        auto prospectBlock = *(grid->getGridBlock(x, y)->get());
+         if (grid->isWithinNBlocks(3, bases[playerId]->getBlock(), prospectBlock)) {
              return true;
          }
 
          for (const auto &wallMapping : walls[playerId]) {
-             if (Grid::isWithinNBlocks(3, wallMapping.second->getBlock(), prospectBlock)) {
+             if (grid->isWithinNBlocks(3, wallMapping.second->getBlock(), prospectBlock)) {
                  return true;
              }
          }
 
          for (const auto &mineMapping : mines[playerId]) {
-             if (Grid::isWithinNBlocks(3, mineMapping.second->getBlock(), prospectBlock)) {
+             if (grid->isWithinNBlocks(3, mineMapping.second->getBlock(), prospectBlock)) {
                  return true;
              }
          }
 
          for (const auto &turretMapping : turrets[playerId]) {
-             if (Grid::isWithinNBlocks(3, turretMapping.second->getBlock(), prospectBlock)) {
+             if (grid->isWithinNBlocks(3, turretMapping.second->getBlock(), prospectBlock)) {
                  return true;
              }
          }
@@ -117,13 +117,13 @@ void Game::spawnResource() {
     int x = random.next(Constants::BOARD_WIDTH);
     int y = random.next(Constants::BOARD_LENGTH);
 
-    while (!Grid::validateCoordinates(x, y)) {
+    while (!grid->validateCoordinates(x, y)) {
         x = random.next(Constants::BOARD_WIDTH);
         y = random.next(Constants::BOARD_LENGTH);
     }
 
-    shared_ptr<Resource> resource = std::make_shared<Resource>(*(Grid::getGridBlock(x, y)->get()));
-    Grid::getGridBlock(x, y)->get()->populate(resource);
+    shared_ptr<Resource> resource = std::make_shared<Resource>(*(grid->getGridBlock(x, y)->get()));
+    grid->getGridBlock(x, y)->get()->populate(resource);
 
     string resourceId = "/r/" + to_string(resourceIdNum);
     resources.insert(make_pair(std::move(resourceId), resource));
@@ -170,10 +170,10 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
                     scaffoldIdNum++;
 
                     shared_ptr<Scaffold> scaffold =
-                            std::make_shared<Scaffold>(*(Grid::getGridBlock(x, y)->get()),
+                            std::make_shared<Scaffold>(*(grid->getGridBlock(x, y)->get()),
                                                        scaffoldType, scaffoldId);
 
-                    Grid::getGridBlock(x, y)->get()->populate(scaffold);
+                    grid->getGridBlock(x, y)->get()->populate(scaffold);
 
                     const auto &playerScaffolds = scaffolds.find(playerId);
                     if (playerScaffolds != scaffolds.end()) {
@@ -187,8 +187,8 @@ void Game::spawnScaffold(string playerId, int x, int y, int scaffoldType) {
 }
 
 void Game::spawnWall(string playerId, int x, int y) {
-    if (Grid::validateCoordinates(x, y)) {
-        shared_ptr<Wall> wall = make_shared<Wall>(*(Grid::getGridBlock(x, y)->get()));
+    if (grid->validateCoordinates(x, y)) {
+        shared_ptr<Wall> wall = make_shared<Wall>(*(grid->getGridBlock(x, y)->get()));
 
         {
             std::unique_lock<std::shared_timed_mutex> writeLock(wallsMutex);
@@ -207,8 +207,8 @@ void Game::spawnWall(string playerId, int x, int y) {
 }
 
 void Game::spawnMine(string playerId, int x, int y) {
-    if (Grid::validateCoordinates(x, y)) {
-        shared_ptr<Mine> mine = make_shared<Mine>(*(Grid::getGridBlock(x, y)->get()));
+    if (grid->validateCoordinates(x, y)) {
+        shared_ptr<Mine> mine = make_shared<Mine>(*(grid->getGridBlock(x, y)->get()));
 
         {
             std::unique_lock<std::shared_timed_mutex> writeLock(minesMutex);
@@ -227,8 +227,8 @@ void Game::spawnMine(string playerId, int x, int y) {
 }
 
 void Game::spawnTurret(string playerId, int x, int y) {
-    if (Grid::validateCoordinates(x, y)) {
-        shared_ptr<Turret> turret = make_shared<Turret>(*(Grid::getGridBlock(x, y)->get()));
+    if (grid->validateCoordinates(x, y)) {
+        shared_ptr<Turret> turret = make_shared<Turret>(*(grid->getGridBlock(x, y)->get()));
 
         {
             std::unique_lock<std::shared_timed_mutex> writeLock(turretsMutex);
@@ -258,13 +258,13 @@ void Game::updateResources() {
                 std::shared_lock<std::shared_timed_mutex> mineReadLock(minesMutex);
                 for (auto &mineMapping : mines) {
                     for (auto &playerMineMapping : mineMapping.second) {
-                        if (Grid::isWithinNBlocks(1, playerMineMapping.second->getBlock(), resourceMapping.second->getBlock())) {
+                        if (grid->isWithinNBlocks(1, playerMineMapping.second->getBlock(), resourceMapping.second->getBlock())) {
                             playerMineMapping.second->collect(*(resourceMapping.second));
                             playerMapping.second->incrementResourceCount(2);
 
                             // Marking the resource as dead.
                             if (resourceMapping.second->getHealth() <= 0) {
-                                Grid::getGridBlock(
+                                grid->getGridBlock(
                                         resourceMapping.second->getBlock().getX(),
                                         resourceMapping.second->getBlock().getY())->get()->depopulate();
                                 resourcesToDelete.push_front(resourceMapping.first);

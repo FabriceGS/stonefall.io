@@ -21,6 +21,7 @@
 #include <Game/Player.h>
 #include <Game/GameState.h>
 #include <Crypto/Crypto.h>
+#include <Map/Grid.h>
 
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Runnable.h"
@@ -58,6 +59,7 @@ private:
     atomic_int scaffoldIdNum{};
     atomic_int structureIdNum{};
     HTTPRequestHandler *webSocketRequestHandler{};
+    shared_ptr<Grid> grid = make_shared<Grid>();
 
     void spawnResource();
     void updateResources();

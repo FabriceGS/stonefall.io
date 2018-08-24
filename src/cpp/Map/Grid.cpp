@@ -4,8 +4,6 @@
 
 #include "Grid.h"
 
-array<array<shared_ptr<GridBlock>, Constants::BOARD_LENGTH>, Constants::BOARD_WIDTH> Grid::gridBlocks;
-
 // 0 - NW, 1 - N, 2 - NE, 3 - W, 4 - E, 5 - SW, 6 - S, 7 - SE
 void Grid::createNeighbors() {
     for (int i = 0; i < Constants::BOARD_WIDTH; i++) {
@@ -60,7 +58,7 @@ optional<shared_ptr<GridBlock>> Grid::getGridBlock(int x, int y) {
 }
 
 Grid::Grid() {
-    cout << std::string("Grid created") << endl;
+    buildGrid();
 }
 
 Grid::~Grid() {

@@ -88,8 +88,7 @@ void WebSocketRequestHandler::updateSession(string playerId, const char *jsonSta
     sendMessage(jsonState, n, flags, *session);
 }
 
-void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response)
-{
+void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response) {
     Application& app = Application::instance();
     try {
         shared_ptr<WebSocket> ws = make_shared<WebSocket>(request, response);

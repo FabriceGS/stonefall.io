@@ -13,17 +13,17 @@
 using namespace std::experimental;
 
 class Grid {
-    private:
-        static array<array<shared_ptr<GridBlock>, Constants::BOARD_LENGTH>, Constants::BOARD_WIDTH> gridBlocks;
-        static void createNeighbors();
+private:
+    array<array<shared_ptr<GridBlock>, Constants::BOARD_LENGTH>, Constants::BOARD_WIDTH> gridBlocks;
+    void createNeighbors();
 
-    public:
-        Grid();
-        ~Grid();
-        static optional<shared_ptr<GridBlock>> getGridBlock(int x, int y);
-        static void buildGrid();
-        static bool validateCoordinates(int x, int y);
-        static bool isWithinNBlocks(int n, GridBlock const& source, GridBlock const& target);
+public:
+    Grid();
+    ~Grid();
+    optional<shared_ptr<GridBlock>> getGridBlock(int x, int y);
+    void buildGrid();
+    bool validateCoordinates(int x, int y);
+    bool isWithinNBlocks(int n, GridBlock const& source, GridBlock const& target);
 };
 
 
