@@ -21,15 +21,15 @@ void Game::onTimer(Poco::Timer& timer) {
     updateResources();
 }
 
-void Game::addSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler)  {
-    webSocketRequestHandler = newWebSocketRequestHandler;
+void Game::addSocketHandler(string playerId, HTTPRequestHandler *newWebSocketRequestHandler)  {
+    webSocketRequestHandlers.insert(newWebSocketRequestHandler);
 }
 
 shared_ptr<Player> Game::addPlayer(string name) {
     // Adding the player.
-    // TODO: Randomly generate playerId.
-    string playerId = Crypto::id();
-    shared_ptr<Player> newPlayer = make_shared<Player>(std::move(name), playerId);
+    string playerId = crypto.id();
+    string playerSecret = crypto.randomSecret();
+    shared_ptr<Player> newPlayer = make_shared<Player>(std::move(name), playerId, playerSecret);
     players.insert(make_pair(playerId, newPlayer));
 
     // Adding their base.

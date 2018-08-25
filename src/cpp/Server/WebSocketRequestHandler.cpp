@@ -55,8 +55,7 @@ using Poco::Dynamic::Var;
 using Poco::HashMap;
 using namespace std;
 
-void WebSocketRequestHandler::sendMessage(char const *msg, int n, int flags, WebSocket ws)
-{
+void WebSocketRequestHandler::sendMessage(char const *msg, int n, int flags, WebSocket ws) {
     // send the JSON object
     ws.sendFrame(msg, n, flags);
 }
@@ -65,27 +64,8 @@ void WebSocketRequestHandler::sendMessage(char const *msg, int n, int flags, Web
 // has been emptied (i.e. each task has been completed). Thus, a complete gameState
 // is ready to be passed to the players and displayed for each user.
 // gameState is a gamestate for which one command queue has been completed.
-void WebSocketRequestHandler::sendUpdates(const GameState& gameState)
-{
-    // TODO: process the entire gamestate into a JSON object here
-    const char *jsonState = "you've been updated by a smooth criminal";
+void WebSocketRequestHandler::sendUpdate(const GameState& gameState) {
 
-    // then interpret the game state for each player and update 'em
-    for (auto session : sessions) {
-        updateSession(session.first, jsonState);
-    }
-}
-
-// a method to update a given player's session, given a gameState (represented by a JSON obj) and player id
-void WebSocketRequestHandler::updateSession(string playerId, const char *jsonState)
-{
-    // get session
-    shared_ptr<WebSocket> session = sessions.at(playerId);
-    int flags;
-    int n;
-
-    // send the buffer
-    sendMessage(jsonState, n, flags, *session);
 }
 
 void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServerResponse& response) {
@@ -139,7 +119,7 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
 
                         // add a new player to the game
                         shared_ptr<Player> player = lockedGame->addPlayer(name);
-                        sessions.insert(make_pair(player->getId(), ws));
+                        lockedGame->addSocketHandler(player->getId(), this);
 
                         break;
                     }
@@ -244,12 +224,10 @@ void WebSocketRequestHandler::handleRequest(HTTPServerRequest& request, HTTPServ
                 app.logger().log(Poco::Message("", "The game pointer has expired", Poco::Message::Priority::PRIO_CRITICAL));
             }
         } while (n > 0 && (flags & WebSocket::FRAME_OP_BITMASK) != WebSocket::FRAME_OP_CLOSE);
-    }
-    catch (WebSocketException& exc) {
+    } catch (WebSocketException& exc) {
         cout << "exception" << endl;
         app.logger().log(exc);
-        switch (exc.code())
-        {
+        switch (exc.code()) {
             case WebSocket::WS_ERR_HANDSHAKE_UNSUPPORTED_VERSION:
                 response.set("Sec-WebSocket-Version", WebSocket::WEBSOCKET_VERSION);
                 // fallthrough

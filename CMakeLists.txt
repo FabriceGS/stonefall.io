@@ -4,6 +4,10 @@ project(stonefall)
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_EXE_LINKER_FLAGS "-lsodium")
+set(CMAKE_SHARED_LINKER_FLAGS "-lsodium")
+set(CMAKE_MODULE_LINKER_FLAGS "-lsodium")
+set(CMAKE_MODULE_LINKER_FLAGS "-lsodium")
+include(Findsodium.cmake)
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)

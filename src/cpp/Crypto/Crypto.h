@@ -12,10 +12,10 @@ using namespace std;
 
 class Crypto {
 private:
-    static int currentId;
+    int currentId = 0;
 public:
-    static string id();
-    static string randomSecret();
+    string id();
+    string randomSecret();
 };
 
 #endif //STONEFALL_CRYPTO_H

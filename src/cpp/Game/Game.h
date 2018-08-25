@@ -58,8 +58,9 @@ private:
     int resCollectCounter{};
     atomic_int scaffoldIdNum{};
     atomic_int structureIdNum{};
-    HTTPRequestHandler *webSocketRequestHandler{};
+    unordered_map<string, HTTPRequestHandler *>webSocketRequestHandlers{};
     shared_ptr<Grid> grid = make_shared<Grid>();
+    Crypto crypto;
 
     void spawnResource();
     void updateResources();
@@ -70,7 +71,7 @@ private:
 public:
     Game();
     void onTimer(Poco::Timer& timer);
-    void addSocketHandler(HTTPRequestHandler *newWebSocketRequestHandler);
+    void addSocketHandler(string playerId, HTTPRequestHandler *newWebSocketRequestHandler);
     shared_ptr<Player> addPlayer(string name);
     shared_ptr<Player> getPlayer(string playerId);
     void removePlayer(string playerId);

@@ -6,7 +6,7 @@
 
 #include "Player.h"
 
-Player::Player(string name, string id) : name(std::move(name)), id(std::move(id)) {
+Player::Player(string name, string id, string secret): name(name), id(id), secret(secret) {
     resourceCount = 0;
     score = 0;
 }

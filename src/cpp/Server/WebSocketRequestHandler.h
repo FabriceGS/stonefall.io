@@ -26,7 +26,6 @@ class Game;
 
 class WebSocketRequestHandler: public HTTPRequestHandler {
 private:
-    unordered_map<string, shared_ptr<WebSocket>> sessions;
     // this is a weak pointer to avoid the cyclic reference
     // http://www.acodersjourney.com/2016/05/top-10-dumb-mistakes-avoid-c-11-smart-pointers/
     weak_ptr<Game> game;
@@ -37,9 +36,7 @@ public:
     }
     void sendMessage(char const * msg, int n, int flags, WebSocket ws);
     void handleRequest(HTTPServerRequest& request, HTTPServerResponse& response) override;
-    void sendUpdates(const GameState& gameState);
-    void updateSession(string playerId, const char* jsonState);
-    unordered_set<string> players;
+    void sendUpdate(const GameState& gameState);
 };
 
 namespace WebSockets {

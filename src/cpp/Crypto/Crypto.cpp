@@ -1,8 +1,6 @@
 #include "Crypto/Crypto.h"
 #include "sodium.h"
 
-int Crypto::currentId = 0;
-
 string Crypto::id() {
     currentId++;
     return to_string(currentId);
