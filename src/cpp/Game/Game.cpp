@@ -22,7 +22,7 @@ void Game::onTimer(Poco::Timer& timer) {
 }
 
 void Game::addSocketHandler(string playerId, HTTPRequestHandler *newWebSocketRequestHandler)  {
-    webSocketRequestHandlers.insert(newWebSocketRequestHandler);
+    webSocketRequestHandlers[playerId] = newWebSocketRequestHandler;
 }
 
 shared_ptr<Player> Game::addPlayer(string name) {

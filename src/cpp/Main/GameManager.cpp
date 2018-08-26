@@ -6,6 +6,5 @@
 
 HTTPRequestHandler *GameManager::createWebSocketRequestHandler() {
     HTTPRequestHandler *newRequestHandler = new WebSocketRequestHandler(game);
-    game->addSocketHandler(newRequestHandler);
     return newRequestHandler;
 }
