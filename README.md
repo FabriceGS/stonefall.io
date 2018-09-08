@@ -12,6 +12,8 @@ cd cmake_build
 cmake ..
 make
 ```
+Then [install libsodium](https://download.libsodium.org/doc/installation/)
+
 Next, clone the stonefall repository with `git clone https://github.com/stonefallio/stonefall.git`.
 Then, open up the newly created `stonefall` folder in your IDE of choice. If it asks for a 
 `CMakeLists.txt` file, simply choose the one at the top of the `stonefall` directory. 
