@@ -1,3 +1,9 @@
+let byIdObjects = {
+  type: 5,
+  //etc.
+};
+
+
 let objects = {
   my: {
     boundingBox: {

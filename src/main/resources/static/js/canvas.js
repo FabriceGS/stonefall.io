@@ -4,6 +4,7 @@ let penciller;
 const drawGame = (
   boundingBox,
   objects,
+  my,
   currentlySelectedObjects,
   animationFrame
 ) => {
@@ -24,92 +25,59 @@ const drawGame = (
   //////////////////////////
 
   ////// GAME OBJECTS //////
-  // draw my objects, then draw others objects
-  // draw my base
-  if (objects.my) {
-    if (objects.my.walls) {
-      // draw my walls
-      objects.my.walls.forEach(wall => {
-        if (boundingBox.contains(wall)) {
-          penciller.pencilWall(wall);
+  //draw game objects
+  objects.players.forEach(player => {
+    if(player && (player.id + 1)){
+      let isMe = (player.id == game.getId());
+      // draw my base
+      if (player.walls) {
+        // draw my walls
+        player.walls.forEach(wall => {
+          if (boundingBox.contains(wall)) {
+            penciller.pencilWall(wall);
+          }
+        });
+      }
+      if (player.turrets) {
+        // draw my turrets
+        player.turrets.forEach(turret => {
+          if (boundingBox.contains(turret)) {
+            penciller.pencilTurret(turret, isMe);
+          }
+        });
+      }
+      if (player.attackers) {
+        // draw my attackers
+        player.attackers.forEach(attacker => {
+          if (boundingBox.contains(attacker)) {
+            penciller.pencilAttacker(attacker, isMe, animationFrame);
+          }
+        });
+      }
+      if (player.mines) {
+        // draw my mines
+        player.mines.forEach(mine => {
+          if (boundingBox.contains(mine)) {
+            penciller.pencilMine(mine, isMe);
+          }
+        });
+      }
+      if (player.scaffoldings) {
+        // draw my scaffoldings
+        player.scaffoldings.forEach(scaffolding => {
+          if (boundingBox.contains(scaffolding)) {
+            penciller.pencilScaffolding(scaffolding, isMe);
+          }
+        });
+      }
+      if (player.base) {
+        if (boundingBox.contains(player.base)) {
+          penciller.pencilBase(player.base, isMe);
         }
-      });
+      }
     }
-    if (objects.my.turrets) {
-      // draw my turrets
-      objects.my.turrets.forEach(turret => {
-        if (boundingBox.contains(turret)) {
-          penciller.pencilTurret(turret, true);
-        }
-      });
-    }
-    if (objects.my.attackers) {
-      // draw my attackers
-      objects.my.attackers.forEach(attacker => {
-        if (boundingBox.contains(attacker)) {
-          penciller.pencilAttacker(attacker, true, animationFrame);
-        }
-      });
-    }
-    if (objects.my.mines) {
-      // draw my mines
-      objects.my.mines.forEach(mine => {
-        if (boundingBox.contains(mine)) {
-          penciller.pencilMine(mine, true);
-        }
-      });
-    }
-    if (objects.my.scaffoldings) {
-      // draw my scaffoldings
-      objects.my.scaffoldings.forEach(scaffolding => {
-        if (boundingBox.contains(scaffolding)) {
-          penciller.pencilScaffolding(scaffolding, true);
-        }
-      });
-    }
-  }
-  if (objects.others) {
-    if (objects.others.walls) {
-      // draw others walls
-      objects.others.walls.forEach(wall => {
-        if (boundingBox.contains(wall)) {
-          penciller.pencilWall(wall);
-        }
-      });
-    }
-    if (objects.others.turrets) {
-      // draw others turrets
-      objects.others.turrets.forEach(turret => {
-        if (boundingBox.contains(turret)) {
-          penciller.pencilTurret(turret, false);
-        }
-      });
-    }
-    if (objects.others.attackers) {
-      // draw others attackers
-      objects.others.attackers.forEach(attacker => {
-        if (boundingBox.contains(attacker)) {
-          penciller.pencilAttacker(attacker, false, animationFrame);
-        }
-      });
-    }
-    if (objects.others.mines) {
-      // draw others mines
-      objects.others.mines.forEach(mine => {
-        if (boundingBox.contains(mine)) {
-          penciller.pencilMine(mine, false);
-        }
-      });
-    }
-    if (objects.others.scaffoldings) {
-      // draw others scaffoldings
-      objects.others.scaffoldings.forEach(scaffolding => {
-        if (boundingBox.contains(scaffolding)) {
-          penciller.pencilScaffolding(scaffolding, false);
-        }
-      });
-    }
-  }
+  });
+
   // draw resources
   let flag = false;
   objects.resources.forEach(resource => {
@@ -117,46 +85,34 @@ const drawGame = (
       penciller.pencilResource(resource);
     }
   });
-  // draw others bases
-  if (objects.others && objects.others.bases) {
-    objects.others.bases.forEach(base => {
-      if (boundingBox.contains(base)) {
-        penciller.pencilBase(base, false);
-      }
-    });
-  }
+
   //////////////////////////
 
-  if (objects.my && objects.my.base) {
-    if (boundingBox.contains(objects.my.base)) {
-      penciller.pencilBase(objects.my.base, true);
-    }
-  }
   /////////// GUI //////////
   switch (game.getCurrentState()) {
     // if the game is selecting objects, draw the selected objects
     case "selectingWalls":
-      objects.my.walls.forEach(wall => {
+      my.walls.forEach(wall => {
         if (
           currentlySelectedObjects.map(object => object.id).includes(wall.id)
         ) {
           penciller.pencilSelectedWall(wall);
         }
       });
-      penciller.pencilBuildingContextMenu(objects.my.base.color);
+      penciller.pencilBuildingContextMenu(my.base.color);
       break;
     case "selectingTurrets":
-      objects.my.turrets.forEach(turret => {
+      my.turrets.forEach(turret => {
         if (
           currentlySelectedObjects.map(object => object.id).includes(turret.id)
         ) {
           penciller.pencilSelectedTurret(turret);
         }
       });
-      penciller.pencilBuildingContextMenu(objects.my.base.color);
+      penciller.pencilBuildingContextMenu(my.base.color);
       break;
     case "selectingAttackers":
-      objects.my.attackers.forEach(attacker => {
+      my.attackers.forEach(attacker => {
         if (
           currentlySelectedObjects
             .map(object => object.id)
@@ -167,20 +123,21 @@ const drawGame = (
       });
       break;
     case "selectingMines":
-      objects.my.mines.forEach(mine => {
+      my.mines.forEach(mine => {
         if (
           currentlySelectedObjects.map(object => object.id).includes(mine.id)
         ) {
           penciller.pencilSelectedMine(mine);
         }
       });
-      penciller.pencilBuildingContextMenu(objects.my.base.color);
+      penciller.pencilBuildingContextMenu(my.base.color);
       break;
     // if the game is selecting a square, draw the selection
     case "selectingWallSquare":
       const validSquares = highlightValidSquares(
         boundingBoxCoordinates,
-        objects
+        objects,
+        my
       );
       const coordinates = penciller.coordinateOf(
         interface.lastMousePos.x,
@@ -193,7 +150,8 @@ const drawGame = (
     case "selectingTurretSquare":
       const validSquares2 = highlightValidSquares(
         boundingBoxCoordinates,
-        objects
+        objects,
+        my
       );
       const coordinates2 = penciller.coordinateOf(
         interface.lastMousePos.x,
@@ -206,7 +164,8 @@ const drawGame = (
     case "selectingAttackerSquare":
       const validSquares3 = highlightValidSquares(
         boundingBoxCoordinates,
-        objects
+        objects,
+        my
       );
       const coordinates3 = penciller.coordinateOf(
         interface.lastMousePos.x,
@@ -219,7 +178,8 @@ const drawGame = (
     case "selectingMineSquare":
       const validSquares4 = highlightValidSquares(
         boundingBoxCoordinates,
-        objects
+        objects,
+        my
       );
       const coordinates4 = penciller.coordinateOf(
         interface.lastMousePos.x,
@@ -232,36 +192,37 @@ const drawGame = (
   }
 
   // draw the hud
-  if (objects.my && objects.my.statistics) {
+  if (my && my.statistics) {
     penciller.pencilHud({
-      ...objects.my.statistics,
-      color: objects.my.base.color
+      ...my.statistics,
+      color: my.base.color,
+      leaderboard: objects.leaderboard
     });
   }
   //////////////////////////
 };
 
-const highlightValidSquares = (boundingBoxCoordinates, objects) => {
+const highlightValidSquares = (boundingBoxCoordinates, objects, my) => {
   // penciller.highlightValidSquares(boundingBoxCoordinates, objects);
   let validSquares = {};
   let x;
   let y;
-  validSquares = { ...validSquares, ...validSquaresFrom(objects.my.base) };
-  objects.my.walls.forEach(wall => {
+  validSquares = { ...validSquares, ...validSquaresFrom(my.base) };
+  my.walls.forEach(wall => {
     const wallValidSquares = validSquaresFrom(wall);
     const wallValidSquaresEntries = Object.entries(wallValidSquares);
     wallValidSquaresEntries.forEach(entry => {
       validSquares[entry[0]] = entry[1];
     });
   });
-  objects.my.turrets.forEach(turret => {
+  my.turrets.forEach(turret => {
     const turretValidSquares = validSquaresFrom(turret);
     const turretValidSquaresEntries = Object.entries(turretValidSquares);
     turretValidSquaresEntries.forEach(entry => {
       validSquares[entry[0]] = entry[1];
     });
   });
-  objects.my.mines.forEach(mine => {
+  my.mines.forEach(mine => {
     const mineValidSquares = validSquaresFrom(mine);
     const mineValidSquaresEntries = Object.entries(mineValidSquares);
     mineValidSquaresEntries.forEach(entry => {

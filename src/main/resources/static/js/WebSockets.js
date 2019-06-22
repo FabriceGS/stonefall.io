@@ -18,7 +18,7 @@ const WebSockets = function() {
     MINE: 3
   };
 
-  // const ip = "104.196.202.184";
+  // const ip = "192.168.137.86:4567";
   const ip = "localhost:4567";
   let conn = new WebSocket("ws://" + ip + "/sockets");
   let id = -1;
@@ -41,11 +41,24 @@ const WebSockets = function() {
           sendInitialize();
           break;
         case MESSAGE_TYPE.UPDATE:
+          //should definitely be setting our own id to whatever was sent to us
+          id = data.id;
+          // console.log("payload...", data.payload);
+          let my;
+          data.payload.players.forEach(player => {
+            if(player.id == id){
+              my = player;
+            }
+          });
+          
           if (!initialized) {
             initialized = true;
-            initialize(data.payload.my.base);
+            console.log("my base:", my.base);
+            initialize(my.base);
           }
+          game.setId(id);
           game.setObjects(data.payload);
+          game.setMyObjects(my);
           game.update();
           break;
         case MESSAGE_TYPE.ERROR:

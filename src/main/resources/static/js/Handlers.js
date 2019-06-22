@@ -91,7 +91,7 @@ const Handlers = function() {
   };
 
   const check = coordinates => {
-    game.getObjects().my.attackers.forEach(attacker => {
+    game.getMyObjects().attackers.forEach(attacker => {
       if (moveChecker(attacker, coordinates)) {
         if (!interface.shiftdown) {
           game.transition("ESCAPE");
@@ -99,7 +99,7 @@ const Handlers = function() {
         game.transition("SELECT_ATTACKERS", attacker);
       }
     });
-    game.getObjects().my.walls.forEach(wall => {
+    game.getMyObjects().walls.forEach(wall => {
       if (coordinates.x === wall.x && coordinates.y === wall.y) {
         if (!interface.shiftdown) {
           game.transition("ESCAPE");
@@ -107,7 +107,7 @@ const Handlers = function() {
         game.transition("SELECT_WALLS", wall);
       }
     });
-    game.getObjects().my.turrets.forEach(turret => {
+    game.getMyObjects().turrets.forEach(turret => {
       if (coordinates.x === turret.x && coordinates.y === turret.y) {
         if (!interface.shiftdown) {
           game.transition("ESCAPE");
@@ -115,7 +115,7 @@ const Handlers = function() {
         game.transition("SELECT_TURRETS", turret);
       }
     });
-    game.getObjects().my.mines.forEach(mine => {
+    game.getMyObjects().mines.forEach(mine => {
       if (coordinates.x === mine.x && coordinates.y === mine.y) {
         if (!interface.shiftdown) {
           game.transition("ESCAPE");

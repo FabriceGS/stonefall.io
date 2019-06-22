@@ -1293,7 +1293,7 @@ const Penciller = function() {
     coordinateRect(x, y, 1, 1);
   };
 
-  const highlightValidSquares = (boundingBoxCoordinates, objects) => {
+  const highlightValidSquares = (boundingBoxCoordinates, objects, my) => {
     ctx.beginPath();
     coordinateRect(
       boundingBoxCoordinates.topLeft.x,
@@ -1305,13 +1305,13 @@ const Penciller = function() {
     ctx.fillStyle = "rgba(20, 20, 20, 0.2)";
     ctx.fill();
     highlightAroundBase(objects.my.base);
-    objects.my.walls.forEach(wall => {
+    my.walls.forEach(wall => {
       highlightAroundWall(wall);
     });
-    objects.my.turrets.forEach(turret => {
+    my.turrets.forEach(turret => {
       highlightAroundTurret(turret);
     });
-    objects.my.mines.forEach(mine => {
+    my.mines.forEach(mine => {
       highlightAroundMine(mine);
     });
   };

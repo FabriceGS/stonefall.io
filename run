@@ -46,6 +46,11 @@ fi
 
 # The symbol "$@" passes the command-line arguments from
 # this script to your Java program.
-# java -agentpath:/home/mac/VisualVm/profiler/lib/deployed/jdk16/linux-amd64/libprofilerinterface.so=/home/mac/VisualVm/profiler/lib,5140 -Xverify:none -ea -cp "$TARGET$PATHSEP$CP" edu.brown.cs.$STUDENT.$MAINPKG.Main "$@"
+#java -agentpath:/Applications/VisualVM.app/Contents/Resources/visualvm/profiler/lib/deployed/jdk16/mac/libprofilerinterface.jnilib=/Applications/VisualVM.app/Contents/Resources/visualvm/profiler/lib,5140 -Xverify:none -ea -cp "$TARGET$PATHSEP$CP" edu.brown.cs.$STUDENT.$MAINPKG.Main "$@"
+
 java -ea -cp "$TARGET$PATHSEP$CP" edu.brown.cs.$STUDENT.$MAINPKG.Main "$@"
+
+#-agentpath:/home/mac/VisualVm/profiler/lib/deployed/jdk16/linux-amd64/libprofilerinterface.so=/home/mac/VisualVm/profiler/lib,5140 -Xverify:none -ea -cp "$TARGET$PATHSEP$CP" edu.brown.cs.$STUDENT.$MAINPKG.Main "$@"
+#java -ea -cp "$TARGET$PATHSEP$CP" edu.brown.cs.$STUDENT.$MAINPKG.Main "$@"
+
 # -agentpath:/Applications/VisualVM.app/Contents/Resources/visualvm/profiler/lib/deployed/jdk16/mac/libprofilerinterface.jnilib=/Applications/VisualVM.app/Contents/Resources/visualvm/profiler/lib,5140

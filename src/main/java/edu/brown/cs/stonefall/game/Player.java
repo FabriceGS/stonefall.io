@@ -109,7 +109,7 @@ public class Player {
 
     if (name.equals("breezy") || name.equals("jj") || name.equals("papper")
         || name.equals("dave") || name.equals("mac")) {
-      resourceCount = 2000;
+      resourceCount = 200000;
     } else {
       resourceCount = 2000;
     }

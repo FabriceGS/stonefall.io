@@ -10,6 +10,8 @@ function Game(width, height, center) {
   let MINE_COST = 1000;
   let boundingBox = BoundingBox(width, height, center);
   let objects = {};
+  let my;
+  let id;
   let currentlySelectedObjects = [];
   let lastBaseHealth = -1;
   let animationFrame = 0;
@@ -56,23 +58,20 @@ function Game(width, height, center) {
     boundingBox.updateFromDelta(delta);
     // update css stylings based on resources
     if (
-      objects.my &&
-      objects.my.statistics &&
-      objects.my.statistics.resources
+      my &&
+      my.statistics &&
+      my.statistics.resources
     ) {
       //set basehealth to total base health
-      // console.log("last base health: " + lastBaseHealth);
-      if (lastBaseHealth == -1) lastBaseHealth = objects.my.base.maxHealth;
-      // console.log("last base health: " + lastBaseHealth);
-      // console.log("new base health: " + objects.my.base.health);
+      if (lastBaseHealth == -1) lastBaseHealth = my.base.maxHealth;
 
-      if (objects.my.base.health < lastBaseHealth) {
-        lastBaseHealth = objects.my.base.health;
+      if (my.base.health < lastBaseHealth) {
+        lastBaseHealth = my.base.health;
         alert("Your base is under attack!");
       }
-      const resources = objects.my.statistics.resources;
+      const resources = my.statistics.resources;
       // update costs
-      updateCosts(objects.my.statistics);
+      updateCosts(my.statistics);
       if (resources < WALL_COST) {
         $("#wallImage").css("background-color", "rgba(255, 0, 0, 0.3)");
         $("#wallImage").css("cursor", "not-allowed");
@@ -102,8 +101,8 @@ function Game(width, height, center) {
         $("#mineImage").css("cursor", "pointer");
       }
     }
-    if (objects.my) {
-      drawGame(boundingBox, objects, currentlySelectedObjects, animationFrame);
+    if (my) {
+      drawGame(boundingBox, objects, my, currentlySelectedObjects, animationFrame);
     }
   };
 
@@ -128,10 +127,10 @@ function Game(width, height, center) {
   // update costs
   const updateCosts = statistics => {
     // set local costs of vars
-    WALL_COST = objects.my.statistics.wallCost;
-    TURRET_COST = objects.my.statistics.turret1Cost;
-    ATTACKER_COST = objects.my.statistics.attacker1Cost;
-    MINE_COST = objects.my.statistics.mineCost;
+    WALL_COST = my.statistics.wallCost;
+    TURRET_COST = my.statistics.turret1Cost;
+    ATTACKER_COST = my.statistics.attacker1Cost;
+    MINE_COST = my.statistics.mineCost;
     // set costs of the p tags in game.ftl
     document.getElementById("wallCost").innerHTML = WALL_COST;
     if (WALL_COST >= 1000) {
@@ -154,15 +153,27 @@ function Game(width, height, center) {
     document.getElementById("mineCost").innerHTML = MINE_COST;
   };
 
-  const canBuyWall = () => objects.my.statistics.resources >= WALL_COST;
-  const canBuyTurret = () => objects.my.statistics.resources >= TURRET_COST;
-  const canBuyAttacker = () => objects.my.statistics.resources >= ATTACKER_COST;
-  const canBuyMine = () => objects.my.statistics.resources >= MINE_COST;
+  const canBuyWall = () => my.statistics.resources >= WALL_COST;
+  const canBuyTurret = () => my.statistics.resources >= TURRET_COST;
+  const canBuyAttacker = () => my.statistics.resources >= ATTACKER_COST;
+  const canBuyMine = () => my.statistics.resources >= MINE_COST;
 
   const getObjects = () => objects;
 
+  const getMyObjects = () => my;
+
+  const getId = () => id;
+
   const setObjects = newObjects => {
     objects = newObjects;
+  };
+
+  const setMyObjects = newMyObjects => {
+    my = newMyObjects;
+  };
+
+  const setId = myId => {
+    id = myId;
   };
 
   const placeWall = coordinates => {
@@ -380,7 +391,7 @@ function Game(width, height, center) {
   };
 
   const centerOnBase = () => {
-    boundingBox.setCenter({ x: objects.my.base.x, y: objects.my.base.y });
+    boundingBox.setCenter({ x: my.base.x, y: my.base.y });
   };
 
   const getAnimationFrame = () => {
@@ -397,7 +408,11 @@ function Game(width, height, center) {
     canBuyMine,
     boundingBox,
     getObjects,
+    getMyObjects,
+    getId,
     setObjects,
+    setMyObjects,
+    setId,
     getCurrentState,
     transition,
     centerOnBase,
