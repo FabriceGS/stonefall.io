@@ -60,18 +60,23 @@ public class SparkHandler {
     Spark.webSocket("/sockets", WebSockets.class);
 
     Spark.get("/", (req, res) -> {
+      System.out.println("user has reached landing page");
       Map<String, Object> variables = ImmutableMap.of("title", "Stonefall");
       return new ModelAndView(variables, "login.ftl");
     }, freeMarker);
     Spark.post("/", (req, res) -> {
+      System.out.println("user has input name");
       QueryParamsMap qm = req.queryMap();
       String name = qm.value("myName");
+      System.out.println("user name: " + name);
       if (WebSockets.isFull()) {
         Map<String, Object> variables = ImmutableMap.of("title", "Stonefall");
         return new ModelAndView(variables, "full.ftl");
       } else {
+        System.out.println("game is not full...");
         Map<String, Object> variables = ImmutableMap.of("title", "Stonefall",
             "Name", name, "isFull", WebSockets.isFull());
+        System.out.println("returning vars...");
         return new ModelAndView(variables, "main.ftl");
       }
 
@@ -107,6 +112,7 @@ public class SparkHandler {
   private static class FrontHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request req, Response res) {
+      System.out.println("landing page reached");
       Map<String, Object> variables = ImmutableMap.of("title", "Stonefall");
       return new ModelAndView(variables, "main.ftl");
     }

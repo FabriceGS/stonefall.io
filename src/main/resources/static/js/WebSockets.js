@@ -18,8 +18,8 @@ const WebSockets = function() {
     MINE: 3
   };
 
-  // const ip = "192.168.137.86:4567";
-  const ip = "localhost:4567";
+  const ip = "192.168.0.7:4567";
+  // const ip = "localhost:4567";
   let conn = new WebSocket("ws://" + ip + "/sockets");
   let id = -1;
 
@@ -41,9 +41,9 @@ const WebSockets = function() {
           sendInitialize();
           break;
         case MESSAGE_TYPE.UPDATE:
+          // console.log("payload received:", data.payload);
           //should definitely be setting our own id to whatever was sent to us
           id = data.id;
-          // console.log("payload...", data.payload);
           let my;
           data.payload.players.forEach(player => {
             if(player.id == id){
@@ -56,6 +56,9 @@ const WebSockets = function() {
             console.log("my base:", my.base);
             initialize(my.base);
           }
+          //tell backend where we're looking
+          let coords = game.getCoordinates();
+          sendCoords(coords.topLeft.x, coords.topLeft.y, coords.bottomRight.x, coords.bottomRight.y);
           game.setId(id);
           game.setObjects(data.payload);
           game.setMyObjects(my);
@@ -71,6 +74,22 @@ const WebSockets = function() {
           break;
       }
     };
+  };
+
+  const sendCoords = (x1,y1,x2,y2) => {
+    // there's a little bit of hackiness, we get the name from a hidden <h3> tag
+    conn.send(
+      JSON.stringify({
+        type: MESSAGE_TYPE.UPDATE,
+        payload: {
+          id: id,
+          x1: x1,
+          y1: y1,
+          x2: x2,
+          y2: y2
+        }
+      })
+    );
   };
 
   const sendInitialize = () => {
@@ -164,6 +183,7 @@ const WebSockets = function() {
     sendMineSpawn,
     sendWallsSell,
     sendTurretsSell,
-    sendMinesSell
+    sendMinesSell,
+    sendCoords
   };
 };

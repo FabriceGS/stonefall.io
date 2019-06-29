@@ -398,6 +398,10 @@ function Game(width, height, center) {
     return animationFrame;
   };
 
+  const getCoordinates = () => {
+    return boundingBox.getCoordinates();
+  }
+
   return {
     BOARD_HEIGHT,
     BOARD_WIDTH,
@@ -414,6 +418,7 @@ function Game(width, height, center) {
     setMyObjects,
     setId,
     getCurrentState,
+    getCoordinates,
     transition,
     centerOnBase,
     getAnimationFrame,

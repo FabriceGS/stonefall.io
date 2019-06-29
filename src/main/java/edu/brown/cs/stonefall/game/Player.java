@@ -46,6 +46,11 @@ public class Player {
   private int scaffoldIdNum;
   private int score;
   private int topScore;
+  //these represent the viewing window of the user on the frontend
+  private int topLX;
+  private int topLY;
+  private int bottomRX;
+  private int bottomRY;
 
   private Random random;
 
@@ -355,6 +360,29 @@ public class Player {
    */
   public boolean isDead() {
     return base.isDead();
+  }
+
+    /**
+   * Sets the player's viewing window.
+   *
+   * @param x1,y1,x1,y2
+   *          new resource count
+   */
+  public void setViewingWindow(int x1, int y1, int x2, int y2) {
+    topLX = x1;
+    topLY = y1;
+    bottomRX = x2;
+    bottomRY = y2;
+  }
+
+  /**
+   * Sets the player's viewing window.
+   *
+   * @param x1,y1,x1,y2
+   *          new resource count
+   */
+  public boolean inViewingWindow(int x, int y) {
+    return (x >= topLX-1) && (x<= bottomRX+1) && (y >= topLY-1) && (y <= bottomRY+1);
   }
 
   /**
