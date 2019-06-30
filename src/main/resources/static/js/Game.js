@@ -166,7 +166,6 @@ function Game(width, height, center) {
   const getId = () => id;
 
   const setObjects = newObjects => {
-    console.log(newObjects);
     objects = newObjects;
   };
 

@@ -29,6 +29,7 @@ public class Game {
   private Map<String, Player> players;
   private Map<String, GameState> gameStates;
   private Game game;
+  private GameState theOneTrueState;
   private Random random;
 
   private Map<String, Resource> resources;
@@ -42,6 +43,7 @@ public class Game {
    */
   public Game() {
     game = this;
+    theOneTrueState = null;
     players = new ConcurrentHashMap<>();
     gameStates = new ConcurrentHashMap<>();
     resources = new ConcurrentHashMap<>();
@@ -90,16 +92,22 @@ public class Game {
 
   private void updateGameStates() {
     for (Map.Entry<String, Player> player : players.entrySet()) {
-
-      // if player's gamestate already exists, update it.
-      if (gameStates.containsKey(player.getKey())) {
-        gameStates.get(player.getKey()).update();
-
-        // if player's gamestate doesn't exist yet, create it
-      } else {
-        GameState gs = new GameState(game, player.getValue());
-        gameStates.put(player.getKey(), gs);
+      if(theOneTrueState == null){
+        theOneTrueState = new GameState(game, player.getValue());
       }
+      theOneTrueState.update();
+      return;
+
+      // // if player's gamestate already exists, update it.
+      // if (gameStates.containsKey(player.getKey())) {
+      //   GameState gameStates.get(player.getKey()).update();
+      //   // if player's gamestate doesn't exist yet, create it
+      // } else {
+      //   GameState gs = new GameState(game, player.getValue());
+      //   gameStates.put(player.getKey(), gs);
+      // }
+      // //only keep one game state
+      // return;
     }
   }
 
@@ -147,6 +155,8 @@ public class Game {
    */
   public synchronized void addPlayer(Player player) {
     players.put(player.getId(), player);
+    //when a new player is added the game states have to be updated
+    this.updateGameStates();
   }
 
   /**
@@ -307,11 +317,32 @@ public class Game {
    *          The Player to retrieve the GameState of.
    * @return The GameState associated with a given Player.
    */
-  public GameState getPayload(Player player) {
-    if (!gameStates.containsKey(player.getId())) {
-      GameState gs = new GameState(game, player);
-      gameStates.put(player.getId(), gs);
+  public GameState getPayload() {
+    for (Map.Entry<String, Player> player : players.entrySet()) {
+      if(theOneTrueState == null){
+        theOneTrueState = new GameState(game, player.getValue());
+      }
+      return theOneTrueState;
     }
-    return gameStates.get(player.getId());
+    return theOneTrueState;
+    // for (Map.Entry<String, Player> player : players.entrySet()) {
+
+    //   // if player's gamestate already exists, update it.
+    //   if (gameStates.containsKey(player.getKey())) {
+    //     gameStates.get(player.getKey()).update();
+    //     // if player's gamestate doesn't exist yet, create it
+    //   } else {
+    //     GameState gs = new GameState(game, player.getValue());
+    //     gameStates.put(player.getKey(), gs);
+    //   }
+    //   //only keep one game state
+    //   return;
+    // }
+
+    // if (!gameStates.containsKey(player.getId())) {
+    //   GameState gs = new GameState(game, player);
+    //   gameStates.put(player.getId(), gs);
+    // }
+    // return gameStates.get(player.getId());
   }
 }

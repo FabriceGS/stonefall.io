@@ -16,6 +16,7 @@
 <body>
   <div id="main">
     <h1 id="serversFull" >Our servers are currently full. Please try again later. </h1>
+    <h2 id="seversFullNote" > Note: We're working on building multiple rooms so this doesn't happen again. </h2>
     <a class="button button-primary button-pill" href="/">Try again?</a>
   </div>
   <!-- Again, we're serving up the unminified source for clarity. -->

@@ -386,7 +386,8 @@ public class Player {
    *          new resource count
    */
   public boolean inViewingWindow(int x, int y) {
-    return (x >= topLX-1) && (x<= bottomRX+1) && (y >= topLY-1) && (y <= bottomRY+1);
+    // return (x >= topLX-1) && (x<= bottomRX+1) && (y >= topLY-1) && (y <= bottomRY+1);
+    return (x >= topLX) && (x<= bottomRX) && (y >= topLY) && (y <= bottomRY);
   }
 
   /**

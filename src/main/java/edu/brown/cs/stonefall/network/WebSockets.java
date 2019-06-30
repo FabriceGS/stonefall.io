@@ -250,11 +250,13 @@ public class WebSockets {
 
       //get the JSON translated game state
       //but we cut off the last curly bracket for optimization purposes
-      JsonObject JsonGameState = fillUpdatePayloadById(game.getPayload(thisPlayer), thisPlayer, Integer.parseInt(thisPlayer.getId().substring(3)));
-      String stringGameState = GSON.toJson(JsonGameState);
-      String circumcisedGameState = stringGameState.substring(0, stringGameState.length() - 1);
+      // JsonObject JsonGameState = fillUpdatePayloadById(game.getPayload(), thisPlayer, Integer.parseInt(thisPlayer.getId().substring(3)));
+      // String stringGameState = GSON.toJson(JsonGameState);
+      // String circumcisedGameState = stringGameState.substring(0, stringGameState.length() - 1);
       // call update session and tell the backend to update everything
-      updateSession(curId, circumcisedGameState);
+      // updateSession(curId, circumcisedGameState);
+      //this is a bad idea, it would be nice just to send to the one player but yolo
+      update();
     }
   }
 
@@ -348,7 +350,8 @@ public class WebSockets {
       String playerId = "/p/" + curEntry.getKey();
       if (game.playerExists(playerId)) {
         firstSeshId = curEntry.getKey();
-        firstState = game.getPayload(game.getPlayer(playerId));
+        firstState = game.getPayload();
+        // game.getPlayer(playerId)
         break;
       }
     }

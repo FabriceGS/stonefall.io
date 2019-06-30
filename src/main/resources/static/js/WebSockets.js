@@ -1,4 +1,6 @@
 const WebSockets = function() {
+  let consoleLogger = 0;
+
   const MESSAGE_TYPE = {
     CONNECT: 0,
     UPDATE: 1,
@@ -41,7 +43,8 @@ const WebSockets = function() {
           sendInitialize();
           break;
         case MESSAGE_TYPE.UPDATE:
-          // console.log("payload received:", data.payload);
+          if(consoleLogger % 80 == 0){ console.log("payload received:", data.payload);}
+          consoleLogger ++;
           //should definitely be setting our own id to whatever was sent to us
           id = data.id;
           let my;
@@ -54,7 +57,7 @@ const WebSockets = function() {
           if (!initialized) {
             initialized = true;
             // console.log("my objects: ", my);
-            // console.log("my base:", my.base);
+            console.log("my base:", my.base);
             initialize(my.base);
           }
           //tell backend where we're looking
