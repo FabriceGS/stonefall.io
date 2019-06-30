@@ -92,45 +92,53 @@ const drawGame = (
   switch (game.getCurrentState()) {
     // if the game is selecting objects, draw the selected objects
     case "selectingWalls":
-      my.walls.forEach(wall => {
-        if (
-          currentlySelectedObjects.map(object => object.id).includes(wall.id)
-        ) {
-          penciller.pencilSelectedWall(wall);
-        }
-      });
-      penciller.pencilBuildingContextMenu(my.base.color);
+      if(my.walls){
+        my.walls.forEach(wall => {
+          if (
+            currentlySelectedObjects.map(object => object.id).includes(wall.id)
+          ) {
+            penciller.pencilSelectedWall(wall);
+          }
+        });
+        penciller.pencilBuildingContextMenu(my.base.color);
+      }
       break;
     case "selectingTurrets":
-      my.turrets.forEach(turret => {
-        if (
-          currentlySelectedObjects.map(object => object.id).includes(turret.id)
-        ) {
-          penciller.pencilSelectedTurret(turret);
-        }
-      });
-      penciller.pencilBuildingContextMenu(my.base.color);
+      if(my.turrets){
+        my.turrets.forEach(turret => {
+          if (
+            currentlySelectedObjects.map(object => object.id).includes(turret.id)
+          ) {
+            penciller.pencilSelectedTurret(turret);
+          }
+        });
+        penciller.pencilBuildingContextMenu(my.base.color);
+      }
       break;
     case "selectingAttackers":
-      my.attackers.forEach(attacker => {
-        if (
-          currentlySelectedObjects
-            .map(object => object.id)
-            .includes(attacker.id)
-        ) {
-          penciller.pencilSelectedAttacker(attacker, animationFrame);
-        }
-      });
+      if(my.attackers){
+        my.attackers.forEach(attacker => {
+          if (
+            currentlySelectedObjects
+              .map(object => object.id)
+              .includes(attacker.id)
+          ) {
+            penciller.pencilSelectedAttacker(attacker, animationFrame);
+          }
+        });
+      }
       break;
     case "selectingMines":
-      my.mines.forEach(mine => {
-        if (
-          currentlySelectedObjects.map(object => object.id).includes(mine.id)
-        ) {
-          penciller.pencilSelectedMine(mine);
-        }
-      });
-      penciller.pencilBuildingContextMenu(my.base.color);
+      if(my.mines){
+        my.mines.forEach(mine => {
+          if (
+            currentlySelectedObjects.map(object => object.id).includes(mine.id)
+          ) {
+            penciller.pencilSelectedMine(mine);
+          }
+        });
+        penciller.pencilBuildingContextMenu(my.base.color);
+      }
       break;
     // if the game is selecting a square, draw the selection
     case "selectingWallSquare":
@@ -208,27 +216,34 @@ const highlightValidSquares = (boundingBoxCoordinates, objects, my) => {
   let x;
   let y;
   validSquares = { ...validSquares, ...validSquaresFrom(my.base) };
-  my.walls.forEach(wall => {
-    const wallValidSquares = validSquaresFrom(wall);
-    const wallValidSquaresEntries = Object.entries(wallValidSquares);
-    wallValidSquaresEntries.forEach(entry => {
-      validSquares[entry[0]] = entry[1];
+  if(my.walls){
+    my.walls.forEach(wall => {
+      const wallValidSquares = validSquaresFrom(wall);
+      const wallValidSquaresEntries = Object.entries(wallValidSquares);
+      wallValidSquaresEntries.forEach(entry => {
+        validSquares[entry[0]] = entry[1];
+      });
     });
-  });
-  my.turrets.forEach(turret => {
-    const turretValidSquares = validSquaresFrom(turret);
-    const turretValidSquaresEntries = Object.entries(turretValidSquares);
-    turretValidSquaresEntries.forEach(entry => {
-      validSquares[entry[0]] = entry[1];
+  }
+  if(my.turrets){
+    my.turrets.forEach(turret => {
+      const turretValidSquares = validSquaresFrom(turret);
+      const turretValidSquaresEntries = Object.entries(turretValidSquares);
+      turretValidSquaresEntries.forEach(entry => {
+        validSquares[entry[0]] = entry[1];
+      });
     });
-  });
-  my.mines.forEach(mine => {
-    const mineValidSquares = validSquaresFrom(mine);
-    const mineValidSquaresEntries = Object.entries(mineValidSquares);
-    mineValidSquaresEntries.forEach(entry => {
-      validSquares[entry[0]] = entry[1];
+  }
+  if(my.mines){
+    my.mines.forEach(mine => {
+      const mineValidSquares = validSquaresFrom(mine);
+      const mineValidSquaresEntries = Object.entries(mineValidSquares);
+      mineValidSquaresEntries.forEach(entry => {
+        validSquares[entry[0]] = entry[1];
+      });
     });
-  });
+  }
+
   singletonCanvas.getCtx().beginPath();
   for (
     let i = Math.floor(boundingBoxCoordinates.topLeft.x);

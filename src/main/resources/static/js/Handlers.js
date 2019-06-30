@@ -91,38 +91,47 @@ const Handlers = function() {
   };
 
   const check = coordinates => {
-    game.getMyObjects().attackers.forEach(attacker => {
-      if (moveChecker(attacker, coordinates)) {
-        if (!interface.shiftdown) {
-          game.transition("ESCAPE");
+    let myBobjects = game.getMyObjects();
+    if(myBobjects.attackers){
+      myBobjects.attackers.forEach(attacker => {
+        if (moveChecker(attacker, coordinates)) {
+          if (!interface.shiftdown) {
+            game.transition("ESCAPE");
+          }
+          game.transition("SELECT_ATTACKERS", attacker);
         }
-        game.transition("SELECT_ATTACKERS", attacker);
-      }
-    });
-    game.getMyObjects().walls.forEach(wall => {
-      if (coordinates.x === wall.x && coordinates.y === wall.y) {
-        if (!interface.shiftdown) {
-          game.transition("ESCAPE");
+      });
+    }
+    if(myBobjects.walls){
+      myBobjects.walls.forEach(wall => {
+        if (coordinates.x === wall.x && coordinates.y === wall.y) {
+          if (!interface.shiftdown) {
+            game.transition("ESCAPE");
+          }
+          game.transition("SELECT_WALLS", wall);
         }
-        game.transition("SELECT_WALLS", wall);
-      }
-    });
-    game.getMyObjects().turrets.forEach(turret => {
-      if (coordinates.x === turret.x && coordinates.y === turret.y) {
-        if (!interface.shiftdown) {
-          game.transition("ESCAPE");
+      });
+    }
+    if(myBobjects.turrets){
+      myBobjects.turrets.forEach(turret => {
+        if (coordinates.x === turret.x && coordinates.y === turret.y) {
+          if (!interface.shiftdown) {
+            game.transition("ESCAPE");
+          }
+          game.transition("SELECT_TURRETS", turret);
         }
-        game.transition("SELECT_TURRETS", turret);
-      }
-    });
-    game.getMyObjects().mines.forEach(mine => {
-      if (coordinates.x === mine.x && coordinates.y === mine.y) {
-        if (!interface.shiftdown) {
-          game.transition("ESCAPE");
+      });
+    }
+    if(myBobjects.mines){
+      myBobjects.mines.forEach(mine => {
+        if (coordinates.x === mine.x && coordinates.y === mine.y) {
+          if (!interface.shiftdown) {
+            game.transition("ESCAPE");
+          }
+          game.transition("SELECT_MINES", mine);
         }
-        game.transition("SELECT_MINES", mine);
-      }
-    });
+      });
+    }
   };
 
   const mousedownHandler = e => {

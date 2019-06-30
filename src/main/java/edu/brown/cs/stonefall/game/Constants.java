@@ -61,7 +61,7 @@ public final class Constants {
 
   static final int LEADERBOARD_SIZE = 10;
 
-  public static final int MAX_PLAYERS = 10;
+  public static final int MAX_PLAYERS = 100;
 
   private Constants() {
   }

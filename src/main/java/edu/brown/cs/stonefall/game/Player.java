@@ -108,6 +108,10 @@ public class Player {
     }
 
     base = new Base(Grid.getGridBlock(x, y).get());
+    topLX = x - 10;
+    topLY = x - 10;
+    bottomRX = x + 10;
+    bottomRY = x + 10;
 
     score = 0;
     topScore = 0;

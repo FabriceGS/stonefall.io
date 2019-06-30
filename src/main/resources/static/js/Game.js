@@ -62,6 +62,7 @@ function Game(width, height, center) {
       my.statistics &&
       my.statistics.resources
     ) {
+      
       //set basehealth to total base health
       if (lastBaseHealth == -1) lastBaseHealth = my.base.maxHealth;
 
@@ -165,6 +166,7 @@ function Game(width, height, center) {
   const getId = () => id;
 
   const setObjects = newObjects => {
+    console.log(newObjects);
     objects = newObjects;
   };
 

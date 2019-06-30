@@ -53,7 +53,8 @@ const WebSockets = function() {
           
           if (!initialized) {
             initialized = true;
-            console.log("my base:", my.base);
+            // console.log("my objects: ", my);
+            // console.log("my base:", my.base);
             initialize(my.base);
           }
           //tell backend where we're looking
