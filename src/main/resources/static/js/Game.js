@@ -8,6 +8,7 @@ function Game(width, height, center) {
   let TURRET_COST = 500;
   let ATTACKER_COST = 250;
   let MINE_COST = 1000;
+  const BASE_MAX_HEALTH = 20000;
   let boundingBox = BoundingBox(width, height, center);
   let objects = {};
   let my;
@@ -64,11 +65,13 @@ function Game(width, height, center) {
     ) {
       
       //set basehealth to total base health
-      if (lastBaseHealth == -1) lastBaseHealth = my.base.maxHealth;
+      if (lastBaseHealth == -1) lastBaseHealth = BASE_MAX_HEALTH;
 
-      if (my.base.health < lastBaseHealth) {
-        lastBaseHealth = my.base.health;
-        alert("Your base is under attack!");
+      if(my.base.health){
+        if (my.base.health < lastBaseHealth) {
+          lastBaseHealth = my.base.health;
+          alert("Your base is under attack!");
+        }
       }
       const resources = my.statistics.resources;
       // update costs

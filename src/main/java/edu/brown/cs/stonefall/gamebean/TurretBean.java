@@ -3,6 +3,10 @@ package edu.brown.cs.stonefall.gamebean;
 import edu.brown.cs.stonefall.game.Constants;
 import edu.brown.cs.stonefall.game.Player;
 import edu.brown.cs.stonefall.pathing.Direction;
+import edu.brown.cs.stonefall.interfaces.Killable;
+import edu.brown.cs.stonefall.interfaces.Attacker;
+import java.util.Optional;
+
 
 /**
  * Turret Bean object which is used to store and send information to the
@@ -47,10 +51,15 @@ public class TurretBean {
     if (attackStatus) {
       targetX = player.getTurrets().get(turretId).getTarget().get().getX();
       targetY = player.getTurrets().get(turretId).getTarget().get().getY();
-      targetDirection = player.getTurrets().get(turretId).getTarget().get()
-          .getDirection();
-      targetRatio = player.getTurrets().get(turretId).getTarget().get()
-          .getMotionRatio();
+      Killable target = player.getTurrets().get(turretId).getTarget().get();
+      if(target instanceof Attacker){
+        targetDirection = ((Attacker) target).getDirection();
+        targetRatio = ((Attacker) target).getMotionRatio();
+      } else {
+        targetDirection = Direction.N;
+        targetRatio = 0;
+      }
+
     }
   }
 

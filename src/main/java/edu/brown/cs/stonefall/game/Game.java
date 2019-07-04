@@ -254,8 +254,7 @@ public class Game {
           attacker.getBlock(), target) && target.isFull()
           && target.getEntity() instanceof Killable
           && !(target.getEntity() instanceof Resource)) {
-        attacker
-            .setDirection(Direction.findDirection(attacker.getBlock(), target));
+        attacker.setDirection(Direction.findDirection(attacker.getBlock(), target));
         attacker.setTarget(Optional.of((Killable) target.getEntity()));
         return;
       }

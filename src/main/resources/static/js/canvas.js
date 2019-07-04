@@ -34,7 +34,7 @@ const drawGame = (
         // draw my walls
         player.walls.forEach(wall => {
           if (boundingBox.contains(wall)) {
-            penciller.pencilWall(wall);
+            penciller.pencilWall(wall, player.color, isMe);
           }
         });
       }
@@ -42,7 +42,7 @@ const drawGame = (
         // draw my turrets
         player.turrets.forEach(turret => {
           if (boundingBox.contains(turret)) {
-            penciller.pencilTurret(turret, isMe);
+            penciller.pencilTurret(turret, player.color, isMe);
           }
         });
       }
@@ -50,7 +50,7 @@ const drawGame = (
         // draw my attackers
         player.attackers.forEach(attacker => {
           if (boundingBox.contains(attacker)) {
-            penciller.pencilAttacker(attacker, isMe, animationFrame);
+            penciller.pencilAttacker(attacker, player.color, animationFrame);
           }
         });
       }
@@ -58,7 +58,7 @@ const drawGame = (
         // draw my mines
         player.mines.forEach(mine => {
           if (boundingBox.contains(mine)) {
-            penciller.pencilMine(mine, isMe);
+            penciller.pencilMine(mine, player.color, isMe);
           }
         });
       }
@@ -66,13 +66,13 @@ const drawGame = (
         // draw my scaffoldings
         player.scaffoldings.forEach(scaffolding => {
           if (boundingBox.contains(scaffolding)) {
-            penciller.pencilScaffolding(scaffolding, isMe);
+            penciller.pencilScaffolding(scaffolding, player.color);
           }
         });
       }
       if (player.base) {
         if (boundingBox.contains(player.base)) {
-          penciller.pencilBase(player.base, isMe);
+          penciller.pencilBase(player.base, player.color, isMe);
         }
       }
     }
@@ -97,10 +97,10 @@ const drawGame = (
           if (
             currentlySelectedObjects.map(object => object.id).includes(wall.id)
           ) {
-            penciller.pencilSelectedWall(wall);
+            penciller.pencilSelectedWall(wall, my.color);
           }
         });
-        penciller.pencilBuildingContextMenu(my.base.color);
+        penciller.pencilBuildingContextMenu(my.color);
       }
       break;
     case "selectingTurrets":
@@ -109,10 +109,10 @@ const drawGame = (
           if (
             currentlySelectedObjects.map(object => object.id).includes(turret.id)
           ) {
-            penciller.pencilSelectedTurret(turret);
+            penciller.pencilSelectedTurret(turret, my.color);
           }
         });
-        penciller.pencilBuildingContextMenu(my.base.color);
+        penciller.pencilBuildingContextMenu(my.color);
       }
       break;
     case "selectingAttackers":
@@ -123,7 +123,7 @@ const drawGame = (
               .map(object => object.id)
               .includes(attacker.id)
           ) {
-            penciller.pencilSelectedAttacker(attacker, animationFrame);
+            penciller.pencilSelectedAttacker(attacker, my.color, animationFrame);
           }
         });
       }
@@ -134,10 +134,10 @@ const drawGame = (
           if (
             currentlySelectedObjects.map(object => object.id).includes(mine.id)
           ) {
-            penciller.pencilSelectedMine(mine);
+            penciller.pencilSelectedMine(mine, my.color);
           }
         });
-        penciller.pencilBuildingContextMenu(my.base.color);
+        penciller.pencilBuildingContextMenu(my.color);
       }
       break;
     // if the game is selecting a square, draw the selection
@@ -203,7 +203,7 @@ const drawGame = (
   if (my && my.statistics) {
     penciller.pencilHud({
       ...my.statistics,
-      color: my.base.color,
+      color: my.color,
       leaderboard: objects.leaderboard
     });
   }

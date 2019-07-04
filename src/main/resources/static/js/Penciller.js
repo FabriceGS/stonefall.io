@@ -1,4 +1,13 @@
 const Penciller = function() {
+  const MAX_HEALTH = {
+    ATTACKER: 3000,
+    MINE: 2000,
+    TURRET: 500,
+    WALL: 4000,
+    BASE: 20000,
+    RESOURCE: 5000,
+  };
+
   let colorScheme = {
     background: "#80AF49",
     grid: "#5D7F35",
@@ -489,7 +498,7 @@ const Penciller = function() {
     ctx.stroke();
   };
 
-  const pencilBase = (base, belongsToMe) => {
+  const pencilBase = (base, color, belongsToMe) => {
     ctx.beginPath();
     coordinateBlock(base.x, base.y);
     ctx.closePath();
@@ -497,7 +506,7 @@ const Penciller = function() {
     ctx.lineWidth = 3;
     ctx.stroke();
     ctx.lineWidth = 1;
-    ctx.fillStyle = base.color;
+    ctx.fillStyle = color;
     ctx.fill();
     //draw heart if my base
     ctx.beginPath();
@@ -511,7 +520,7 @@ const Penciller = function() {
       ctx.fillStyle = colorScheme.darkOutline;
     }
     ctx.fill();
-    pencilHealth(base);
+    pencilHealth(base, MAX_HEALTH.BASE);
     ctx.textAlign = "center";
     const textPixel = pixelOf(base.x + 0.5, base.y + 1.6);
     ctx.fillStyle = colorScheme.white;
@@ -520,11 +529,11 @@ const Penciller = function() {
     ctx.textAlign = "left";
   };
 
-  const pencilWall = wall => {
+  const pencilWall = (wall, color) => {
     ctx.beginPath();
     coordinateBlock(wall.x, wall.y);
     ctx.closePath();
-    ctx.fillStyle = wall.color;
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.lineWidth = 2;
     ctx.strokeStyle = colorScheme.darkOutline;
@@ -543,15 +552,15 @@ const Penciller = function() {
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.lineWidth = 1;
-    pencilHealth(wall);
+    pencilHealth(wall, MAX_HEALTH.WALL);
   };
 
-  const pencilSelectedWall = wall => {
+  const pencilSelectedWall = (wall, color) => {
     // draw the middle lines
     ctx.beginPath();
     coordinateBlock(wall.x, wall.y);
     ctx.closePath();
-    ctx.fillStyle = wall.color;
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.strokeStyle = colorScheme.darkOutline;
     const topLeft = pixelOf(wall.x + 0.15, wall.y + 0.15);
@@ -572,15 +581,15 @@ const Penciller = function() {
     ctx.strokeStyle = colorScheme.selectionOutline;
     ctx.stroke();
     ctx.lineWidth = 1;
-    pencilHealth(wall);
+    pencilHealth(wall, MAX_HEALTH.WALL);
   };
 
-  const pencilTurret = (turret, belongsToMe) => {
+  const pencilTurret = (turret, color, belongsToMe) => {
     // draw the block
     ctx.beginPath();
     coordinateBlock(turret.x, turret.y, 1, 1);
     ctx.closePath();
-    ctx.fillStyle = turret.color;
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.lineWidth = 2;
     ctx.strokeStyle = colorScheme.darkOutline;
@@ -643,15 +652,15 @@ const Penciller = function() {
       ctx.lineWidth = 1;
       ctx.stroke();
     }
-    pencilHealth(turret);
+    pencilHealth(turret, MAX_HEALTH.TURRET);
   };
 
-  const pencilSelectedTurret = (turret, belongsToMe) => {
+  const pencilSelectedTurret = (turret, color, belongsToMe) => {
     // draw the block
     ctx.beginPath();
     coordinateBlock(turret.x, turret.y);
     ctx.closePath();
-    ctx.fillStyle = turret.color;
+    ctx.fillStyle = color;
     ctx.fill();
 
     // draw the gun base
@@ -698,10 +707,10 @@ const Penciller = function() {
     ctx.lineWidth = 2;
     ctx.stroke();
     ctx.lineWidth = 1;
-    pencilHealth(turret);
+    pencilHealth(turret, MAX_HEALTH.TURRET);
   };
 
-  const pencilAttacker = (attacker, belongsToMe, animationFrame) => {
+  const pencilAttacker = (attacker, color, animationFrame) => {
     ctx.beginPath();
     if (attacker.movement) {
       coordinateTriangle(
@@ -717,7 +726,7 @@ const Penciller = function() {
     ctx.closePath();
     ctx.strokeStyle = colorScheme.outline;
     ctx.stroke();
-    ctx.fillStyle = attacker.color;
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.strokeStyle = colorScheme.darkOutline;
     ctx.lineWidth = 2;
@@ -741,10 +750,10 @@ const Penciller = function() {
       ctx.resetTransform();
     }
 
-    pencilAttackerHealth(attacker);
+    pencilAttackerHealth(attacker, MAX_HEALTH.ATTACKER);
   };
 
-  const pencilSelectedAttacker = (attacker, belongsToMe, animationFrame) => {
+  const pencilSelectedAttacker = (attacker, color, animationFrame) => {
     ctx.beginPath();
     if (attacker.movement) {
       coordinateTriangle(
@@ -759,7 +768,7 @@ const Penciller = function() {
     ctx.closePath();
     ctx.strokeStyle = colorScheme.outline;
     ctx.stroke();
-    ctx.fillStyle = attacker.color;
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.strokeStyle = colorScheme.selectionOutline;
     ctx.lineWidth = 2;
@@ -783,15 +792,15 @@ const Penciller = function() {
       ctx.resetTransform();
     }
 
-    pencilAttackerHealth(attacker);
+    pencilAttackerHealth(attacker, MAX_HEALTH.ATTACKER);
   };
 
-  const pencilMine = (mine, belongsToMe) => {
+  const pencilMine = (mine, color) => {
     // draw the block
     ctx.beginPath();
     coordinateBlock(mine.x, mine.y);
     ctx.closePath();
-    ctx.fillStyle = mine.color;
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.strokeStyle = colorScheme.darkOutline;
     ctx.lineWidth = 2;
@@ -819,15 +828,15 @@ const Penciller = function() {
     ctx.closePath();
     ctx.stroke();
     ctx.lineWidth = 1;
-    pencilHealth(mine);
+    pencilHealth(mine, MAX_HEALTH.MINE);
   };
 
-  const pencilSelectedMine = (mine, belongsToMe) => {
+  const pencilSelectedMine = (mine, color) => {
     // draw the block
     ctx.beginPath();
     coordinateBlock(mine.x, mine.y, 1, 1);
     ctx.closePath();
-    ctx.fillStyle = mine.color;
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.strokeStyle = colorScheme.selectionOutline;
     ctx.lineWidth = 2;
@@ -857,7 +866,7 @@ const Penciller = function() {
     ctx.stroke();
     ctx.lineWidth = 1;
     coordinateRect(mine.x, mine.y, 1, 1);
-    pencilHealth(mine);
+    pencilHealth(mine, MAX_HEALTH.MINE);
   };
 
   const pencilResource = resource => {
@@ -889,10 +898,10 @@ const Penciller = function() {
     ctx.closePath();
     ctx.fillStyle = colorScheme.resource.speck;
     ctx.fill();
-    pencilHealth(resource);
+    pencilHealth(resource, MAX_HEALTH.RESOURCE);
   };
 
-  const pencilHud = hud => {
+  const pencilHud = (hud, leaderboard) => {
     ctx.globalAlpha = 0.5;
 
     // top left corner hud
@@ -1147,7 +1156,7 @@ const Penciller = function() {
     }
   };
 
-  const pencilScaffolding = scaffolding => {
+  const pencilScaffolding = (scaffolding, color) => {
     // draw the lines
     const box1TopLeft = pixelOf(scaffolding.x + 0.25, scaffolding.y + 0.31);
     const box1TopRight = pixelOf(scaffolding.x + 0.7, scaffolding.y + 0.25);
@@ -1170,7 +1179,7 @@ const Penciller = function() {
     ctx.lineTo(box1BottomLeft.x, box1BottomLeft.y);
     ctx.lineTo(box1TopLeft.x, box1TopLeft.y);
     ctx.closePath();
-    ctx.fillStyle = scaffolding.color;
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.lineWidth = 2;
     ctx.strokeStyle = colorScheme.darkOutline;
@@ -1184,7 +1193,7 @@ const Penciller = function() {
     ctx.lineTo(box2BottomLeft.x, box2BottomLeft.y);
     ctx.lineTo(box2TopLeft.x, box2TopLeft.y);
     ctx.closePath();
-    ctx.fillStyle = scaffolding.color;
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.lineWidth = 2;
     ctx.strokeStyle = colorScheme.darkOutline;
@@ -1198,14 +1207,14 @@ const Penciller = function() {
     ctx.lineTo(box3BottomLeft.x, box3BottomLeft.y);
     ctx.lineTo(box3TopLeft.x, box3TopLeft.y);
     ctx.closePath();
-    ctx.fillStyle = scaffolding.color;
+    ctx.fillStyle = color;
     ctx.fill();
     ctx.lineWidth = 2;
     ctx.strokeStyle = colorScheme.darkOutline;
     ctx.stroke();
 
     ctx.lineWidth = 1;
-    pencilHealth(scaffolding);
+    pencilHealth(scaffolding, scaffolding.maxHealth);
   };
 
   const pencilBuildingContextMenu = color => {
@@ -1221,19 +1230,21 @@ const Penciller = function() {
     ctx.lineWidth = 1;
   };
 
-  const pencilHealth = object => {
-    if (object.health != object.maxHealth) {
+  const pencilHealth = (object, maxHealth) => {
+    // console.log("object", object);    
+    // maxHealth = 
+    if (object.health) {
       // pencil the health
       const topLeftPixel = pixelOf(object.x, object.y + 0.9);
       const topRightBarPixel = pixelOf(object.x + 1, object.y + 0.9);
       const topRightRemainingPixel = pixelOf(
-        object.x + object.health / object.maxHealth,
+        object.x + object.health / maxHealth,
         object.y + 0.9
       );
       const bottomLeftPixel = pixelOf(object.x, object.y + 1);
       const bottomRightBarPixel = pixelOf(object.x + 1, object.y + 1);
       const bottomRightRemainingPixel = pixelOf(
-        object.x + object.health / object.maxHealth,
+        object.x + object.health / maxHealth,
         object.y + 1
       );
       ctx.beginPath();
@@ -1255,19 +1266,19 @@ const Penciller = function() {
     }
   };
 
-  const pencilAttackerHealth = attacker => {
-    if (attacker.health != attacker.maxHealth) {
+  const pencilAttackerHealth = (attacker, maxHealth) => {
+    if (attacker.health) {
       // pencil the health
       const topLeftPixel = pixelOf(attacker.x, attacker.y + 0.9);
       const topRightBarPixel = pixelOf(attacker.x + 1, attacker.y + 0.9);
       const topRightRemainingPixel = pixelOf(
-        attacker.x + attacker.health / attacker.maxHealth,
+        attacker.x + attacker.health / maxHealth,
         attacker.y + 0.9
       );
       const bottomLeftPixel = pixelOf(attacker.x, attacker.y + 1);
       const bottomRightBarPixel = pixelOf(attacker.x + 1, attacker.y + 1);
       const bottomRightRemainingPixel = pixelOf(
-        attacker.x + attacker.health / attacker.maxHealth,
+        attacker.x + attacker.health / maxHealth,
         attacker.y + 1
       );
       ctx.beginPath();
@@ -1304,19 +1315,19 @@ const Penciller = function() {
     ctx.closePath();
     ctx.fillStyle = "rgba(20, 20, 20, 0.2)";
     ctx.fill();
-    highlightAroundBase(objects.my.base);
+    highlightAroundBase(objects.my.base, my.color);
     my.walls.forEach(wall => {
-      highlightAroundWall(wall);
+      highlightAroundWall(wall, my.color);
     });
     my.turrets.forEach(turret => {
-      highlightAroundTurret(turret);
+      highlightAroundTurret(turret, my.color);
     });
     my.mines.forEach(mine => {
-      highlightAroundMine(mine);
+      highlightAroundMine(mine, my.color);
     });
   };
 
-  const highlightAround = object => {
+  const highlightAround = (object, color) => {
     // draw the grass around the object
     ctx.beginPath();
     coordinateRect(
@@ -1364,24 +1375,24 @@ const Penciller = function() {
     ctx.stroke();
   };
 
-  const highlightAroundBase = base => {
+  const highlightAroundBase = (base, color) => {
     highlightAround(base);
-    pencilBase(base, true);
+    pencilBase(base, color, true);
   };
 
-  const highlightAroundWall = wall => {
+  const highlightAroundWall = (wall, color) => {
     highlightAround(wall);
-    pencilWall(wall, true);
+    pencilWall(wall, color, true);
   };
 
-  const highlightAroundTurret = turret => {
+  const highlightAroundTurret = (turret, color) => {
     highlightAround(turret);
-    pencilTurret(turret, true);
+    pencilTurret(turret, color, true);
   };
 
-  const highlightAroundMine = mine => {
+  const highlightAroundMine = (mine, color) => {
     highlightAround(mine);
-    pencilMine(mine, true);
+    pencilMine(mine, color, true);
   };
 
   return {

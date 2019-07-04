@@ -117,8 +117,27 @@ public final class Grid {
         && Math.abs(source.getY() - target.getY()) <= n;
   }
 
+  private static Optional<Killable> getAttackableInRange(
+      GridBlock block, int range) {
+    int offset = 1;
+    while (offset <= range) {
+      for (int i = -offset; i < 1 + offset; i++) {
+        for (int j = -offset; j < 1 + offset; j++) {
+          Optional<GridBlock> target =
+              Grid.getGridBlock(block.getX() + i, block.getY() + j);
+          if (target.isPresent() && target.get().isChargeable(range)) {
+            return Optional.of((Killable) target.get().getEntity());
+          }
+        }
+      }
+      offset++;
+    }
+    return Optional.empty();
+  }
+
   private static Optional<Killable> getKillableInRange(
       GridBlock block, int range) {
+    System.out.println("block" + block.getEntity());
     int offset = 1;
     while (offset <= range) {
       for (int i = -offset; i < 1 + offset; i++) {
@@ -140,8 +159,7 @@ public final class Grid {
     while (offset < 3) {
       for (int i = -offset; i < 1 + offset; i++) {
         for (int j = -offset; j < 1 + offset; j++) {
-          Optional<GridBlock> target =
-              Grid.getGridBlock(block.getX() + i, block.getY() + j);
+          Optional<GridBlock> target = Grid.getGridBlock(block.getX() + i, block.getY() + j);
           if (target.isPresent() && target.get().isFull()) {
             return target.get();
           }

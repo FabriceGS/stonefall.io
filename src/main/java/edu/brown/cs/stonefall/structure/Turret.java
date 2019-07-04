@@ -20,7 +20,7 @@ public class Turret implements Killable {
   private GridBlock block;
   private boolean alreadyRewarded;
   private boolean attackStatus;
-  private Optional<Attacker> target;
+  private Optional<Killable> target;
 
   /**
    * Constructor for a turret, instantiates it with its default characteristics
@@ -86,7 +86,7 @@ public class Turret implements Killable {
    *
    * @return target
    */
-  public Optional<Attacker> getTarget() {
+  public Optional<Killable> getTarget() {
     return target;
   }
 
@@ -96,7 +96,7 @@ public class Turret implements Killable {
    * @param newTarget
    *          new target of turret
    */
-  public void setTarget(Optional<Attacker> newTarget) {
+  public void setTarget(Optional<Killable> newTarget) {
     target = newTarget;
   }
 

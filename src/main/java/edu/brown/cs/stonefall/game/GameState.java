@@ -10,6 +10,7 @@ import java.util.PriorityQueue;
 
 import com.google.common.collect.ImmutableList;
 
+import edu.brown.cs.stonefall.game.GridTuple;
 import edu.brown.cs.stonefall.gamebean.AttackerBean;
 import edu.brown.cs.stonefall.gamebean.BaseBean;
 import edu.brown.cs.stonefall.gamebean.MineBean;
@@ -18,7 +19,6 @@ import edu.brown.cs.stonefall.gamebean.ResourceBean;
 import edu.brown.cs.stonefall.gamebean.ScaffoldBean;
 import edu.brown.cs.stonefall.gamebean.TurretBean;
 import edu.brown.cs.stonefall.gamebean.WallBean;
-import edu.brown.cs.stonefall.interfaces.Attacker;
 import edu.brown.cs.stonefall.map.Grid;
 import edu.brown.cs.stonefall.network.WebSockets;
 import edu.brown.cs.stonefall.structure.Mine;
@@ -26,6 +26,12 @@ import edu.brown.cs.stonefall.structure.Resource;
 import edu.brown.cs.stonefall.structure.Scaffold;
 import edu.brown.cs.stonefall.structure.Turret;
 import edu.brown.cs.stonefall.structure.Wall;
+import edu.brown.cs.stonefall.structure.Base;
+import edu.brown.cs.stonefall.interfaces.Killable;
+import edu.brown.cs.stonefall.interfaces.Entity;
+import edu.brown.cs.stonefall.interfaces.Attacker;
+import edu.brown.cs.stonefall.pathing.Direction;
+
 
 /**
  * A class representing the state of the Game class for one Player.
@@ -59,6 +65,9 @@ public class GameState {
 
   private List<ResourceBean> resources;
 
+  private GridTuple[][] prevGrid; 
+  private GridTuple[][] nextGrid; 
+
   /**
    * Constructs a GameState in the specified Game, for the specified Player.
    *
@@ -88,17 +97,47 @@ public class GameState {
     myScaffolds = new ArrayList<>();
     enemyScaffolds = new ArrayList<>();
 
+    myBase = null; 
     enemyBases = new ArrayList<>();
 
     resources = new ArrayList<>();
 
+    nextGrid = new GridTuple[Constants.BOARD_WIDTH][Constants.BOARD_HEIGHT]; 
+
+
     update();
+  }
+
+  /**
+   * Updates all Entities for this GameState, faster
+   * only noting changes to the game state, instead of iterating over the whole thing
+   */
+  public synchronized void fastUpdate() {
+    //update grids
+    prevGrid = nextGrid;
+    nextGrid = new GridTuple[Constants.BOARD_WIDTH][Constants.BOARD_HEIGHT]; 
+
+    //new object lists
+    updateStats();
+    updateBases();
+    updateResources();
+    updateWalls();
+    updateScaffolds();
+    updateAttackers();
+    updateTurrets();
+    updateMines();
+    updateLeaders();
   }
 
   /**
    * Updates all Entities for this GameState.
    */
   public synchronized void update() {
+    //update grids
+    prevGrid = nextGrid;
+    nextGrid = new GridTuple[Constants.BOARD_WIDTH][Constants.BOARD_HEIGHT]; 
+
+    //new object lists
     myWalls = new ArrayList<>();
     enemyWalls = new ArrayList<>();
     myAttackers = new ArrayList<>();
@@ -152,9 +191,13 @@ public class GameState {
   }
 
   private synchronized void updateBases() {
-    myBase = new BaseBean(me);
+    if(myBase == null){
+      myBase = new BaseBean(me);
+    }
 
     for (Player player : game.getPlayers().values()) {
+      Base playerBase = player.getBase();
+      nextGrid[playerBase.getX()][playerBase.getY()] = new GridTuple(playerBase, player.getId());
 
       // if player is dead, tell frontend to terminate game for them
       if (player.isDead()) {
@@ -174,6 +217,8 @@ public class GameState {
       for (Map.Entry<String, Scaffold> scaffold : player.getScaffolds()
           .entrySet()) {
         if (player.getScaffolds().containsKey(scaffold.getKey())) {
+          Scaffold playerScaffold = scaffold.getValue();
+          nextGrid[playerScaffold.getX()][playerScaffold.getY()] = new GridTuple(playerScaffold, player.getId());
 
           if (player.equals(me)) {
             myScaffolds.add(new ScaffoldBean(scaffold.getKey(), player));
@@ -196,6 +241,9 @@ public class GameState {
       for (Map.Entry<String, Wall> wall : player.getValue().getWalls()
           .entrySet()) {
         if (player.getValue().getWalls().containsKey(wall.getKey())) {
+          Wall playerWall = wall.getValue();
+          nextGrid[playerWall.getX()][playerWall.getY()] = new GridTuple(playerWall, player.getValue().getId());
+
           if (player.getValue().equals(me)) {
             myWalls.add(new WallBean(wall.getKey(), me));
           } else {
@@ -216,6 +264,8 @@ public class GameState {
       for (Map.Entry<String, Mine> mine : player.getValue().getMines()
           .entrySet()) {
         if (player.getValue().getMines().containsKey(mine.getKey())) {
+          Mine playerMine = mine.getValue();
+          nextGrid[playerMine.getX()][playerMine.getY()] = new GridTuple(playerMine, player.getValue().getId());
 
           if (player.getValue().equals(me)) {
             myMines.add(new MineBean(mine.getKey(), player.getValue()));
@@ -236,32 +286,69 @@ public class GameState {
     for (Map.Entry<String, Player> player : game.getPlayers().entrySet()) {
       player.getValue().getAttackers().forEach((key, attacker) -> {
         if (player.getValue().getAttackers().containsKey(key)) {
+          nextGrid[attacker.getX()][attacker.getY()] = new GridTuple(attacker, player.getValue().getId());
+          //if attacker isn't doing anything, autoattack
+          if(!attacker.inMotion() && !attacker.getAttackStatus() && !attacker.getTarget().isPresent()){
+            //set direction
+            //set target
+            Optional<Killable> target = getAttackableInRange(attacker, Constants.MELEE_ATTACKER_RANGE, player.getValue().getId());
+            if(target.isPresent() && target.get().getBlock().isFull()){
+              attacker.setDirection(Direction.findDirection(attacker.getBlock(), ((Entity) target.get()).getBlock()));
+              attacker.setTarget(Optional.of(target.get()));
+            }
+          } 
+          //then do the standard stuff teo & david wrote
+          if (attacker.inMotion()) {
+            attacker.updateMotion();
+          }
+          // System.out.println("update: set attack status --> false"); 
+          attacker.setAttackStatus(false);
+          if (player.getValue().validateTarget(attacker.getTarget(), attacker)) {
+            attacker.attack();
+            attacker.setAttackStatus(true);
+            if (attacker.getTarget().get().isDead()) {
+              player.getValue().setResourceCount(
+                  player.getValue().getResourceCount() + player.getValue().multiplyByScoreLogistically(
+                      attacker.getTarget().get().getReward()));
+              attacker.setAttackStatus(false);
+              attacker.setTarget(Optional.empty());
+            }
+          } else {
+            if (attacker.getTarget().isPresent()
+                && attacker.getTarget().get() instanceof Attacker
+                && !((Attacker) attacker.getTarget().get()).inMotion()
+                && !Grid.isWithinNBlocks(Constants.MELEE_ATTACKER_RANGE,
+                    attacker.getBlock(),
+                    attacker.getTarget().get().getBlock())
+                && !attacker.inMotion()) {
+              attacker.startChase((Attacker) attacker.getTarget().get());
+            } 
+          }
+          // }
+
+
+
+
+        //   //if the attacker ain't already attacking somebody, autoattack nearby objects
+        //   if(!attacker.getAttackStatus()){
+        //     Optional<Killable> target = getAttackableInRange(attacker, Constants.MELEE_ATTACKER_RANGE, player.getValue().getId());
+        //     if(target.isPresent()){
+        //       attacker.startCharge(target.get());
+        // //             if (Grid.isWithinNBlocks(Constants.MELEE_ATTACKER_RANGE,
+        // //   attacker.getBlock(), target) && target.isFull()
+        // //   && target.getEntity() instanceof Killable
+        // //   && !(target.getEntity() instanceof Resource)) {
+        // // attacker
+        // //     .setDirection(Direction.findDirection(attacker.getBlock(), target));
+        // // attacker.setTarget(Optional.of((Killable) target.getEntity()));
+        //       // attacker.setDirection(Direction.findDirection(attacker.getBlock(), ((Entity) target.get()).getBlock()));
+        //       // attacker.setTarget(target);
+        //       // attacker.attack();
+        //       // attacker.setAttackStatus(true);
+        //     }
+        //   }
+
           if (player.getValue().equals(me)) {
-            if (attacker.inMotion()) {
-              attacker.updateMotion();
-            }
-            attacker.setAttackStatus(false);
-            if (me.validateTarget(attacker.getTarget(), attacker)) {
-              attacker.attack();
-              attacker.setAttackStatus(true);
-              if (attacker.getTarget().get().isDead()) {
-                me.setResourceCount(
-                    me.getResourceCount() + me.multiplyByScoreLogistically(
-                        attacker.getTarget().get().getReward()));
-                attacker.setAttackStatus(false);
-                attacker.setTarget(Optional.empty());
-              }
-            } else {
-              if (attacker.getTarget().isPresent()
-                  && attacker.getTarget().get() instanceof Attacker
-                  && !((Attacker) attacker.getTarget().get()).inMotion()
-                  && !Grid.isWithinNBlocks(Constants.MELEE_ATTACKER_RANGE,
-                      attacker.getBlock(),
-                      attacker.getTarget().get().getBlock())
-                  && !attacker.inMotion()) {
-                attacker.startChase((Attacker) attacker.getTarget().get());
-              }
-            }
             myAttackers.add(new AttackerBean(key, me));
           } else {
             enemyAttackers.add(new AttackerBean(key, player.getValue()));
@@ -282,14 +369,15 @@ public class GameState {
       for (Map.Entry<String, Turret> turret : player.getValue().getTurrets()
           .entrySet()) {
         if (player.getValue().getTurrets().containsKey(turret.getKey())) {
+          Turret playerTurret = turret.getValue();
+          nextGrid[playerTurret.getX()][playerTurret.getY()] = new GridTuple(playerTurret, player.getValue().getId());
+
           if (player.getValue().equals(me)) {
             myTurrets.add(new TurretBean(turret.getKey(), me));
-            turretAttack(turret.getValue());
           } else {
-            enemyTurrets
-                .add(new TurretBean(turret.getKey(), player.getValue()));
+            enemyTurrets.add(new TurretBean(turret.getKey(), player.getValue()));
           }
-
+          turretAttack(turret.getValue(), player.getValue());
           if (turret.getValue().isDead()) {
             player.getValue().remove(Constants.OBJECT_TYPE.TURRET.ordinal(),
                 turret.getKey());
@@ -299,37 +387,94 @@ public class GameState {
     }
   }
 
-  private void turretAttack(Turret turret) {
-    boolean attacked = false;
+  private synchronized void turretAttack(Turret turret, Player owner) {
+    Optional<Killable> target = getAttackableInRange(turret, Constants.TURRET_RANGE, owner.getId());
+    if(target.isPresent()){
+      turret.attack(target.get());
+      turret.setAttackStatus(true);
+      turret.setTarget(target);
+      if(target.get().isDead()){
+        turret.setAttackStatus(false);
+        turret.setTarget(Optional.empty());
+        owner.setResourceCount(owner.getResourceCount() + owner.multiplyByScoreLogistically(target.get().getReward()));
+      }
+    } else {
+      turret.setAttackStatus(false);
+      turret.setTarget(Optional.empty());
+    }
 
-    for (Player player : game.getPlayers().values()) {
-      if (!player.equals(me)) {
-        for (Attacker attacker : player.getAttackers().values()) {
-          turret.setAttackStatus(false);
-          if (Grid.isWithinNBlocks(Constants.TURRET_RANGE, attacker.getBlock(),
-              turret.getBlock())) {
-            turret.attack(attacker);
-            turret.setAttackStatus(true);
-            turret.setTarget(Optional.of(attacker));
-            attacked = true;
-            turret.setAttackStatus(true);
-            turret.setTarget(Optional.of(attacker));
-            if (attacker.isDead()) {
-              turret.setAttackStatus(false);
-              turret.setTarget(Optional.empty());
-              me.setResourceCount(me.getResourceCount()
-                  + me.multiplyByScoreLogistically(attacker.getReward()));
+    // System.out.println("turret block entity: " + turret.getBlock().getEntity());
+    // boolean attacked = false;
+
+    // for (Player player : game.getPlayers().values()) {
+    //   if (!player.getId().equals(owner)) {
+    //     for (Attacker attacker : player.getAttackers().values()) {
+    //       turret.setAttackStatus(false);
+    //       if (Grid.isWithinNBlocks(Constants.TURRET_RANGE, attacker.getBlock(),
+    //           turret.getBlock())) {
+    //         turret.attack(attacker);
+    //         turret.setAttackStatus(true);
+    //         turret.setTarget(Optional.of(attacker));
+    //         attacked = true;
+    //         turret.setAttackStatus(true);
+    //         turret.setTarget(Optional.of(attacker));
+    //         if (attacker.isDead()) {
+    //           turret.setAttackStatus(false);
+    //           turret.setTarget(Optional.empty());
+    //           me.setResourceCount(me.getResourceCount()
+    //               + me.multiplyByScoreLogistically(attacker.getReward()));
+    //         }
+    //         break;
+    //       }
+    //     }
+    //     if (attacked) {
+    //       return;
+    //     }
+    //   }
+    // }
+    // turret.setAttackStatus(false);
+    // turret.setTarget(Optional.empty());
+  }
+
+
+  //prefers turrets
+  //then attackers
+  //then equal
+  private synchronized Optional<Killable> getAttackableInRange(
+      Killable k, int range, String player) {
+    int offset = 1;
+    int x = k.getX();
+    int y = k.getY();
+    Optional<Killable> potentialTarget = Optional.empty();
+    Optional<Killable> newTarget = Optional.empty();
+    while (offset <= range) {
+      for (int i = -offset + x; i < 1 + offset + x; i++) {
+        for (int j = -offset + y; j < 1 + offset + y; j++) {
+          if(i < Constants.BOARD_WIDTH && j < Constants.BOARD_HEIGHT && i > 0 && j > 0){
+            if(prevGrid[i][j] != null){
+              if(!prevGrid[i][j].getKillable().isDead() 
+                && !(prevGrid[i][j].getKillable() instanceof Resource) 
+                && !player.equals(prevGrid[i][j].getPlayerId())){
+                newTarget = Optional.of((Killable) prevGrid[i][j].getKillable());
+                if(potentialTarget.isPresent()){
+                  if((potentialTarget.get() instanceof Turret)){
+                    return potentialTarget;
+                  }
+                  if(!(potentialTarget.get() instanceof Attacker)){
+                    potentialTarget = newTarget;
+                  }
+                } else {
+                  potentialTarget = newTarget;
+                }
+
+              }
             }
-            break;
           }
         }
-        if (attacked) {
-          return;
-        }
       }
+      offset++;
     }
-    turret.setAttackStatus(false);
-    turret.setTarget(Optional.empty());
+    return potentialTarget;
   }
 
   /**

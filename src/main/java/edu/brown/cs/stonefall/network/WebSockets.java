@@ -266,433 +266,480 @@ public class WebSockets {
   * iterates over each game object once, but every player multiple times
   */
   public static void update(){
-    //too many god damn maps, but it's b/c json objects can't be indexed later for class vars like
-    //"isEmpty" for example
-    Map<String, Boolean> payloadIsEmpty = new ConcurrentHashMap<>();
+    try{
+      //too many god damn maps, but it's b/c json objects can't be indexed later for class vars like
+      //"isEmpty" for example
+      Map<String, Boolean> payloadIsEmpty = new ConcurrentHashMap<>();
 
+      //each player needs a payload
+      Map<Player, Map<Player, JsonObject>> playerPayloads = new ConcurrentHashMap<>();
+      // fill playerPayloads with a series of empty maps (of type player --> playerJson)
+      for (Entry<Integer, Session> curEntry : sessions.entrySet()) {
+        Session curSesh = curEntry.getValue();
+        if ((curSesh == null) || !curSesh.isOpen()) {
+          continue;
+        }
+        Integer tmpSeshId = curEntry.getKey();
+        if(game.playerExists("/p/" + tmpSeshId)){
+          Player iterPlayer = game.getPlayer("/p/" + tmpSeshId);
+          //the payload should be a list of player id and their corresponding objects
+          Map<Player, JsonObject> tempPlayerJsons = new ConcurrentHashMap<>();
+          playerPayloads.put(iterPlayer, tempPlayerJsons);
+        }
 
-    //each player needs a payload
-    Map<Player, Map<Player, JsonObject>> playerPayloads = new ConcurrentHashMap<>();
-    // fill playerPayloads with a series of empty maps (of type player --> playerJson)
-    for (Entry<Integer, Session> curEntry : sessions.entrySet()) {
-      Session curSesh = curEntry.getValue();
-      if ((curSesh == null) || !curSesh.isOpen()) {
-        continue;
-      }
-      Integer tmpSeshId = curEntry.getKey();
-      if(game.playerExists("/p/" + tmpSeshId)){
-        Player iterPlayer = game.getPlayer("/p/" + tmpSeshId);
-        //the payload should be a list of player id and their corresponding objects
-        Map<Player, JsonObject> tempPlayerJsons = new ConcurrentHashMap<>();
-        playerPayloads.put(iterPlayer, tempPlayerJsons);
       }
 
-    }
-    
-    Map<String, ArrayList<JsonObject>> playerJsonResources = new ConcurrentHashMap<>();
-    Map<String, ArrayList<JsonObject>> playerJsonWalls = new ConcurrentHashMap<>();
-    Map<String, ArrayList<JsonObject>> playerJsonTurrets = new ConcurrentHashMap<>();
-    Map<String, ArrayList<JsonObject>> playerJsonScaffoldings = new ConcurrentHashMap<>();
-    Map<String, ArrayList<JsonObject>> playerJsonMines = new ConcurrentHashMap<>();
-    Map<String, ArrayList<JsonObject>> playerJsonAttackers = new ConcurrentHashMap<>();
-    //creates the outline of the entire payload, i.e. all info by player id
-    //but each list starts out empty
-    for (Entry<Integer, Session> curEntry : sessions.entrySet()) {
-      Session curSesh = curEntry.getValue();
-      if ((curSesh == null) || !curSesh.isOpen()) {
-        continue;
-      }
-      Integer tmpSeshId = curEntry.getKey();
-      if(game.playerExists("/p/" + tmpSeshId)){
-        JsonObject aPlayerJson = new JsonObject();
-        aPlayerJson.addProperty("id", tmpSeshId);
-        Player iterPlayer = game.getPlayer("/p/" + tmpSeshId);
-        //initialize resources (only one per player )
-        playerJsonResources.put("/p/" + tmpSeshId, new ArrayList<JsonObject>());
-        //put empty player json in each player's payload map
-        for (Entry<Player, Map<Player, JsonObject>> curPlayer : playerPayloads.entrySet()) {
-          JsonObject tmpPlayerJson = aPlayerJson.deepCopy();
-          //initalize all object lists
-          String indexKey = curPlayer.getKey().getId() + iterPlayer.getId();
-          playerJsonWalls.put(indexKey, new ArrayList<JsonObject>());
-          playerJsonTurrets.put(indexKey, new ArrayList<JsonObject>());
-          playerJsonMines.put(indexKey, new ArrayList<JsonObject>());
-          playerJsonScaffoldings.put(indexKey, new ArrayList<JsonObject>());
-          playerJsonAttackers.put(indexKey, new ArrayList<JsonObject>());
-          //input player statistics (such that each player has access to his own stats)
-          if(curPlayer.getKey().getId() == iterPlayer.getId()){
-            JsonObject statistics = new JsonObject();
-            statistics.addProperty("name", iterPlayer.getName());
-            statistics.addProperty("resources", iterPlayer.getResourceCount());
-            statistics.addProperty("score", iterPlayer.getScore());
-            statistics.addProperty("mineCost",
-                iterPlayer.multiplyByScoreLogistically(Constants.MINE_COST));
-            statistics.addProperty("wallCost",
-                iterPlayer.multiplyByScoreLogistically(Constants.WALL_COST));
-            statistics.addProperty("attacker1Cost",
-                iterPlayer.multiplyByScoreLogistically(Constants.ATTACKER_COST));
-            statistics.addProperty("turret1Cost",
-                iterPlayer.multiplyByScoreLogistically(Constants.TURRET_COST));
-            tmpPlayerJson.add("statistics", statistics);
-            payloadIsEmpty.put(indexKey, false);
-          } else {
-            payloadIsEmpty.put(indexKey, true);
+      Map<String, ArrayList<JsonObject>> playerJsonResources = new ConcurrentHashMap<>();
+      Map<String, ArrayList<JsonObject>> playerJsonWalls = new ConcurrentHashMap<>();
+      Map<String, ArrayList<JsonObject>> playerJsonTurrets = new ConcurrentHashMap<>();
+      Map<String, ArrayList<JsonObject>> playerJsonScaffoldings = new ConcurrentHashMap<>();
+      Map<String, ArrayList<JsonObject>> playerJsonMines = new ConcurrentHashMap<>();
+      Map<String, ArrayList<JsonObject>> playerJsonAttackers = new ConcurrentHashMap<>();
+      //creates the outline of the entire payload, i.e. all info by player id
+      //but each list starts out empty
+      for (Entry<Integer, Session> curEntry : sessions.entrySet()) {
+        Session curSesh = curEntry.getValue();
+        if ((curSesh == null) || !curSesh.isOpen()) {
+          continue;
+        }
+        Integer tmpSeshId = curEntry.getKey();
+        if(game.playerExists("/p/" + tmpSeshId)){
+          JsonObject aPlayerJson = new JsonObject();
+          aPlayerJson.addProperty("id", tmpSeshId);
+          Player iterPlayer = game.getPlayer("/p/" + tmpSeshId);
+          //initialize resources (only one per player )
+          playerJsonResources.put("/p/" + tmpSeshId, new ArrayList<JsonObject>());
+          //put empty player json in each player's payload map
+          for (Entry<Player, Map<Player, JsonObject>> curPlayer : playerPayloads.entrySet()) {
+            JsonObject tmpPlayerJson = aPlayerJson.deepCopy();
+            //add color
+            tmpPlayerJson.addProperty("color", iterPlayer.getColorHex());
+            //initalize all object lists
+            String indexKey = curPlayer.getKey().getId() + iterPlayer.getId();
+            playerJsonWalls.put(indexKey, new ArrayList<JsonObject>());
+            playerJsonTurrets.put(indexKey, new ArrayList<JsonObject>());
+            playerJsonMines.put(indexKey, new ArrayList<JsonObject>());
+            playerJsonScaffoldings.put(indexKey, new ArrayList<JsonObject>());
+            playerJsonAttackers.put(indexKey, new ArrayList<JsonObject>());
+            //input player statistics (such that each player has access to his own stats)
+            if(curPlayer.getKey().getId() == iterPlayer.getId()){
+              JsonObject statistics = new JsonObject();
+              statistics.addProperty("name", iterPlayer.getName());
+              statistics.addProperty("resources", iterPlayer.getResourceCount());
+              statistics.addProperty("score", iterPlayer.getScore());
+              statistics.addProperty("mineCost", iterPlayer.multiplyByScoreLogistically(Constants.MINE_COST));
+              statistics.addProperty("wallCost", iterPlayer.multiplyByScoreLogistically(Constants.WALL_COST));
+              statistics.addProperty("attacker1Cost", iterPlayer.multiplyByScoreLogistically(Constants.ATTACKER_COST));
+              statistics.addProperty("turret1Cost", iterPlayer.multiplyByScoreLogistically(Constants.TURRET_COST));
+              tmpPlayerJson.add("statistics", statistics);
+              payloadIsEmpty.put(indexKey, false);
+            } else {
+              payloadIsEmpty.put(indexKey, true);
+            }
+            (curPlayer.getValue()).put(iterPlayer, tmpPlayerJson);
           }
-          (curPlayer.getValue()).put(iterPlayer, tmpPlayerJson);
         }
       }
-    }
 
-    //choose a game state to be everybody's game state
-    Integer firstSeshId;
-    GameState firstState = null;
-    for (Entry<Integer, Session> curEntry : sessions.entrySet()) {
-      String playerId = "/p/" + curEntry.getKey();
-      if (game.playerExists(playerId)) {
-        firstSeshId = curEntry.getKey();
-        firstState = game.getPayload();
-        // game.getPlayer(playerId)
-        break;
+      //choose a game state to be everybody's game state
+      Integer firstSeshId;
+      GameState firstState = null;
+      for (Entry<Integer, Session> curEntry : sessions.entrySet()) {
+        String playerId = "/p/" + curEntry.getKey();
+        if (game.playerExists(playerId)) {
+          firstSeshId = curEntry.getKey();
+          firstState = game.getPayload();
+          // game.getPlayer(playerId)
+          break;
+        }
       }
-    }
-    if(firstState == null){
-      return;
-    }
-    //now iterate over every object in the game state and determine in which player payload it belongs
+      if(firstState == null){
+        return;
+      }
+      //now iterate over every object in the game state and determine in which player payload it belongs
 
-    //iterate over all bases
-    List<BaseBean> baseBeans = new ArrayList<BaseBean>();
-    baseBeans.addAll(firstState.getEnemyBases());
-    baseBeans.add(firstState.getMyBase());
-    for (BaseBean b : baseBeans) {
-      JsonObject tempBase = new JsonObject();
-      tempBase.addProperty("x", b.getX());
-      tempBase.addProperty("y", b.getY());
-      tempBase.addProperty("health", b.getHp());
-      tempBase.addProperty("maxHealth", b.getMaxHp());
-      tempBase.addProperty("color", b.getColorHex());
-      tempBase.addProperty("name", b.getName());
-      //check which players should get this base
+      //iterate over all bases
+      List<BaseBean> baseBeans = new ArrayList<BaseBean>();
+      baseBeans.addAll(firstState.getEnemyBases());
+      baseBeans.add(firstState.getMyBase());
+      for (BaseBean b : baseBeans) {
+        JsonObject tempBase = new JsonObject();
+        tempBase.addProperty("x", b.getX());
+        tempBase.addProperty("y", b.getY());
+        if(b.getHp() != Constants.BASE_HP){
+          tempBase.addProperty("health", b.getHp());
+        }
+        // tempBase.addProperty("maxHealth", b.getMaxHp());
+        tempBase.addProperty("name", b.getName());
+        //check which players should get this base
+        for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
+          Player tempPlayer = curPlayerPayload.getKey();
+          String basePlayerId = b.getPlayerId();
+          //if it is "my" or if it is in my viewing window, #sendittt
+          if(basePlayerId.equals(tempPlayer.getId()) || tempPlayer.inViewingWindow(b.getX(), b.getY())){
+            //get player payload
+            Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
+            //get jsonobject corresponding to appropriate player within the payload
+            Player baseOwner = game.getPlayer(basePlayerId);
+            if(baseOwner != null){
+              JsonObject playerJson = thisPlayerJsons.get(baseOwner);
+              //add  base to its corresponding owner's json object for all player's in whomst've viewing window the base is in
+              playerJson.add("base", tempBase);
+              //indicate this json is no longer empty
+              payloadIsEmpty.put(tempPlayer.getId() + basePlayerId, false);
+            }
+          }
+        }
+      }
+
+      // wallss
+      //we're gonna need to do something like this for the arrays...
+
+      //for wall in the game
+        //for player in the game
+        //if wall is in player's window
+          //store a mapping from a playerJson, to a list of its walls
+      //for player payload
+        //for playerJson within payload
+          //add the corresponding array of walls 
+      //this is all so complicated because it is not possible to index into a previously added property of a JsonObject
+      //or if there is a way I'm not aware of it
+
+      List<WallBean> retWalls = new ArrayList<WallBean>();
+      retWalls.addAll(firstState.getMyWalls());
+      retWalls.addAll(firstState.getEnemyWalls());
+      for (WallBean w : retWalls) {
+        JsonObject tempWall = new JsonObject();
+        tempWall.addProperty("x", w.getX());
+        tempWall.addProperty("y", w.getY());
+        if(w.getHp() != Constants.WALL_HP){
+          tempWall.addProperty("health", w.getHp());
+        }
+        tempWall.addProperty("id", w.getId());
+        // walls.add(tempWall);
+        //check which players should get this wall
+        for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
+          Player tempPlayer = curPlayerPayload.getKey();
+          String wallPlayerId = w.getPlayerId();
+          //if it is "my" or if it is in my viewing window, send it
+          if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
+            //get player payload
+            Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
+            
+            Player wallOwner = game.getPlayer(wallPlayerId);
+            if(wallOwner != null){
+              //get jsonobject corresponding to appropriate player within the payload
+              JsonObject playerJson = thisPlayerJsons.get(wallOwner);
+              //add  wall to its corresponding owner's json array for all player's in whomst've viewing window the wall is in
+              (playerJsonWalls.get(tempPlayer.getId() + wallPlayerId)).add(tempWall);
+              // playerJson.add("base", tempBase);
+              payloadIsEmpty.put(tempPlayer.getId() + wallPlayerId, false);
+            }
+
+          }
+        }
+      }
+
+      List<TurretBean> retTurrets = new ArrayList<TurretBean>();
+      retTurrets.addAll(firstState.getMyTurrets());
+      retTurrets.addAll(firstState.getEnemyTurrets());
+      for (TurretBean w : retTurrets) {
+        JsonObject tempTurret = new JsonObject();
+        tempTurret.addProperty("x", w.getX());
+        tempTurret.addProperty("y", w.getY());
+        if(w.getHp() != Constants.TURRET_HP){
+          tempTurret.addProperty("health", w.getHp());
+        }
+        tempTurret.addProperty("id", w.getId());
+        if (w.getAttackStatus()) {
+          JsonObject tempAttacking = new JsonObject();
+          tempAttacking.addProperty("x", w.getTargetX());
+          tempAttacking.addProperty("y", w.getTargetY());
+          tempAttacking.addProperty("direction", w.getTargetDirection().encode());
+          tempAttacking.addProperty("ratio", w.getTargetRatio());
+          tempTurret.add("attacking", tempAttacking);
+        }
+        // Turrets.add(tempTurret);
+        //check which players should get this Turret
+        for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
+          Player tempPlayer = curPlayerPayload.getKey();
+          String turretPlayerId = w.getPlayerId();
+          //if it is "my" or if it is in my viewing window, send it
+          if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
+            //get player payload
+            Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
+            //ensure player hasn't disconnected during this iteration
+            Player turretOwner = game.getPlayer(turretPlayerId);
+            if(turretOwner != null){
+              //get jsonobject corresponding to appropriate player within the payload
+              JsonObject playerJson = thisPlayerJsons.get((turretPlayerId));
+              //add  turret to its corresponding owner's json array for all player's in whomst've viewing window the turret is in
+              (playerJsonTurrets.get(tempPlayer.getId() + turretPlayerId)).add(tempTurret);
+              // playerJson.add("base", tempBase);
+              payloadIsEmpty.put(tempPlayer.getId() + turretPlayerId, false);
+            }
+          }
+        }
+      }
+
+
+      List<MineBean> retMines = new ArrayList<MineBean>();
+      retMines.addAll(firstState.getMyMines());
+      retMines.addAll(firstState.getEnemyMines());
+      for (MineBean w : retMines) {
+        JsonObject tempMine = new JsonObject();
+        tempMine.addProperty("x", w.getX());
+        tempMine.addProperty("y", w.getY());
+        if(w.getHp() != Constants.MINE_HP){
+          tempMine.addProperty("health", w.getHp());
+        }
+        tempMine.addProperty("id", w.getId());
+        // Mines.add(tempMine);
+        //check which players should get this Mine
+        for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
+          Player tempPlayer = curPlayerPayload.getKey();
+          String minePlayerId = w.getPlayerId();
+          //if it is "my" or if it is in my viewing window, send it
+          if(tempPlayer.inViewingWindow(w.getX(), w.getY())){
+            //get player payload
+            Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
+            //ensure player hasn't disconnected during this iteration
+            Player mineOwner = game.getPlayer(minePlayerId);
+            if(mineOwner != null){
+              //get jsonobject corresponding to appropriate player within the payload
+              JsonObject playerJson = thisPlayerJsons.get(mineOwner);
+              //add  mine to its corresponding owner's json array for all player's in whomst've viewing window the mine is in
+              (playerJsonMines.get(tempPlayer.getId() + minePlayerId)).add(tempMine);
+              // playerJson.add("base", tempBase);
+              payloadIsEmpty.put(tempPlayer.getId() + minePlayerId, false);
+            }
+          }
+        }
+      }    
+      
+      
+      List<AttackerBean> retAttackers = new ArrayList<AttackerBean>();
+      retAttackers.addAll(firstState.getMyAttackers());
+      retAttackers.addAll(firstState.getEnemyAttackers());
+      for (AttackerBean w : retAttackers) {
+        JsonObject tempAttacker = new JsonObject();
+        tempAttacker.addProperty("x", w.getX());
+        tempAttacker.addProperty("y", w.getY());
+        //unnecessary if already max health
+        if(w.getHp() != Constants.MELEE_ATTACKER_HP){
+          tempAttacker.addProperty("health", w.getHp());
+        }
+        tempAttacker.addProperty("id", w.getId());
+        JsonObject movement = new JsonObject();
+        movement.addProperty("direction", w.getDirection());
+        //unnecessary if not in motion
+        if(w.inMotion()){
+          movement.addProperty("ratio", w.getRatio());
+        }
+        movement.addProperty("motion", w.inMotion());
+        tempAttacker.add("movement", movement);
+        tempAttacker.addProperty("isAttacking", w.attackStatus());
+        // Attackers.add(tempAttacker);
+        //check which players should get this Attacker
+        for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
+          Player tempPlayer = curPlayerPayload.getKey();
+          String attackerPlayerId = w.getPlayerId();
+          //if it is "my" or if it is in my viewing window, send it
+          if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
+            //get player payload
+            Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
+            //ensure player hasn't disconnected during this iteration
+            Player attackerOwner = game.getPlayer(attackerPlayerId);
+            if(attackerOwner != null){
+              //get jsonobject corresponding to appropriate player within the payload
+              JsonObject playerJson = thisPlayerJsons.get(attackerOwner);
+              //add  attacker to its corresponding owner's json array for all player's in whomst've viewing window the attacker is in
+              (playerJsonAttackers.get(tempPlayer.getId() + attackerPlayerId)).add(tempAttacker);
+              // playerJson.add("base", tempBase);
+              payloadIsEmpty.put(tempPlayer.getId() + attackerPlayerId, false);
+            }
+          }
+        }
+      }
+
+      List<ScaffoldBean> retScaffoldings = new ArrayList<ScaffoldBean>();
+      retScaffoldings.addAll(firstState.getMyScaffolds());
+      retScaffoldings.addAll(firstState.getEnemyScaffolds());
+      for (ScaffoldBean w : retScaffoldings) {
+        JsonObject tempScaffolding = new JsonObject();
+        tempScaffolding.addProperty("x", w.getX());
+        tempScaffolding.addProperty("y", w.getY());
+        tempScaffolding.addProperty("health", w.getHp());
+        tempScaffolding.addProperty("maxHealth", w.getMaxHp());
+        tempScaffolding.addProperty("id", w.getId());
+        // Scaffoldings.add(tempScaffolding);
+        //check which players should get this Scaffolding
+        for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
+          Player tempPlayer = curPlayerPayload.getKey();
+          String scaffoldingPlayerId = w.getPlayerId();
+          //if it is in my viewing window, send it
+          if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
+            //get player payload
+            Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
+            //ensure player hasn't disconnected during this iteration
+            Player scaffoldingOwner = game.getPlayer(scaffoldingPlayerId);
+            if(scaffoldingOwner != null){
+              //get jsonobject corresponding to appropriate player within the payload
+              JsonObject playerJson = thisPlayerJsons.get(scaffoldingOwner);
+              //add  scaffolding to its corresponding owner's json array for all player's in whomst've viewing window the scaffolding is in
+              (playerJsonScaffoldings.get(tempPlayer.getId() + scaffoldingPlayerId)).add(tempScaffolding);
+              // playerJson.add("base", tempBase);
+              payloadIsEmpty.put(tempPlayer.getId() + scaffoldingPlayerId, false);
+            }
+          }
+        }
+      }
+
+
+      JsonArray resources = new JsonArray();
+      List<ResourceBean> retResources = new ArrayList<ResourceBean>();
+      retResources.addAll(firstState.getResources());
+      for (ResourceBean w : retResources) {
+        JsonObject tempResource = new JsonObject();
+        tempResource.addProperty("x", w.getX());
+        tempResource.addProperty("y", w.getY());
+        if(w.getHp() != Constants.RESOURCE_HP){
+          tempResource.addProperty("health", w.getHp());
+        }
+        //check which players should get this Resource
+        for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
+          Player tempPlayer = curPlayerPayload.getKey();
+          // if it is in my viewing window, send it
+          if(tempPlayer.inViewingWindow(w.getX(), w.getY())){
+            //add  resource to its corresponding owner's array for all player's in whomst've viewing window the resource is in
+            (playerJsonResources.get(tempPlayer.getId())).add(tempResource);
+          }
+        }
+      }
+
+
+      //add those lists of objs into the json objects
       for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-        Player tempPlayer = curPlayerPayload.getKey();
-        String basePlayerId = b.getPlayerId();
-        //if it is "my" or if it is in my viewing window, #sendittt
-        if(basePlayerId.equals(tempPlayer.getId()) || tempPlayer.inViewingWindow(b.getX(), b.getY())){
-          //get player payload
-          Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
-          //get jsonobject corresponding to appropriate player within the payload
-          JsonObject playerJson = thisPlayerJsons.get(game.getPlayer(basePlayerId));
-          //add  base to its corresponding owner's json object for all player's in whomst've viewing window the base is in
-          playerJson.add("base", tempBase);
-          //indicate this json is no longer empty
-          payloadIsEmpty.put(tempPlayer.getId() + basePlayerId, false);
-        }
-      }
-    }
+        Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
+        for (Entry<Player, JsonObject> curPlayerJsonObject : thisPlayerJsons.entrySet()){
+          String playerKey = curPlayerPayload.getKey().getId() + curPlayerJsonObject.getKey().getId();
+          //skip if empty
+          if(!payloadIsEmpty.get(playerKey)){
+            JsonObject tmpPlayerJsonObject = curPlayerJsonObject.getValue();
 
-    // wallss
-    //we're gonna need to do something like this for the arrays...
+            //add each wall to a jsonarray
+            JsonArray tmpWalls = new JsonArray();
+            ArrayList<JsonObject> tmpWallsList = playerJsonWalls.get(playerKey);
+            if(!tmpWallsList.isEmpty()){
+              tmpWallsList.forEach((tmpWall) -> tmpWalls.add(tmpWall));
+              tmpPlayerJsonObject.add("walls", tmpWalls);
+            } 
+            
+            JsonArray tmpTurrets = new JsonArray();
+            ArrayList<JsonObject> tmpTurretsList = playerJsonTurrets.get(playerKey);
+            if(!tmpTurretsList.isEmpty()){
+              tmpTurretsList.forEach((tmpTurret) -> tmpTurrets.add(tmpTurret));
+              tmpPlayerJsonObject.add("turrets", tmpTurrets);
+            } 
 
-    //for wall in the game
-      //for player in the game
-      //if wall is in player's window
-        //store a mapping from a playerJson, to a list of its walls
-    //for player payload
-      //for playerJson within payload
-        //add the corresponding array of walls 
-    //this is all so complicated because it is not possible to index into a previously added property of a JsonObject
-    //or if there is a way I'm not aware of it
-
-    List<WallBean> retWalls = new ArrayList<WallBean>();
-    retWalls.addAll(firstState.getMyWalls());
-    retWalls.addAll(firstState.getEnemyWalls());
-    for (WallBean w : retWalls) {
-      JsonObject tempWall = new JsonObject();
-      tempWall.addProperty("x", w.getX());
-      tempWall.addProperty("y", w.getY());
-      tempWall.addProperty("health", w.getHp());
-      tempWall.addProperty("maxHealth", w.getMaxHp());
-      tempWall.addProperty("id", w.getId());
-      tempWall.addProperty("color", w.getColorHex());
-      // walls.add(tempWall);
-      //check which players should get this wall
-      for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-        Player tempPlayer = curPlayerPayload.getKey();
-        String wallPlayerId = w.getPlayerId();
-        //if it is "my" or if it is in my viewing window, send it
-        if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
-          //get player payload
-          Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
-          //get jsonobject corresponding to appropriate player within the payload
-          JsonObject playerJson = thisPlayerJsons.get(game.getPlayer(wallPlayerId));
-          //add  wall to its corresponding owner's json array for all player's in whomst've viewing window the wall is in
-          (playerJsonWalls.get(tempPlayer.getId() + wallPlayerId)).add(tempWall);
-          // playerJson.add("base", tempBase);
-          payloadIsEmpty.put(tempPlayer.getId() + wallPlayerId, false);
-        }
-      }
-    }
-
-    List<TurretBean> retTurrets = new ArrayList<TurretBean>();
-    retTurrets.addAll(firstState.getMyTurrets());
-    retTurrets.addAll(firstState.getEnemyTurrets());
-    for (TurretBean w : retTurrets) {
-      JsonObject tempTurret = new JsonObject();
-      tempTurret.addProperty("x", w.getX());
-      tempTurret.addProperty("y", w.getY());
-      tempTurret.addProperty("health", w.getHp());
-      tempTurret.addProperty("maxHealth", w.getMaxHp());
-      tempTurret.addProperty("id", w.getId());
-      tempTurret.addProperty("color", w.getColorHex());
-      if (w.getAttackStatus()) {
-        JsonObject tempAttacking = new JsonObject();
-        tempAttacking.addProperty("x", w.getTargetX());
-        tempAttacking.addProperty("y", w.getTargetY());
-        tempAttacking.addProperty("direction", w.getTargetDirection().encode());
-        tempAttacking.addProperty("ratio", w.getTargetRatio());
-        tempTurret.add("attacking", tempAttacking);
-      }
-      // Turrets.add(tempTurret);
-      //check which players should get this Turret
-      for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-        Player tempPlayer = curPlayerPayload.getKey();
-        String turretPlayerId = w.getPlayerId();
-        //if it is "my" or if it is in my viewing window, send it
-        if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
-          //get player payload
-          Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
-          //get jsonobject corresponding to appropriate player within the payload
-          JsonObject playerJson = thisPlayerJsons.get(game.getPlayer(turretPlayerId));
-          //add  turret to its corresponding owner's json array for all player's in whomst've viewing window the turret is in
-          (playerJsonTurrets.get(tempPlayer.getId() + turretPlayerId)).add(tempTurret);
-          // playerJson.add("base", tempBase);
-          payloadIsEmpty.put(tempPlayer.getId() + turretPlayerId, false);
-        }
-      }
-    }
-
-
-    List<MineBean> retMines = new ArrayList<MineBean>();
-    retMines.addAll(firstState.getMyMines());
-    retMines.addAll(firstState.getEnemyMines());
-    for (MineBean w : retMines) {
-      JsonObject tempMine = new JsonObject();
-      tempMine.addProperty("x", w.getX());
-      tempMine.addProperty("y", w.getY());
-      tempMine.addProperty("health", w.getHp());
-      tempMine.addProperty("maxHealth", w.getMaxHp());
-      tempMine.addProperty("id", w.getId());
-      tempMine.addProperty("color", w.getColorHex());
-      // Mines.add(tempMine);
-      //check which players should get this Mine
-      for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-        Player tempPlayer = curPlayerPayload.getKey();
-        String minePlayerId = w.getPlayerId();
-        //if it is "my" or if it is in my viewing window, send it
-        if(tempPlayer.inViewingWindow(w.getX(), w.getY())){
-          //get player payload
-          Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
-          //get jsonobject corresponding to appropriate player within the payload
-          JsonObject playerJson = thisPlayerJsons.get(game.getPlayer(minePlayerId));
-          //add  mine to its corresponding owner's json array for all player's in whomst've viewing window the mine is in
-          (playerJsonMines.get(tempPlayer.getId() + minePlayerId)).add(tempMine);
-          // playerJson.add("base", tempBase);
-          payloadIsEmpty.put(tempPlayer.getId() + minePlayerId, false);
-        }
-      }
-    }    
-    
-    
-    List<AttackerBean> retAttackers = new ArrayList<AttackerBean>();
-    retAttackers.addAll(firstState.getMyAttackers());
-    retAttackers.addAll(firstState.getEnemyAttackers());
-    for (AttackerBean w : retAttackers) {
-      JsonObject tempAttacker = new JsonObject();
-      tempAttacker.addProperty("x", w.getX());
-      tempAttacker.addProperty("y", w.getY());
-      tempAttacker.addProperty("health", w.getHp());
-      tempAttacker.addProperty("maxHealth", w.getMaxHp());
-      tempAttacker.addProperty("id", w.getId());
-      tempAttacker.addProperty("color", w.getColorHex());
-      JsonObject movement = new JsonObject();
-      movement.addProperty("direction", w.getDirection());
-      movement.addProperty("ratio", w.getRatio());
-      movement.addProperty("motion", w.inMotion());
-      tempAttacker.add("movement", movement);
-      tempAttacker.addProperty("isAttacking", w.attackStatus());
-      // Attackers.add(tempAttacker);
-      //check which players should get this Attacker
-      for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-        Player tempPlayer = curPlayerPayload.getKey();
-        String attackerPlayerId = w.getPlayerId();
-        //if it is "my" or if it is in my viewing window, send it
-        if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
-          //get player payload
-          Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
-          //get jsonobject corresponding to appropriate player within the payload
-          JsonObject playerJson = thisPlayerJsons.get(game.getPlayer(attackerPlayerId));
-          //add  attacker to its corresponding owner's json array for all player's in whomst've viewing window the attacker is in
-          (playerJsonAttackers.get(tempPlayer.getId() + attackerPlayerId)).add(tempAttacker);
-          // playerJson.add("base", tempBase);
-          payloadIsEmpty.put(tempPlayer.getId() + attackerPlayerId, false);
-        }
-      }
-    }
-
-    List<ScaffoldBean> retScaffoldings = new ArrayList<ScaffoldBean>();
-    retScaffoldings.addAll(firstState.getMyScaffolds());
-    retScaffoldings.addAll(firstState.getEnemyScaffolds());
-    for (ScaffoldBean w : retScaffoldings) {
-      JsonObject tempScaffolding = new JsonObject();
-      tempScaffolding.addProperty("x", w.getX());
-      tempScaffolding.addProperty("y", w.getY());
-      tempScaffolding.addProperty("health", w.getHp());
-      tempScaffolding.addProperty("maxHealth", w.getMaxHp());
-      tempScaffolding.addProperty("id", w.getId());
-      tempScaffolding.addProperty("color", w.getColorHex());
-      // Scaffoldings.add(tempScaffolding);
-      //check which players should get this Scaffolding
-      for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-        Player tempPlayer = curPlayerPayload.getKey();
-        String scaffoldingPlayerId = w.getPlayerId();
-        //if it is in my viewing window, send it
-        if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
-          //get player payload
-          Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
-          //get jsonobject corresponding to appropriate player within the payload
-          JsonObject playerJson = thisPlayerJsons.get(game.getPlayer(scaffoldingPlayerId));
-          //add  scaffolding to its corresponding owner's json array for all player's in whomst've viewing window the scaffolding is in
-          (playerJsonScaffoldings.get(tempPlayer.getId() + scaffoldingPlayerId)).add(tempScaffolding);
-          // playerJson.add("base", tempBase);
-          payloadIsEmpty.put(tempPlayer.getId() + scaffoldingPlayerId, false);
-        }
-      }
-    }
-
-
-    JsonArray resources = new JsonArray();
-    List<ResourceBean> retResources = new ArrayList<ResourceBean>();
-    retResources.addAll(firstState.getResources());
-    for (ResourceBean w : retResources) {
-      JsonObject tempResource = new JsonObject();
-      tempResource.addProperty("x", w.getX());
-      tempResource.addProperty("y", w.getY());
-      tempResource.addProperty("health", w.getHp());
-      tempResource.addProperty("maxHealth", w.getMaxHp());
-      //check which players should get this Resource
-      for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-        Player tempPlayer = curPlayerPayload.getKey();
-        // if it is in my viewing window, send it
-        if(tempPlayer.inViewingWindow(w.getX(), w.getY())){
-          //add  resource to its corresponding owner's array for all player's in whomst've viewing window the resource is in
-          (playerJsonResources.get(tempPlayer.getId())).add(tempResource);
-        }
-      }
-    }
-
-
-    //add those lists of objs into the json objects
-    for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-      Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
-      for (Entry<Player, JsonObject> curPlayerJsonObject : thisPlayerJsons.entrySet()){
-        String playerKey = curPlayerPayload.getKey().getId() + curPlayerJsonObject.getKey().getId();
-        //skip if empty
-        if(!payloadIsEmpty.get(playerKey)){
-          JsonObject tmpPlayerJsonObject = curPlayerJsonObject.getValue();
-
-          //add each wall to a jsonarray
-          JsonArray tmpWalls = new JsonArray();
-          ArrayList<JsonObject> tmpWallsList = playerJsonWalls.get(playerKey);
-          if(!tmpWallsList.isEmpty()){
-            tmpWallsList.forEach((tmpWall) -> tmpWalls.add(tmpWall));
-            tmpPlayerJsonObject.add("walls", tmpWalls);
-          } 
+            JsonArray tmpScaffolds = new JsonArray();
+            ArrayList<JsonObject> tmpScaffoldsList = playerJsonScaffoldings.get(playerKey);
+            if(!tmpScaffoldsList.isEmpty()){
+              tmpScaffoldsList.forEach((tmpScaffold) -> tmpScaffolds.add(tmpScaffold));
+              tmpPlayerJsonObject.add("scaffoldings", tmpScaffolds);
+            } 
+            
+            JsonArray tmpAttackers = new JsonArray();
+            ArrayList<JsonObject> tmpAttackersList = playerJsonAttackers.get(playerKey);
+            if(!tmpAttackersList.isEmpty()){
+              tmpAttackersList.forEach((tmpAttacker) -> tmpAttackers.add(tmpAttacker));
+              tmpPlayerJsonObject.add("attackers", tmpAttackers);
+            } 
           
-          JsonArray tmpTurrets = new JsonArray();
-          ArrayList<JsonObject> tmpTurretsList = playerJsonTurrets.get(playerKey);
-          if(!tmpTurretsList.isEmpty()){
-            tmpTurretsList.forEach((tmpTurret) -> tmpTurrets.add(tmpTurret));
-            tmpPlayerJsonObject.add("turrets", tmpTurrets);
-          } 
-
-          JsonArray tmpScaffolds = new JsonArray();
-          ArrayList<JsonObject> tmpScaffoldsList = playerJsonScaffoldings.get(playerKey);
-          if(!tmpScaffoldsList.isEmpty()){
-            tmpScaffoldsList.forEach((tmpScaffold) -> tmpScaffolds.add(tmpScaffold));
-            tmpPlayerJsonObject.add("scaffoldings", tmpScaffolds);
-          } 
-          
-          JsonArray tmpAttackers = new JsonArray();
-          ArrayList<JsonObject> tmpAttackersList = playerJsonAttackers.get(playerKey);
-          if(!tmpAttackersList.isEmpty()){
-            tmpAttackersList.forEach((tmpAttacker) -> tmpAttackers.add(tmpAttacker));
-            tmpPlayerJsonObject.add("attackers", tmpAttackers);
-          } 
-        
-          JsonArray tmpMines = new JsonArray();
-          ArrayList<JsonObject> tmpMinesList = playerJsonMines.get(playerKey);
-          if(!tmpMinesList.isEmpty()){
-            tmpMinesList.forEach((tmpMine) -> tmpMines.add(tmpMine));
-            tmpPlayerJsonObject.add("mines", tmpMines);
-          } 
+            JsonArray tmpMines = new JsonArray();
+            ArrayList<JsonObject> tmpMinesList = playerJsonMines.get(playerKey);
+            if(!tmpMinesList.isEmpty()){
+              tmpMinesList.forEach((tmpMine) -> tmpMines.add(tmpMine));
+              tmpPlayerJsonObject.add("mines", tmpMines);
+            } 
+          }
         }
       }
-    }
 
 
 
 
 
-    // leaderboard
-    JsonArray leaderboard = new JsonArray();
-    List<Player> leaders = firstState.getLeaders();
-    for (Player player : leaders) {
-      JsonObject tempPlayer = new JsonObject();
-      tempPlayer.addProperty("name", player.getName());
-      tempPlayer.addProperty("score", player.getScore());
-      tempPlayer.addProperty("color", player.getColorHex());
-      leaderboard.add(tempPlayer);
-    }
+      // leaderboard
+      JsonArray leaderboard = new JsonArray();
+      List<Player> leaders = firstState.getLeaders();
+      for (Player player : leaders) {
+        JsonObject tempPlayer = new JsonObject();
+        tempPlayer.addProperty("name", player.getName());
+        tempPlayer.addProperty("score", player.getScore());
+        tempPlayer.addProperty("color", player.getColorHex());
+        leaderboard.add(tempPlayer);
+      }
 
-    //for all players, build their packet and #sendittt
-    //things that could be converted to a string once only
-    //resources
-    //leaderboard
-    //type
-      //more complicated
-      //each individual object across packets
-    
-    for (Entry<Player, Map<Player, JsonObject>> payloadMap : playerPayloads.entrySet()) {
-      //build the actual payload JSON
-      JsonObject payload = new JsonObject();
-      //add resources/leaderboard to this payload (common to every player)
-      JsonArray tmpResources = new JsonArray();
-      ArrayList<JsonObject> tmpResourcesList = playerJsonResources.get(payloadMap.getKey().getId());
-      if(!tmpResourcesList.isEmpty()) tmpResourcesList.forEach((tmpResource) -> tmpResources.add(tmpResource));
-      payload.add("resources", tmpResources);
-      payload.add("leaderboard", leaderboard);
-      //concatenate all the non-empty player jsons
-      JsonArray allPlayers = new JsonArray();
-      //get the payload (i.e. map of players to json objects)
-      Map<Player, JsonObject> playerJsonMaps = payloadMap.getValue();
-      for (Entry<Player, JsonObject> playerJsonMap : playerJsonMaps.entrySet()) {
-        if(!payloadIsEmpty.get(payloadMap.getKey().getId() + playerJsonMap.getKey().getId())){
-          //add each player according to its id to the payload
-          allPlayers.add(playerJsonMap.getValue());
+      //for all players, build their packet and #sendittt
+      //things that could be converted to a string once only
+      //resources
+      //leaderboard
+      //type
+        //more complicated
+        //each individual object across packets
+      
+      for (Entry<Player, Map<Player, JsonObject>> payloadMap : playerPayloads.entrySet()) {
+        //build the actual payload JSON
+        JsonObject payload = new JsonObject();
+        //add resources/leaderboard to this payload
+        JsonArray tmpResources = new JsonArray();
+        ArrayList<JsonObject> tmpResourcesList = playerJsonResources.get(payloadMap.getKey().getId());
+        if(!tmpResourcesList.isEmpty()) tmpResourcesList.forEach((tmpResource) -> tmpResources.add(tmpResource));
+        payload.add("resources", tmpResources);
+        payload.add("leaderboard", leaderboard);
+        //concatenate all the non-empty player jsons
+        JsonArray allPlayers = new JsonArray();
+        //get the payload (i.e. map of players to json objects)
+        Map<Player, JsonObject> playerJsonMaps = payloadMap.getValue();
+        for (Entry<Player, JsonObject> playerJsonMap : playerJsonMaps.entrySet()) {
+          if(!payloadIsEmpty.get(payloadMap.getKey().getId() + playerJsonMap.getKey().getId())){
+            //add each player according to its id to the payload
+            allPlayers.add(playerJsonMap.getValue());
+          }
+        }
+        payload.add("players", allPlayers);
+        //add payload to higher level Json with type & id
+        JsonObject json = new JsonObject();
+        Integer playerSessionId = Integer.parseInt(payloadMap.getKey().getId().substring(3));
+        json.addProperty("id", playerSessionId); //get this player's id
+        json.addProperty("type", Constants.MESSAGE_TYPE.UPDATE.ordinal());
+        json.add("payload", payload);
+        //send it
+        Session curSesh = sessions.get(playerSessionId);
+        if ((curSesh != null) && curSesh.isOpen()) {
+          try{
+            curSesh.getRemote().sendStringByFuture(GSON.toJson(json));
+          } catch (WebSocketException w) {
+            System.out.println("socket closed unexpectedly");
+          }
         }
       }
-      payload.add("players", allPlayers);
-      //add payload to higher level Json with type & id
-      JsonObject json = new JsonObject();
-      Integer playerSessionId = Integer.parseInt(payloadMap.getKey().getId().substring(3));
-      json.addProperty("id", playerSessionId); //get this player's id
-      json.addProperty("type", Constants.MESSAGE_TYPE.UPDATE.ordinal());
-      json.add("payload", payload);
-      //send it
-      Session curSesh = sessions.get(playerSessionId);
-      if ((curSesh != null) && curSesh.isOpen()) {
-        curSesh.getRemote().sendStringByFuture(GSON.toJson(json));
-      }
+    } catch (IllegalStateException e) {
+      System.out
+          .println("Timer error found and caught here in WebSockets.java!");
+      e.printStackTrace();
+    } catch (WebSocketException w) {
+      System.out.println("Web Socket connection error");
+      // } catch (JsonProcessingException e1) {
+      // // TODO Auto-generated catch block
+      // e1.printStackTrace();
+    } catch (NullPointerException n){
+      System.out.println("websockets update null pointer exception");
+      n.printStackTrace();
+    }
+      catch (Exception f) {
+      f.printStackTrace();
     }
   }
 
@@ -1902,7 +1949,11 @@ public class WebSockets {
     JsonObject Json = new JsonObject();
     Json.add("payload", payload);
     Json.addProperty("type", Constants.MESSAGE_TYPE.ERROR.ordinal());
-    curSesh.getRemote().sendStringByFuture(GSON.toJson(Json));
+    try {
+      curSesh.getRemote().sendStringByFuture(GSON.toJson(Json));
+    } catch (WebSocketException w) {
+      System.out.println("websocket exception");
+    }
   }
 
   
@@ -1929,7 +1980,11 @@ public class WebSockets {
     payload.addProperty("maxScore", tempPlayer.getTopScore());
     Json.add("payload", payload);
 
-    curSesh.getRemote().sendStringByFuture(GSON.toJson(Json));
+    try {
+      curSesh.getRemote().sendStringByFuture(GSON.toJson(Json));
+    } catch (WebSocketException w) {
+      System.out.println("websocket exception");
+    }
     // Remove the session from the queue
     sessions.remove(curSeshId);
   }

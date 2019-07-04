@@ -20,8 +20,8 @@ const WebSockets = function() {
     MINE: 3
   };
 
-  const ip = "192.168.0.7:4567";
-  // const ip = "localhost:4567";
+  // const ip = "192.168.0.30:4567";
+  const ip = "localhost:4567";
   let conn = new WebSocket("ws://" + ip + "/sockets");
   let id = -1;
 

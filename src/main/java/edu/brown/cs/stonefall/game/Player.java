@@ -526,32 +526,36 @@ public class Player {
    *          id of object we wish to remove
    */
   public synchronized void remove(int objectType, String objectId) {
-
-    if (objectType == Constants.OBJECT_TYPE.MINE.ordinal()) {
-      Grid.getGridBlock(mines.get(objectId).getX(), mines.get(objectId).getY())
-          .get().depopulate();
-      mines.remove(objectId);
-      score -= Constants.MINE_COST;
-    } else if (objectType == Constants.OBJECT_TYPE.TURRET.ordinal()) {
-      Grid.getGridBlock(turrets.get(objectId).getX(),
-          turrets.get(objectId).getY()).get().depopulate();
-      turrets.remove(objectId);
-      score -= Constants.TURRET_COST;
-    } else if (objectType == Constants.OBJECT_TYPE.WALL.ordinal()) {
-      Grid.getGridBlock(walls.get(objectId).getX(), walls.get(objectId).getY())
-          .get().depopulate();
-      walls.remove(objectId);
-      score -= Constants.WALL_COST;
-    } else if (objectType == Constants.OBJECT_TYPE.ATTACKER.ordinal()) {
-      Grid.getGridBlock(attackers.get(objectId).getX(),
-          attackers.get(objectId).getY()).get().depopulate();
-      attackers.remove(objectId);
-      score -= Constants.ATTACKER_COST;
-    } else if (objectType == Constants.OBJECT_TYPE.SCAFFOLD.ordinal()) {
-      Grid.getGridBlock(scaffolds.get(objectId).getX(),
-          scaffolds.get(objectId).getY()).get().depopulate();
-      scaffolds.remove(objectId);
+    try{
+      if (objectType == Constants.OBJECT_TYPE.MINE.ordinal()) {
+        Grid.getGridBlock(mines.get(objectId).getX(), mines.get(objectId).getY())
+            .get().depopulate();
+        mines.remove(objectId);
+        score -= Constants.MINE_COST;
+      } else if (objectType == Constants.OBJECT_TYPE.TURRET.ordinal()) {
+        Grid.getGridBlock(turrets.get(objectId).getX(),
+            turrets.get(objectId).getY()).get().depopulate();
+        turrets.remove(objectId);
+        score -= Constants.TURRET_COST;
+      } else if (objectType == Constants.OBJECT_TYPE.WALL.ordinal()) {
+        Grid.getGridBlock(walls.get(objectId).getX(), walls.get(objectId).getY())
+            .get().depopulate();
+        walls.remove(objectId);
+        score -= Constants.WALL_COST;
+      } else if (objectType == Constants.OBJECT_TYPE.ATTACKER.ordinal()) {
+        Grid.getGridBlock(attackers.get(objectId).getX(),
+            attackers.get(objectId).getY()).get().depopulate();
+        attackers.remove(objectId);
+        score -= Constants.ATTACKER_COST;
+      } else if (objectType == Constants.OBJECT_TYPE.SCAFFOLD.ordinal()) {
+        Grid.getGridBlock(scaffolds.get(objectId).getX(),
+            scaffolds.get(objectId).getY()).get().depopulate();
+        scaffolds.remove(objectId);
+      }
+    } catch (NullPointerException n){
+      System.out.println("Attempted to remove null object");
     }
+
   }
 
   /**
@@ -573,8 +577,8 @@ public class Player {
     } else if (objectType == Constants.OBJECT_TYPE.ATTACKER.ordinal()) {
       resourceCount += Constants.MELEE_ATTACKER_REWARD;
     }
-
     remove(objectType, objectId);
+
   }
 
   /**

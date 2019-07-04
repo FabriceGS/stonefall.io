@@ -26,6 +26,7 @@ public interface Attacker extends Killable, Movable {
    */
   void setTarget(Optional<Killable> newTarget);
 
+
   /**
    * Sets the status of this Attacker.
    * @param status A boolean representing if this Attacker is attacking an
