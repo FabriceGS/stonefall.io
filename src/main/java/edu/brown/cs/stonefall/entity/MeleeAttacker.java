@@ -123,18 +123,23 @@ public class MeleeAttacker implements Attacker, Movable {
 
   @Override
   public void startMotion(GridBlock toReach) {
+    // System.out.println("REACHED STAGE 1.1");
     path = new ArrayList<>();
     target = Optional.empty();
 
     AStar<GridBlock, GridEdge> aStar = new AStar<>();
     GridBlock newDest = toReach;
     for (int i = 0; i < Constants.PATH_RECALCULATION_LIMIT; i++) {
+      // System.out.println("REACHED STAGE 1.2, i: " + i);
       try {
+        // System.out.println("REACHED STAGE 1.3");
         path = aStar.shortestPath(block, newDest);
         break;
       } catch (UnreachableVertexException e) {
+        // System.out.println("REACHED STAGE 1.4");
         if (e.getClosest().isPresent()) {
           newDest = (GridBlock) e.getClosest().get();
+          // System.out.println("STAGE 1.5, NEW DEST IS: " + newDest);
         } else {
           break;
         }
@@ -142,8 +147,10 @@ public class MeleeAttacker implements Attacker, Movable {
     }
 
     if (path != null && !path.isEmpty()) {
+      // System.out.println("REACHED STAGE 1.6");
       eMotion = new MovableMotion(this, path);
     } else {
+      // System.out.println("REACHED STAGE 1.7");
       eMotion = new MovableMotion(this);
     }
   }
@@ -151,7 +158,7 @@ public class MeleeAttacker implements Attacker, Movable {
   @Override
   public void startChase(Attacker newTarget) {
     path = new ArrayList<>();
-    setTarget(Optional.of(newTarget));
+    target = Optional.empty();
 
     AStar<GridBlock, GridEdge> aStar = new AStar<>();
     GridBlock newDest = newTarget.getBlock();
@@ -174,16 +181,18 @@ public class MeleeAttacker implements Attacker, Movable {
     }
 
     if (path != null && !path.isEmpty()) {
+      setTarget(Optional.of(newTarget));
       eMotion = new MeleeChaseMotion(this, path, newTarget);
     } else {
       eMotion = new MovableMotion(this);
+      target = Optional.empty();  
     }
   }
 
   @Override
   public void startCharge(Killable newTarget) {
     path = new ArrayList<>();
-    setTarget(Optional.of(newTarget));
+    target = Optional.empty();
 
     AStar<GridBlock, GridEdge> aStar = new AStar<>();
     GridBlock newDest = newTarget.getBlock();
@@ -205,9 +214,11 @@ public class MeleeAttacker implements Attacker, Movable {
     }
 
     if (path != null && !path.isEmpty()) {
+      setTarget(Optional.of(newTarget));
       eMotion = new MeleeChargeMotion(this, path, newTarget);
     } else {
       eMotion = new MovableMotion(this);
+      target = Optional.empty();
     }
   }
 

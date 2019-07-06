@@ -63,7 +63,6 @@ public class MeleeChargeMotion implements Motion {
     GridBlock newDest = target.getBlock();
     List<GridEdge> newPath = new ArrayList<>();
     stopMotion(parent.getBlock());
-
     /*
     If the target is no longer reachable, this Attacker will get as close
     as it can to the target.
@@ -90,6 +89,11 @@ public class MeleeChargeMotion implements Motion {
       }
     }
 
+    //if the path has become blocked, return to the netural state
+    if(newPath.size() == 0){
+      parent.setTarget(Optional.empty());
+    }
+    
     startMotion(newPath);
   }
 

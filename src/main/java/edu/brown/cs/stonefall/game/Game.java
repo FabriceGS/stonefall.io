@@ -155,6 +155,12 @@ public class Game {
    */
   public synchronized void addPlayer(Player player) {
     players.put(player.getId(), player);
+    // initialize gamestate
+    if(theOneTrueState == null){
+      theOneTrueState = new GameState(game, player);
+    }
+    //tell the gamestate that a new base needs to be added
+    // theOneTrueState.addBase(player);
     //when a new player is added the game states have to be updated
     this.updateGameStates();
   }
@@ -260,10 +266,13 @@ public class Game {
       }
 
       if (target.isReachable(range)) {
+        // System.out.println("REACHABLE --> START CHASE");
         attacker.startChase((Attacker) target.getEntity());
       } else if (target.isChargeable(range)) {
+        // System.out.println("CHARGEABLE --> START CHARGE");
         attacker.startCharge((Killable) target.getEntity());
       } else {
+        // System.out.println("NOT REACH/CHARGEABLE --> START MOTION");
         attacker.startMotion(target);
       }
     }
@@ -310,7 +319,7 @@ public class Game {
   }
 
   /**
-   * Returns the GameState associated with a given Player.
+   * Returns the f associated with a given Player.
    * 
    * @param player
    *          The Player to retrieve the GameState of.

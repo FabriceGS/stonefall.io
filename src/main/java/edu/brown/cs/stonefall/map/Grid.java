@@ -137,7 +137,7 @@ public final class Grid {
 
   private static Optional<Killable> getKillableInRange(
       GridBlock block, int range) {
-    System.out.println("block" + block.getEntity());
+    // System.out.println("block" + block.getEntity());
     int offset = 1;
     while (offset <= range) {
       for (int i = -offset; i < 1 + offset; i++) {

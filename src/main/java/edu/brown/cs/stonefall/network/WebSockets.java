@@ -360,8 +360,8 @@ public class WebSockets {
 
       //iterate over all bases
       List<BaseBean> baseBeans = new ArrayList<BaseBean>();
-      baseBeans.addAll(firstState.getEnemyBases());
-      baseBeans.add(firstState.getMyBase());
+      baseBeans.addAll(firstState.getBases());
+      // baseBeans.add(firstState.getMyBase());
       for (BaseBean b : baseBeans) {
         JsonObject tempBase = new JsonObject();
         tempBase.addProperty("x", b.getX());
@@ -406,8 +406,8 @@ public class WebSockets {
       //or if there is a way I'm not aware of it
 
       List<WallBean> retWalls = new ArrayList<WallBean>();
-      retWalls.addAll(firstState.getMyWalls());
-      retWalls.addAll(firstState.getEnemyWalls());
+      retWalls.addAll(firstState.getWalls());
+      // retWalls.addAll(firstState.getEnemyWalls());
       for (WallBean w : retWalls) {
         JsonObject tempWall = new JsonObject();
         tempWall.addProperty("x", w.getX());
@@ -441,8 +441,8 @@ public class WebSockets {
       }
 
       List<TurretBean> retTurrets = new ArrayList<TurretBean>();
-      retTurrets.addAll(firstState.getMyTurrets());
-      retTurrets.addAll(firstState.getEnemyTurrets());
+      retTurrets.addAll(firstState.getTurrets());
+      // retTurrets.addAll(firstState.getEnemyTurrets());
       for (TurretBean w : retTurrets) {
         JsonObject tempTurret = new JsonObject();
         tempTurret.addProperty("x", w.getX());
@@ -484,8 +484,8 @@ public class WebSockets {
 
 
       List<MineBean> retMines = new ArrayList<MineBean>();
-      retMines.addAll(firstState.getMyMines());
-      retMines.addAll(firstState.getEnemyMines());
+      retMines.addAll(firstState.getMines());
+      // retMines.addAll(firstState.getEnemyMines());
       for (MineBean w : retMines) {
         JsonObject tempMine = new JsonObject();
         tempMine.addProperty("x", w.getX());
@@ -519,8 +519,8 @@ public class WebSockets {
       
       
       List<AttackerBean> retAttackers = new ArrayList<AttackerBean>();
-      retAttackers.addAll(firstState.getMyAttackers());
-      retAttackers.addAll(firstState.getEnemyAttackers());
+      retAttackers.addAll(firstState.getAttackers());
+      // retAttackers.addAll(firstState.getEnemyAttackers());
       for (AttackerBean w : retAttackers) {
         JsonObject tempAttacker = new JsonObject();
         tempAttacker.addProperty("x", w.getX());
@@ -563,8 +563,8 @@ public class WebSockets {
       }
 
       List<ScaffoldBean> retScaffoldings = new ArrayList<ScaffoldBean>();
-      retScaffoldings.addAll(firstState.getMyScaffolds());
-      retScaffoldings.addAll(firstState.getEnemyScaffolds());
+      retScaffoldings.addAll(firstState.getScaffolds());
+      // retScaffoldings.addAll(firstState.getEnemyScaffolds());
       for (ScaffoldBean w : retScaffoldings) {
         JsonObject tempScaffolding = new JsonObject();
         tempScaffolding.addProperty("x", w.getX());
@@ -1588,339 +1588,339 @@ public class WebSockets {
    * @param curSeshId
    * @return
    */
-  private static JsonObject fillUpdatePayloadById(GameState myState,
-      Player thisPlayer, Integer curSeshId) {
-    //the payload should be a list of player id and their corresponding objects
-    Map<Integer, JsonObject> playerJsons = new ConcurrentHashMap<>();
+  // private static JsonObject fillUpdatePayloadById(GameState myState,
+  //     Player thisPlayer, Integer curSeshId) {
+  //   //the payload should be a list of player id and their corresponding objects
+  //   Map<Integer, JsonObject> playerJsons = new ConcurrentHashMap<>();
 
-    //creates the outline of the entire payload, i.e. all info by player id
-    //but each list starts out empty
-    for (Entry<Integer, Session> curEntry : sessions.entrySet()) {
-      Integer tmpSeshId = curEntry.getKey();
-      if(game.playerExists("/p/" + tmpSeshId)){
-        JsonObject aPlayerJson = new JsonObject();
-        aPlayerJson.addProperty("id", tmpSeshId);
-        //initalize all object lists
-        JsonArray wallsList = new JsonArray();
-        JsonArray attackersList = new JsonArray();
-        JsonArray turretsList = new JsonArray();
-        JsonArray scaffoldingsList = new JsonArray();
-        JsonArray minesList = new JsonArray();
-        aPlayerJson.add("walls", wallsList);
-        aPlayerJson.add("attackers", attackersList);
-        aPlayerJson.add("turrets", turretsList);
-        aPlayerJson.add("scaffoldings", scaffoldingsList);
-        aPlayerJson.add("mines", minesList);
-        //input all other player statistics 
-        Player iterPlayer = game.getPlayer("/p/" + tmpSeshId);
-        JsonObject enemyStatistics = new JsonObject();
-        enemyStatistics.addProperty("name", iterPlayer.getName());
-        enemyStatistics.addProperty("resources", iterPlayer.getResourceCount());
-        enemyStatistics.addProperty("score", iterPlayer.getScore());
-        enemyStatistics.addProperty("mineCost",
-            iterPlayer.multiplyByScoreLogistically(Constants.MINE_COST));
-        enemyStatistics.addProperty("wallCost",
-            iterPlayer.multiplyByScoreLogistically(Constants.WALL_COST));
-        enemyStatistics.addProperty("attacker1Cost",
-            iterPlayer.multiplyByScoreLogistically(Constants.ATTACKER_COST));
-        enemyStatistics.addProperty("turret1Cost",
-            iterPlayer.multiplyByScoreLogistically(Constants.TURRET_COST));
-        aPlayerJson.add("statistics", enemyStatistics);
-        //put player json in the map
-        playerJsons.put(tmpSeshId, aPlayerJson);
-      }
-    }
+  //   //creates the outline of the entire payload, i.e. all info by player id
+  //   //but each list starts out empty
+  //   for (Entry<Integer, Session> curEntry : sessions.entrySet()) {
+  //     Integer tmpSeshId = curEntry.getKey();
+  //     if(game.playerExists("/p/" + tmpSeshId)){
+  //       JsonObject aPlayerJson = new JsonObject();
+  //       aPlayerJson.addProperty("id", tmpSeshId);
+  //       //initalize all object lists
+  //       JsonArray wallsList = new JsonArray();
+  //       JsonArray attackersList = new JsonArray();
+  //       JsonArray turretsList = new JsonArray();
+  //       JsonArray scaffoldingsList = new JsonArray();
+  //       JsonArray minesList = new JsonArray();
+  //       aPlayerJson.add("walls", wallsList);
+  //       aPlayerJson.add("attackers", attackersList);
+  //       aPlayerJson.add("turrets", turretsList);
+  //       aPlayerJson.add("scaffoldings", scaffoldingsList);
+  //       aPlayerJson.add("mines", minesList);
+  //       //input all other player statistics 
+  //       Player iterPlayer = game.getPlayer("/p/" + tmpSeshId);
+  //       JsonObject enemyStatistics = new JsonObject();
+  //       enemyStatistics.addProperty("name", iterPlayer.getName());
+  //       enemyStatistics.addProperty("resources", iterPlayer.getResourceCount());
+  //       enemyStatistics.addProperty("score", iterPlayer.getScore());
+  //       enemyStatistics.addProperty("mineCost",
+  //           iterPlayer.multiplyByScoreLogistically(Constants.MINE_COST));
+  //       enemyStatistics.addProperty("wallCost",
+  //           iterPlayer.multiplyByScoreLogistically(Constants.WALL_COST));
+  //       enemyStatistics.addProperty("attacker1Cost",
+  //           iterPlayer.multiplyByScoreLogistically(Constants.ATTACKER_COST));
+  //       enemyStatistics.addProperty("turret1Cost",
+  //           iterPlayer.multiplyByScoreLogistically(Constants.TURRET_COST));
+  //       aPlayerJson.add("statistics", enemyStatistics);
+  //       //put player json in the map
+  //       playerJsons.put(tmpSeshId, aPlayerJson);
+  //     }
+  //   }
 
-    // me (contains all relevant information for me)
-    // JsonObject my = new JsonObject();
-    JsonObject currentPlayer = playerJsons.get(curSeshId);
+  //   // me (contains all relevant information for me)
+  //   // JsonObject my = new JsonObject();
+  //   JsonObject currentPlayer = playerJsons.get(curSeshId);
 
-    // player stats
-    JsonObject statistics = new JsonObject();
-    statistics.addProperty("name", thisPlayer.getName());
-    statistics.addProperty("resources", thisPlayer.getResourceCount());
-    statistics.addProperty("score", thisPlayer.getScore());
-    statistics.addProperty("mineCost",
-        thisPlayer.multiplyByScoreLogistically(Constants.MINE_COST));
-    statistics.addProperty("wallCost",
-        thisPlayer.multiplyByScoreLogistically(Constants.WALL_COST));
-    statistics.addProperty("attacker1Cost",
-        thisPlayer.multiplyByScoreLogistically(Constants.ATTACKER_COST));
-    statistics.addProperty("turret1Cost",
-        thisPlayer.multiplyByScoreLogistically(Constants.TURRET_COST));
+  //   // player stats
+  //   JsonObject statistics = new JsonObject();
+  //   statistics.addProperty("name", thisPlayer.getName());
+  //   statistics.addProperty("resources", thisPlayer.getResourceCount());
+  //   statistics.addProperty("score", thisPlayer.getScore());
+  //   statistics.addProperty("mineCost",
+  //       thisPlayer.multiplyByScoreLogistically(Constants.MINE_COST));
+  //   statistics.addProperty("wallCost",
+  //       thisPlayer.multiplyByScoreLogistically(Constants.WALL_COST));
+  //   statistics.addProperty("attacker1Cost",
+  //       thisPlayer.multiplyByScoreLogistically(Constants.ATTACKER_COST));
+  //   statistics.addProperty("turret1Cost",
+  //       thisPlayer.multiplyByScoreLogistically(Constants.TURRET_COST));
     
-    currentPlayer.add("statistics", statistics);
+  //   currentPlayer.add("statistics", statistics);
 
-    // base
-    JsonObject base = new JsonObject();
-    BaseBean mybb = myState.getMyBase();
-    base.addProperty("x", mybb.getX());
-    base.addProperty("y", mybb.getY());
-    base.addProperty("health", mybb.getHp());
-    base.addProperty("maxHealth", mybb.getMaxHp());
-    base.addProperty("color", mybb.getColorHex());
-    base.addProperty("name", thisPlayer.getName());
-    currentPlayer.add("base", base);
+  //   // base
+  //   JsonObject base = new JsonObject();
+  //   BaseBean mybb = myState.getMyBase();
+  //   base.addProperty("x", mybb.getX());
+  //   base.addProperty("y", mybb.getY());
+  //   base.addProperty("health", mybb.getHp());
+  //   base.addProperty("maxHealth", mybb.getMaxHp());
+  //   base.addProperty("color", mybb.getColorHex());
+  //   base.addProperty("name", thisPlayer.getName());
+  //   currentPlayer.add("base", base);
 
-    // walls
-    JsonArray walls = new JsonArray();
-    List<WallBean> retWalls = myState.getMyWalls();
-    for (WallBean w : retWalls) {
-      JsonObject tempWall = new JsonObject();
-      tempWall.addProperty("x", w.getX());
-      tempWall.addProperty("y", w.getY());
-      tempWall.addProperty("health", w.getHp());
-      tempWall.addProperty("maxHealth", w.getMaxHp());
-      tempWall.addProperty("id", w.getId());
-      tempWall.addProperty("color", w.getColorHex());
-      walls.add(tempWall);
-    }
-    currentPlayer.add("walls", walls);
+  //   // walls
+  //   JsonArray walls = new JsonArray();
+  //   List<WallBean> retWalls = myState.getMyWalls();
+  //   for (WallBean w : retWalls) {
+  //     JsonObject tempWall = new JsonObject();
+  //     tempWall.addProperty("x", w.getX());
+  //     tempWall.addProperty("y", w.getY());
+  //     tempWall.addProperty("health", w.getHp());
+  //     tempWall.addProperty("maxHealth", w.getMaxHp());
+  //     tempWall.addProperty("id", w.getId());
+  //     tempWall.addProperty("color", w.getColorHex());
+  //     walls.add(tempWall);
+  //   }
+  //   currentPlayer.add("walls", walls);
 
-    // turrets
-    JsonArray turrets = new JsonArray();
-    List<TurretBean> retTurs = myState.getMyTurrets();
-    for (TurretBean t : retTurs) {
-      JsonObject tempTur = new JsonObject();
-      tempTur.addProperty("x", t.getX());
-      tempTur.addProperty("y", t.getY());
-      tempTur.addProperty("health", t.getHp());
-      tempTur.addProperty("maxHealth", t.getMaxHp());
-      tempTur.addProperty("id", t.getId());
-      tempTur.addProperty("color", t.getColorHex());
-      if (t.getAttackStatus()) {
-        JsonObject tempAttacking = new JsonObject();
-        tempAttacking.addProperty("x", t.getTargetX());
-        tempAttacking.addProperty("y", t.getTargetY());
-        tempAttacking.addProperty("direction", t.getTargetDirection().encode());
-        tempAttacking.addProperty("ratio", t.getTargetRatio());
-        tempTur.add("attacking", tempAttacking);
-      }
-      turrets.add(tempTur);
-    }
-    currentPlayer.add("turrets", turrets);
+  //   // turrets
+  //   JsonArray turrets = new JsonArray();
+  //   List<TurretBean> retTurs = myState.getMyTurrets();
+  //   for (TurretBean t : retTurs) {
+  //     JsonObject tempTur = new JsonObject();
+  //     tempTur.addProperty("x", t.getX());
+  //     tempTur.addProperty("y", t.getY());
+  //     tempTur.addProperty("health", t.getHp());
+  //     tempTur.addProperty("maxHealth", t.getMaxHp());
+  //     tempTur.addProperty("id", t.getId());
+  //     tempTur.addProperty("color", t.getColorHex());
+  //     if (t.getAttackStatus()) {
+  //       JsonObject tempAttacking = new JsonObject();
+  //       tempAttacking.addProperty("x", t.getTargetX());
+  //       tempAttacking.addProperty("y", t.getTargetY());
+  //       tempAttacking.addProperty("direction", t.getTargetDirection().encode());
+  //       tempAttacking.addProperty("ratio", t.getTargetRatio());
+  //       tempTur.add("attacking", tempAttacking);
+  //     }
+  //     turrets.add(tempTur);
+  //   }
+  //   currentPlayer.add("turrets", turrets);
 
-    // attackers
-    JsonArray attackers = new JsonArray();
-    List<AttackerBean> retAtts = myState.getMyAttackers();
-    for (AttackerBean a : retAtts) {
-      JsonObject tempAtt = new JsonObject();
-      tempAtt.addProperty("targetX", a.getTargetX());
-      tempAtt.addProperty("targetY", a.getTargetY());
-      tempAtt.addProperty("x", a.getX());
-      tempAtt.addProperty("y", a.getY());
-      tempAtt.addProperty("health", a.getHp());
-      tempAtt.addProperty("maxHealth", a.getMaxHp());
-      tempAtt.addProperty("id", a.getId());
-      tempAtt.addProperty("color", a.getColorHex());
-      JsonObject movement = new JsonObject();
-      movement.addProperty("direction", a.getDirection());
-      movement.addProperty("ratio", a.getRatio());
-      movement.addProperty("motion", a.inMotion());
-      tempAtt.add("movement", movement);
-      tempAtt.addProperty("isAttacking", a.attackStatus());
-      attackers.add(tempAtt);
-    }
-    currentPlayer.add("attackers", attackers);
+  //   // attackers
+  //   JsonArray attackers = new JsonArray();
+  //   List<AttackerBean> retAtts = myState.getMyAttackers();
+  //   for (AttackerBean a : retAtts) {
+  //     JsonObject tempAtt = new JsonObject();
+  //     tempAtt.addProperty("targetX", a.getTargetX());
+  //     tempAtt.addProperty("targetY", a.getTargetY());
+  //     tempAtt.addProperty("x", a.getX());
+  //     tempAtt.addProperty("y", a.getY());
+  //     tempAtt.addProperty("health", a.getHp());
+  //     tempAtt.addProperty("maxHealth", a.getMaxHp());
+  //     tempAtt.addProperty("id", a.getId());
+  //     tempAtt.addProperty("color", a.getColorHex());
+  //     JsonObject movement = new JsonObject();
+  //     movement.addProperty("direction", a.getDirection());
+  //     movement.addProperty("ratio", a.getRatio());
+  //     movement.addProperty("motion", a.inMotion());
+  //     tempAtt.add("movement", movement);
+  //     tempAtt.addProperty("isAttacking", a.attackStatus());
+  //     attackers.add(tempAtt);
+  //   }
+  //   currentPlayer.add("attackers", attackers);
 
-    // mines
-    JsonArray mines = new JsonArray();
-    List<MineBean> retMines = myState.getMyMines();
-    for (MineBean m : retMines) {
-      JsonObject tempMine = new JsonObject();
-      tempMine.addProperty("x", m.getX());
-      tempMine.addProperty("y", m.getY());
-      tempMine.addProperty("health", m.getHp());
-      tempMine.addProperty("maxHealth", m.getMaxHp());
-      tempMine.addProperty("id", m.getId());
-      tempMine.addProperty("color", m.getColorHex());
-      mines.add(tempMine);
-    }
-    currentPlayer.add("mines", mines);
+  //   // mines
+  //   JsonArray mines = new JsonArray();
+  //   List<MineBean> retMines = myState.getMyMines();
+  //   for (MineBean m : retMines) {
+  //     JsonObject tempMine = new JsonObject();
+  //     tempMine.addProperty("x", m.getX());
+  //     tempMine.addProperty("y", m.getY());
+  //     tempMine.addProperty("health", m.getHp());
+  //     tempMine.addProperty("maxHealth", m.getMaxHp());
+  //     tempMine.addProperty("id", m.getId());
+  //     tempMine.addProperty("color", m.getColorHex());
+  //     mines.add(tempMine);
+  //   }
+  //   currentPlayer.add("mines", mines);
 
-    // scaffolds
-    JsonArray scaffoldings = new JsonArray();
-    List<ScaffoldBean> retScaffolds = myState.getMyScaffolds();
-    for (ScaffoldBean s : retScaffolds) {
-      JsonObject tempScaf = new JsonObject();
-      tempScaf.addProperty("x", s.getX());
-      tempScaf.addProperty("y", s.getY());
-      tempScaf.addProperty("health", s.getHp());
-      tempScaf.addProperty("maxHealth", s.getMaxHp());
-      tempScaf.addProperty("id", s.getId());
-      tempScaf.addProperty("color", s.getColorHex());
-      scaffoldings.add(tempScaf);
-    }
-    currentPlayer.add("scaffoldings", scaffoldings);
+  //   // scaffolds
+  //   JsonArray scaffoldings = new JsonArray();
+  //   List<ScaffoldBean> retScaffolds = myState.getMyScaffolds();
+  //   for (ScaffoldBean s : retScaffolds) {
+  //     JsonObject tempScaf = new JsonObject();
+  //     tempScaf.addProperty("x", s.getX());
+  //     tempScaf.addProperty("y", s.getY());
+  //     tempScaf.addProperty("health", s.getHp());
+  //     tempScaf.addProperty("maxHealth", s.getMaxHp());
+  //     tempScaf.addProperty("id", s.getId());
+  //     tempScaf.addProperty("color", s.getColorHex());
+  //     scaffoldings.add(tempScaf);
+  //   }
+  //   currentPlayer.add("scaffoldings", scaffoldings);
 
-    // others (contains all
-    JsonObject others = new JsonObject();
+  //   // others (contains all
+  //   JsonObject others = new JsonObject();
 
-    // enemy bases
-    // JsonArray enemyBases = new JsonArray();
-    List<BaseBean> enemyBaseBeans = myState.getEnemyBases();
-    for (BaseBean eb : enemyBaseBeans) {
-      JsonObject tempEnemyBase = new JsonObject();
-      tempEnemyBase.addProperty("x", eb.getX());
-      tempEnemyBase.addProperty("y", eb.getY());
-      tempEnemyBase.addProperty("health", eb.getHp());
-      tempEnemyBase.addProperty("maxHealth", eb.getMaxHp());
-      tempEnemyBase.addProperty("color", eb.getColorHex());
-      tempEnemyBase.addProperty("name", eb.getName());
-      Integer basePlayerId = Integer.valueOf((eb.getPlayerId()).substring(3));
-      //get player json
-      JsonObject playerJson = playerJsons.get(basePlayerId);
-      //add each base to its corresponding owner
-      playerJson.add("base", tempEnemyBase);
-    }
+  //   // enemy bases
+  //   // JsonArray enemyBases = new JsonArray();
+  //   List<BaseBean> enemyBaseBeans = myState.getEnemyBases();
+  //   for (BaseBean eb : enemyBaseBeans) {
+  //     JsonObject tempEnemyBase = new JsonObject();
+  //     tempEnemyBase.addProperty("x", eb.getX());
+  //     tempEnemyBase.addProperty("y", eb.getY());
+  //     tempEnemyBase.addProperty("health", eb.getHp());
+  //     tempEnemyBase.addProperty("maxHealth", eb.getMaxHp());
+  //     tempEnemyBase.addProperty("color", eb.getColorHex());
+  //     tempEnemyBase.addProperty("name", eb.getName());
+  //     Integer basePlayerId = Integer.valueOf((eb.getPlayerId()).substring(3));
+  //     //get player json
+  //     JsonObject playerJson = playerJsons.get(basePlayerId);
+  //     //add each base to its corresponding owner
+  //     playerJson.add("base", tempEnemyBase);
+  //   }
 
-    // enemy walls
-    JsonArray enemyWalls = new JsonArray();
-    List<WallBean> enemyWallBeans = myState.getEnemyWalls();
-    for (WallBean ew : enemyWallBeans) {
-      JsonObject tempEnemyWall = new JsonObject();
-      tempEnemyWall.addProperty("x", ew.getX());
-      tempEnemyWall.addProperty("y", ew.getY());
-      tempEnemyWall.addProperty("health", ew.getHp());
-      tempEnemyWall.addProperty("maxHealth", ew.getMaxHp());
-      tempEnemyWall.addProperty("id", ew.getId());
-      tempEnemyWall.addProperty("color", ew.getColorHex());
-      //get player json of object owner
-      JsonObject playerJson = playerJsons.get((Integer.valueOf((ew.getPlayerId()).substring(3))));
-      //add each base to its corresponding owner's list of objects of this type
-      ((JsonArray) playerJson.get("walls")).add(tempEnemyWall);
-    }
+  //   // enemy walls
+  //   JsonArray enemyWalls = new JsonArray();
+  //   List<WallBean> enemyWallBeans = myState.getEnemyWalls();
+  //   for (WallBean ew : enemyWallBeans) {
+  //     JsonObject tempEnemyWall = new JsonObject();
+  //     tempEnemyWall.addProperty("x", ew.getX());
+  //     tempEnemyWall.addProperty("y", ew.getY());
+  //     tempEnemyWall.addProperty("health", ew.getHp());
+  //     tempEnemyWall.addProperty("maxHealth", ew.getMaxHp());
+  //     tempEnemyWall.addProperty("id", ew.getId());
+  //     tempEnemyWall.addProperty("color", ew.getColorHex());
+  //     //get player json of object owner
+  //     JsonObject playerJson = playerJsons.get((Integer.valueOf((ew.getPlayerId()).substring(3))));
+  //     //add each base to its corresponding owner's list of objects of this type
+  //     ((JsonArray) playerJson.get("walls")).add(tempEnemyWall);
+  //   }
 
-    // enemy turrets
-    JsonArray enemyTurrets = new JsonArray();
-    List<TurretBean> enemyTurretBeans = myState.getEnemyTurrets();
-    for (TurretBean et : enemyTurretBeans) {
-      JsonObject tempEnemyTurret = new JsonObject();
-      tempEnemyTurret.addProperty("x", et.getX());
-      tempEnemyTurret.addProperty("y", et.getY());
-      tempEnemyTurret.addProperty("health", et.getHp());
-      tempEnemyTurret.addProperty("maxHealth", et.getMaxHp());
-      tempEnemyTurret.addProperty("id", et.getId());
-      tempEnemyTurret.addProperty("color", et.getColorHex());
-      if (et.getAttackStatus()) {
-        JsonObject tempAttacking = new JsonObject();
-        tempAttacking.addProperty("x", et.getTargetX());
-        tempAttacking.addProperty("y", et.getTargetY());
-        tempAttacking.addProperty("direction",
-            et.getTargetDirection().encode());
-        tempAttacking.addProperty("ratio", et.getTargetRatio());
-        tempEnemyTurret.add("attacking", tempAttacking);
-      }
-      //get player json of object owner
-      JsonObject playerJson = playerJsons.get((Integer.valueOf((et.getPlayerId()).substring(3))));
-      //add each base to its corresponding owner's list of objects of this type
-      ((JsonArray) playerJson.get("turrets")).add(tempEnemyTurret);
-    }
+  //   // enemy turrets
+  //   JsonArray enemyTurrets = new JsonArray();
+  //   List<TurretBean> enemyTurretBeans = myState.getEnemyTurrets();
+  //   for (TurretBean et : enemyTurretBeans) {
+  //     JsonObject tempEnemyTurret = new JsonObject();
+  //     tempEnemyTurret.addProperty("x", et.getX());
+  //     tempEnemyTurret.addProperty("y", et.getY());
+  //     tempEnemyTurret.addProperty("health", et.getHp());
+  //     tempEnemyTurret.addProperty("maxHealth", et.getMaxHp());
+  //     tempEnemyTurret.addProperty("id", et.getId());
+  //     tempEnemyTurret.addProperty("color", et.getColorHex());
+  //     if (et.getAttackStatus()) {
+  //       JsonObject tempAttacking = new JsonObject();
+  //       tempAttacking.addProperty("x", et.getTargetX());
+  //       tempAttacking.addProperty("y", et.getTargetY());
+  //       tempAttacking.addProperty("direction",
+  //           et.getTargetDirection().encode());
+  //       tempAttacking.addProperty("ratio", et.getTargetRatio());
+  //       tempEnemyTurret.add("attacking", tempAttacking);
+  //     }
+  //     //get player json of object owner
+  //     JsonObject playerJson = playerJsons.get((Integer.valueOf((et.getPlayerId()).substring(3))));
+  //     //add each base to its corresponding owner's list of objects of this type
+  //     ((JsonArray) playerJson.get("turrets")).add(tempEnemyTurret);
+  //   }
 
-    // enemy attackers
-    JsonArray enemyAttackers = new JsonArray();
-    List<AttackerBean> enemyAttackerBeans = myState.getEnemyAttackers();
-    for (AttackerBean ea : enemyAttackerBeans) {
-      JsonObject tempEnemyAttacker = new JsonObject();
-      tempEnemyAttacker.addProperty("targetX", ea.getTargetX());
-      tempEnemyAttacker.addProperty("targetY", ea.getTargetY());
-      tempEnemyAttacker.addProperty("x", ea.getX());
-      tempEnemyAttacker.addProperty("y", ea.getY());
-      tempEnemyAttacker.addProperty("health", ea.getHp());
-      tempEnemyAttacker.addProperty("maxHealth", ea.getMaxHp());
-      tempEnemyAttacker.addProperty("id", ea.getId());
-      tempEnemyAttacker.addProperty("color", ea.getColorHex());
-      JsonObject movement = new JsonObject();
-      movement.addProperty("direction", ea.getDirection());
-      movement.addProperty("ratio", ea.getRatio());
-      tempEnemyAttacker.add("movement", movement);
-      tempEnemyAttacker.addProperty("isAttacking", ea.attackStatus());
-      //get player json of object owner
-      JsonObject playerJson = playerJsons.get((Integer.valueOf((ea.getPlayerId()).substring(3))));
-      //add each base to its corresponding owner's list of objects of this type
-      ((JsonArray) playerJson.get("attackers")).add(tempEnemyAttacker);
-    }
+  //   // enemy attackers
+  //   JsonArray enemyAttackers = new JsonArray();
+  //   List<AttackerBean> enemyAttackerBeans = myState.getEnemyAttackers();
+  //   for (AttackerBean ea : enemyAttackerBeans) {
+  //     JsonObject tempEnemyAttacker = new JsonObject();
+  //     tempEnemyAttacker.addProperty("targetX", ea.getTargetX());
+  //     tempEnemyAttacker.addProperty("targetY", ea.getTargetY());
+  //     tempEnemyAttacker.addProperty("x", ea.getX());
+  //     tempEnemyAttacker.addProperty("y", ea.getY());
+  //     tempEnemyAttacker.addProperty("health", ea.getHp());
+  //     tempEnemyAttacker.addProperty("maxHealth", ea.getMaxHp());
+  //     tempEnemyAttacker.addProperty("id", ea.getId());
+  //     tempEnemyAttacker.addProperty("color", ea.getColorHex());
+  //     JsonObject movement = new JsonObject();
+  //     movement.addProperty("direction", ea.getDirection());
+  //     movement.addProperty("ratio", ea.getRatio());
+  //     tempEnemyAttacker.add("movement", movement);
+  //     tempEnemyAttacker.addProperty("isAttacking", ea.attackStatus());
+  //     //get player json of object owner
+  //     JsonObject playerJson = playerJsons.get((Integer.valueOf((ea.getPlayerId()).substring(3))));
+  //     //add each base to its corresponding owner's list of objects of this type
+  //     ((JsonArray) playerJson.get("attackers")).add(tempEnemyAttacker);
+  //   }
 
-    // enemy mines
-    JsonArray enemyMines = new JsonArray();
-    List<MineBean> enemyMineBeans = myState.getEnemyMines();
-    for (MineBean em : enemyMineBeans) {
-      JsonObject tempEnemyMine = new JsonObject();
-      tempEnemyMine.addProperty("x", em.getX());
-      tempEnemyMine.addProperty("y", em.getY());
-      tempEnemyMine.addProperty("health", em.getHp());
-      tempEnemyMine.addProperty("maxHealth", em.getMaxHp());
-      tempEnemyMine.addProperty("id", em.getId());
-      tempEnemyMine.addProperty("color", em.getColorHex());
-      //get player json of object owner
-      JsonObject playerJson = playerJsons.get((Integer.valueOf((em.getPlayerId()).substring(3))));
-      //add each base to its corresponding owner's list of objects of this type
-      ((JsonArray) playerJson.get("mines")).add(tempEnemyMine);
-    }
+  //   // enemy mines
+  //   JsonArray enemyMines = new JsonArray();
+  //   List<MineBean> enemyMineBeans = myState.getEnemyMines();
+  //   for (MineBean em : enemyMineBeans) {
+  //     JsonObject tempEnemyMine = new JsonObject();
+  //     tempEnemyMine.addProperty("x", em.getX());
+  //     tempEnemyMine.addProperty("y", em.getY());
+  //     tempEnemyMine.addProperty("health", em.getHp());
+  //     tempEnemyMine.addProperty("maxHealth", em.getMaxHp());
+  //     tempEnemyMine.addProperty("id", em.getId());
+  //     tempEnemyMine.addProperty("color", em.getColorHex());
+  //     //get player json of object owner
+  //     JsonObject playerJson = playerJsons.get((Integer.valueOf((em.getPlayerId()).substring(3))));
+  //     //add each base to its corresponding owner's list of objects of this type
+  //     ((JsonArray) playerJson.get("mines")).add(tempEnemyMine);
+  //   }
 
-    // enemy scaffolds
-    JsonArray enemyScaffoldings = new JsonArray();
-    List<ScaffoldBean> enemyScafs = myState.getEnemyScaffolds();
-    for (ScaffoldBean es : enemyScafs) {
-      JsonObject tempEnemyScaf = new JsonObject();
-      tempEnemyScaf.addProperty("x", es.getX());
-      tempEnemyScaf.addProperty("y", es.getY());
-      tempEnemyScaf.addProperty("health", es.getHp());
-      tempEnemyScaf.addProperty("maxHealth", es.getMaxHp());
-      tempEnemyScaf.addProperty("id", es.getId());
-      tempEnemyScaf.addProperty("color", es.getColorHex());
-      //get player json of object owner
-      JsonObject playerJson = playerJsons.get((Integer.valueOf((es.getPlayerId()).substring(3))));
-      //add each base to its corresponding owner's list of objects of this type
-      ((JsonArray) playerJson.get("scaffoldings")).add(tempEnemyScaf);
-    }
+  //   // enemy scaffolds
+  //   JsonArray enemyScaffoldings = new JsonArray();
+  //   List<ScaffoldBean> enemyScafs = myState.getEnemyScaffolds();
+  //   for (ScaffoldBean es : enemyScafs) {
+  //     JsonObject tempEnemyScaf = new JsonObject();
+  //     tempEnemyScaf.addProperty("x", es.getX());
+  //     tempEnemyScaf.addProperty("y", es.getY());
+  //     tempEnemyScaf.addProperty("health", es.getHp());
+  //     tempEnemyScaf.addProperty("maxHealth", es.getMaxHp());
+  //     tempEnemyScaf.addProperty("id", es.getId());
+  //     tempEnemyScaf.addProperty("color", es.getColorHex());
+  //     //get player json of object owner
+  //     JsonObject playerJson = playerJsons.get((Integer.valueOf((es.getPlayerId()).substring(3))));
+  //     //add each base to its corresponding owner's list of objects of this type
+  //     ((JsonArray) playerJson.get("scaffoldings")).add(tempEnemyScaf);
+  //   }
 
 
-    //this is the motherlode right here
-    //all things which are universal to players go in here, along with a list of each player
-    //and that player's in game info
-    JsonObject payload = new JsonObject();
+  //   //this is the motherlode right here
+  //   //all things which are universal to players go in here, along with a list of each player
+  //   //and that player's in game info
+  //   JsonObject payload = new JsonObject();
 
-    //resources
-    JsonArray resources = new JsonArray();
-    List<ResourceBean> resourceBeans = myState.getResources();
-    for (ResourceBean rb : resourceBeans) {
-      JsonObject tempResource = new JsonObject();
-      tempResource.addProperty("x", rb.getX());
-      tempResource.addProperty("y", rb.getY());
-      tempResource.addProperty("health", rb.getHp());
-      tempResource.addProperty("maxHealth", rb.getMaxHp());
-      resources.add(tempResource);
-    }
-    payload.add("resources", resources);
+  //   //resources
+  //   JsonArray resources = new JsonArray();
+  //   List<ResourceBean> resourceBeans = myState.getResources();
+  //   for (ResourceBean rb : resourceBeans) {
+  //     JsonObject tempResource = new JsonObject();
+  //     tempResource.addProperty("x", rb.getX());
+  //     tempResource.addProperty("y", rb.getY());
+  //     tempResource.addProperty("health", rb.getHp());
+  //     tempResource.addProperty("maxHealth", rb.getMaxHp());
+  //     resources.add(tempResource);
+  //   }
+  //   payload.add("resources", resources);
 
-    // leaderboard
-    JsonArray leaderboard = new JsonArray();
-    List<Player> leaders = myState.getLeaders();
-    for (Player player : leaders) {
-      JsonObject tempPlayer = new JsonObject();
-      tempPlayer.addProperty("name", player.getName());
-      tempPlayer.addProperty("score", player.getScore());
-      tempPlayer.addProperty("color", player.getColorHex());
-      leaderboard.add(tempPlayer);
-    }
-    payload.add("leaderboard", leaderboard);
+  //   // leaderboard
+  //   JsonArray leaderboard = new JsonArray();
+  //   List<Player> leaders = myState.getLeaders();
+  //   for (Player player : leaders) {
+  //     JsonObject tempPlayer = new JsonObject();
+  //     tempPlayer.addProperty("name", player.getName());
+  //     tempPlayer.addProperty("score", player.getScore());
+  //     tempPlayer.addProperty("color", player.getColorHex());
+  //     leaderboard.add(tempPlayer);
+  //   }
+  //   payload.add("leaderboard", leaderboard);
 
-    JsonArray allPlayers = new JsonArray();
-    for (Entry<Integer, JsonObject> curEntry : playerJsons.entrySet()) {
-      //add each player according to its id to the payload
-      allPlayers.add(curEntry.getValue());
-    }
-    payload.add("players", allPlayers);
+  //   JsonArray allPlayers = new JsonArray();
+  //   for (Entry<Integer, JsonObject> curEntry : playerJsons.entrySet()) {
+  //     //add each player according to its id to the payload
+  //     allPlayers.add(curEntry.getValue());
+  //   }
+  //   payload.add("players", allPlayers);
 
-    // Put payload into return Json
-    JsonObject Json = new JsonObject();
-    Json.add("payload", payload);
-    Json.addProperty("type", Constants.MESSAGE_TYPE.UPDATE.ordinal());
+  //   // Put payload into return Json
+  //   JsonObject Json = new JsonObject();
+  //   Json.add("payload", payload);
+  //   Json.addProperty("type", Constants.MESSAGE_TYPE.UPDATE.ordinal());
 
-    // return GSON.toJson(Json);
-    return Json;
-  }
+  //   // return GSON.toJson(Json);
+  //   return Json;
+  // }
 
   /**
    * Error sending protocol to the frontend.

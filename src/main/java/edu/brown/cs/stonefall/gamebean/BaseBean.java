@@ -96,4 +96,11 @@ public class BaseBean {
     return Constants.BASE_HP;
   }
 
+  // Overriding equals() to compare two Complex objects 
+  @Override
+  public boolean equals(Object o) { 
+    BaseBean b = (BaseBean) o;
+    return (x == b.getX() && y==b.getY());
+  }
+
 }
