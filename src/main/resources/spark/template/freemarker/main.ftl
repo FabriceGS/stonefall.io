@@ -3,6 +3,15 @@
     <meta charset="utf-8">
     <title>${title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-123481528-2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-123481528-2');
+    </script>
     <!-- In real-world webapps, css is usually minified and
          concatenated. Here, separate normalize from our code, and
          avoid minification for clarity. -->

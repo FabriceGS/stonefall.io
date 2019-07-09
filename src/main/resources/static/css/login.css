@@ -21,6 +21,10 @@
   font-size: 10px;
 }
 
+#donateForm{
+  display: none;
+}
+
 h1 {
   padding-top: 5vh;
   margin: 0;
