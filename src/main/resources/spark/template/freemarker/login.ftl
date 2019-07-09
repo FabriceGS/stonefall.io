@@ -38,7 +38,10 @@
         Get resources from destroying other people's structures (the bigger they are, the more you get). <br>
         Look around with the arrow keys. <br> -->
         <!-- Have fun, and let the stones fall. <br> -->
-     <!-- </p> -->
+     <!-- < /p> -->
+     <div style = "position: fixed; bottom: 5px; left: 5px">
+     <a id="createdBy" href="https://fabricegs.github.io/index.html" > Built by Fabrice Guyot-Sionnest, David Oyeka, Teo Tsivranidis & Mac Mccann</a>
+     </div>
   </div>
 
 

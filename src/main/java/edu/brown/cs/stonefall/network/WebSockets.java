@@ -46,7 +46,9 @@ import edu.brown.cs.stonefall.map.Grid;
 public class WebSockets {
   private static final Gson GSON = new Gson();
   private static final Map<Integer, Session> sessions = new ConcurrentHashMap<>();
+  private static final Map<String, String> privateKeys = new ConcurrentHashMap<>();
   private static Game game;
+  private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
   private static Integer nextId = 0;
 
@@ -83,7 +85,13 @@ public class WebSockets {
       JsonObject Json = new JsonObject();
       JsonObject payload = new JsonObject();
       payload.addProperty("id", nextId);
+      //security feature
+      String newPrivateKey = randomAlphaNumber();
+      privateKeys.put("/p/" + nextId, newPrivateKey);
+      payload.addProperty("privateKey", newPrivateKey);
+      //type
       Json.addProperty("type", Constants.MESSAGE_TYPE.CONNECT.ordinal());
+      //payload w/ private key & id
       Json.add("payload", payload);
 
       // Send the CONNECT message
@@ -145,6 +153,12 @@ public class WebSockets {
     // Get the player object
     String playerId = "/p/" + curId;
     Player thisPlayer = game.getPlayer(playerId);
+
+    //cryptographic check
+    String privateKey = payload.get("privateKey").getAsString();
+    if(!privateKey.equals(privateKeys.get(playerId))){
+      return;
+    }
 
     if (received.get("type").getAsInt() == Constants.MESSAGE_TYPE.SELL
         .ordinal()) {
@@ -235,6 +249,7 @@ public class WebSockets {
       // update set of coordinates by parsing coordinates message
       String name = payload.get("name").getAsString();
 
+
       // Add the player to the game if doesn't already exist
       if (thisPlayer == null) {
         thisPlayer = new Player(name, playerId);
@@ -258,6 +273,14 @@ public class WebSockets {
       //this is a bad idea, it would be nice just to send to the one player but yolo
       update();
     }
+  }
+
+  private static String randomAlphaNumber(){
+    StringBuilder builder = new StringBuilder();
+    for(int i=0; i<8; i++){
+      builder.append(ALPHA_NUMERIC_STRING.charAt((int) Math.random() * ALPHA_NUMERIC_STRING.length()));
+    }
+    return builder.toString();
   }
 
 

@@ -24,6 +24,7 @@ const WebSockets = function() {
   const ip = "localhost:4567";
   let conn = new WebSocket("ws://" + ip + "/sockets");
   let id = -1;
+  let privateKey = -1;
 
   // Setup the WebSocket connection.
   const setupConnection = initialize => {
@@ -40,12 +41,13 @@ const WebSockets = function() {
           break;
         case MESSAGE_TYPE.CONNECT:
           id = data.payload.id;
+          privateKey = data.payload.privateKey;
           sendInitialize();
           break;
         case MESSAGE_TYPE.UPDATE:
           // if(consoleLogger % 80 == 0){ console.log("payload received:", data.payload);}
           consoleLogger ++;
-          //should definitely be setting our own id to whatever was sent to us
+          //setting our own id to whatever was sent to us
           id = data.id;
           let my;
           data.payload.players.forEach(player => {
@@ -86,6 +88,7 @@ const WebSockets = function() {
       JSON.stringify({
         type: MESSAGE_TYPE.UPDATE,
         payload: {
+          privateKey: privateKey,
           id: id,
           x1: x1,
           y1: y1,
@@ -102,6 +105,7 @@ const WebSockets = function() {
       JSON.stringify({
         type: MESSAGE_TYPE.INITIALIZE,
         payload: {
+          privateKey: privateKey,
           id: id,
           name: $("#name").text()
         }
@@ -114,6 +118,7 @@ const WebSockets = function() {
       JSON.stringify({
         type: MESSAGE_TYPE.ATTACK,
         payload: {
+          privateKey: privateKey,
           id: id,
           attackers: attackers.map(attacker => attacker.id),
           x1: toAttackCoordinates.x,
@@ -128,6 +133,7 @@ const WebSockets = function() {
       JSON.stringify({
         type: MESSAGE_TYPE.CREATE,
         payload: {
+          privateKey: privateKey,
           id: id,
           x1: x,
           y1: y,
@@ -158,6 +164,7 @@ const WebSockets = function() {
       JSON.stringify({
         type: MESSAGE_TYPE.SELL,
         payload: {
+          privateKey: privateKey,
           id: id,
           toSellIds: objects.map(object => object.id),
           objectType

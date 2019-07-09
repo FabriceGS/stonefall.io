@@ -14,6 +14,13 @@
   padding-top: 5vh;
 }
 
+#createdBy{
+  text-decoration: none;
+  font-family: 'lato';
+  color: white;
+  font-size: 10px;
+}
+
 h1 {
   padding-top: 5vh;
   margin: 0;
