@@ -24,7 +24,7 @@ import edu.brown.cs.stonefall.structure.Wall;
  *
  * @author Theodoros
  */
-public class Player {
+public class HumanPlayer implements Player{
 
   private Base base;
 
@@ -86,7 +86,7 @@ public class Player {
    * @param id
    *          id of player
    */
-  public Player(String name, String id) {
+  public HumanPlayer(String name, String id) {
     random = new Random();
 
     this.name = name;

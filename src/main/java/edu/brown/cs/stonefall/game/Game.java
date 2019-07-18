@@ -27,6 +27,7 @@ import edu.brown.cs.stonefall.structure.Wall;
 public class Game {
 
   private Map<String, Player> players;
+  private Map<String, Bot> bots;
   private Map<String, GameState> gameStates;
   private Game game;
   private GameState theOneTrueState;
@@ -45,6 +46,7 @@ public class Game {
     game = this;
     theOneTrueState = null;
     players = new ConcurrentHashMap<>();
+    bots = new ConcurrentHashMap<>();
     gameStates = new ConcurrentHashMap<>();
     resources = new ConcurrentHashMap<>();
 
@@ -76,9 +78,17 @@ public class Game {
       // Perform the task
       updateResources();
       updateGameStates();
+      updateBots();
 
       WebSockets.update();
     }
+  }
+
+  private void updateBots() {
+    //check size of player hash map
+    //if less then constants.min_players
+    //build a new Xbot
+    //add to hashmap
   }
 
   /**

@@ -252,7 +252,7 @@ public class WebSockets {
 
       // Add the player to the game if doesn't already exist
       if (thisPlayer == null) {
-        thisPlayer = new Player(name, playerId);
+        thisPlayer = new HumanPlayer(name, playerId);
         game.addPlayer(thisPlayer);
       }
 
