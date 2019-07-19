@@ -63,6 +63,8 @@ public final class Constants {
 
   public static final int MAX_PLAYERS = 50;
 
+  public static final int MAX_BOTS = 5;
+
   private Constants() {
   }
 

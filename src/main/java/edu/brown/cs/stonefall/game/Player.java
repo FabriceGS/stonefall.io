@@ -26,33 +26,33 @@ import edu.brown.cs.stonefall.structure.Wall;
  */
 public class Player {
 
-  private Base base;
+  protected Base base;
 
-  private Map<String, Wall> walls;
-  private Map<String, Turret> turrets;
-  private Map<String, Mine> mines;
-  private Map<String, Scaffold> scaffolds;
+  protected Map<String, Wall> walls;
+  protected Map<String, Turret> turrets;
+  protected Map<String, Mine> mines;
+  protected Map<String, Scaffold> scaffolds;
 
-  private Map<String, Attacker> attackers;
+  protected Map<String, Attacker> attackers;
 
-  private String name;
-  private String id;
-  private Color color;
+  protected String name;
+  protected String id;
+  protected Color color;
 
-  private int resourceCount;
-  private int mineIdNum;
-  private int attackerIdNum;
-  private int structureIdNum;
-  private int scaffoldIdNum;
-  private int score;
-  private int topScore;
+  protected int resourceCount;
+  protected int mineIdNum;
+  protected int attackerIdNum;
+  protected int structureIdNum;
+  protected int scaffoldIdNum;
+  protected int score;
+  protected int topScore;
   //these represent the viewing window of the user on the frontend
-  private int topLX;
-  private int topLY;
-  private int bottomRX;
-  private int bottomRY;
+  protected int topLX;
+  protected int topLY;
+  protected int bottomRX;
+  protected int bottomRY;
 
-  private Random random;
+  protected Random random;
 
   /**
    * Constructor for a player.

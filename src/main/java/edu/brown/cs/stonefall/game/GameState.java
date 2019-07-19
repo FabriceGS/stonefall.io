@@ -87,7 +87,7 @@ public class GameState {
   //     // if player is dead, tell frontend to terminate game for them
   //     if (player.isDead()) {
   //       WebSockets.gameOver(player.getId());
-  //       game.removePlayer(player);
+  //       game.voidlayer(player);
   //       continue;
   //     }
 
@@ -219,10 +219,6 @@ public class GameState {
 
   //   }
   // }
-
-
-
-
 
   /**
    * Updates all Entities for this GameState.

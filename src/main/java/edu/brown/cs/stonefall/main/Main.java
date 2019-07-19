@@ -1,5 +1,6 @@
 package edu.brown.cs.stonefall.main;
 
+import edu.brown.cs.stonefall.bots.BotManager;
 import edu.brown.cs.stonefall.game.Game;
 import edu.brown.cs.stonefall.network.SparkHandler;
 import joptsimple.OptionParser;

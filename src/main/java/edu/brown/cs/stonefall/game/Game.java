@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
+import edu.brown.cs.stonefall.bots.BotManager;
 import edu.brown.cs.stonefall.custom_exceptions.UnreachableVertexException;
 import edu.brown.cs.stonefall.entity.MeleeAttacker;
 import edu.brown.cs.stonefall.interfaces.Attacker;
@@ -38,11 +39,14 @@ public class Game {
   private int resSpawnCounter;
   private int resCollectCounter;
 
+  BotManager botManager;
+
   /**
    * Constructs a new instance of a Stonefall game.
    */
   public Game() {
     game = this;
+    botManager = new BotManager(this);
     theOneTrueState = null;
     players = new ConcurrentHashMap<>();
     gameStates = new ConcurrentHashMap<>();
@@ -76,7 +80,7 @@ public class Game {
       // Perform the task
       updateResources();
       updateGameStates();
-
+      botManager.updateBots();
       WebSockets.update();
     }
   }

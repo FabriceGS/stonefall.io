@@ -16,8 +16,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -154,12 +152,42 @@ public class WebSockets {
     String playerId = "/p/" + curId;
     Player thisPlayer = game.getPlayer(playerId);
 
-    //cryptographic check
-    String privateKey = payload.get("privateKey").getAsString();
-    if(!privateKey.equals(privateKeys.get(playerId))){
-      return;
-    }
+    // Rejects player action if they didn't previously belong in the game.
+    if (isPlayerValid(payload, playerId)) return;
 
+    // Rejects player action if they committed an invalid action.
+    if (handleGameAction(received, payload, curId, thisPlayer)) return;
+
+    if (received.get("type").getAsInt() == Constants.MESSAGE_TYPE.INITIALIZE
+        .ordinal()) {
+      // update set of coordinates by parsing coordinates message
+      String name = payload.get("name").getAsString();
+      // Add the player to the game if doesn't already exist
+      if (thisPlayer == null) {
+        thisPlayer = new Player(name, playerId);
+        game.addPlayer(thisPlayer);
+      }
+
+
+      //get the first player
+      //the newest player's game state becomes everybody's game state
+      // Integer firstSeshId = sessions.entrySet().iterator().next().getKey();
+      // Player firstPlayer = game.getPlayer("/p/" + firstSeshId);
+      // GameState firstState = game.getPayload(firstPlayer);
+
+      //get the JSON translated game state
+      //but we cut off the last curly bracket for optimization purposes
+      // JsonObject JsonGameState = fillUpdatePayloadById(game.getPayload(), thisPlayer, Integer.parseInt(thisPlayer.getId().substring(3)));
+      // String stringGameState = GSON.toJson(JsonGameState);
+      // String circumcisedGameState = stringGameState.substring(0, stringGameState.length() - 1);
+      // call update session and tell the backend to update everything
+      // updateSession(curId, circumcisedGameState);
+      //this is a bad idea, it would be nice just to send to the one player but yolo
+      update();
+    }
+  }
+
+  private boolean handleGameAction(JsonObject received, JsonObject payload, int curId, Player thisPlayer) {
     if (received.get("type").getAsInt() == Constants.MESSAGE_TYPE.SELL
         .ordinal()) {
       // object type to sell
@@ -179,8 +207,7 @@ public class WebSockets {
       for (String id : myLinkedHash) {
         thisPlayer.sell(objType, id);
       }
-    }
-    if (received.get("type").getAsInt() == Constants.MESSAGE_TYPE.ATTACK
+    } else if (received.get("type").getAsInt() == Constants.MESSAGE_TYPE.ATTACK
         .ordinal()) {
       // communicate to backend that an attack has occurred
 
@@ -216,7 +243,7 @@ public class WebSockets {
 
       if (!Grid.validateCoordinates(x1, y1)) {
         sendError(curId, 1, "Invalid creation");
-        return;
+        return true;
       }
 
       int creationType = payload.get("objectType").getAsInt();
@@ -243,36 +270,15 @@ public class WebSockets {
       int y2 = payload.get("y2").getAsInt();
       thisPlayer.setViewingWindow(x1,y1,x2,y2);
     }
+    return false;
+  }
 
-    if (received.get("type").getAsInt() == Constants.MESSAGE_TYPE.INITIALIZE
-        .ordinal()) {
-      // update set of coordinates by parsing coordinates message
-      String name = payload.get("name").getAsString();
-
-
-      // Add the player to the game if doesn't already exist
-      if (thisPlayer == null) {
-        thisPlayer = new Player(name, playerId);
-        game.addPlayer(thisPlayer);
-      }
-
-
-      //get the first player
-      //the newest player's game state becomes everybody's game state
-      // Integer firstSeshId = sessions.entrySet().iterator().next().getKey();
-      // Player firstPlayer = game.getPlayer("/p/" + firstSeshId);
-      // GameState firstState = game.getPayload(firstPlayer);
-
-      //get the JSON translated game state
-      //but we cut off the last curly bracket for optimization purposes
-      // JsonObject JsonGameState = fillUpdatePayloadById(game.getPayload(), thisPlayer, Integer.parseInt(thisPlayer.getId().substring(3)));
-      // String stringGameState = GSON.toJson(JsonGameState);
-      // String circumcisedGameState = stringGameState.substring(0, stringGameState.length() - 1);
-      // call update session and tell the backend to update everything
-      // updateSession(curId, circumcisedGameState);
-      //this is a bad idea, it would be nice just to send to the one player but yolo
-      update();
+  private boolean isPlayerValid(JsonObject payload, String playerId) {
+    String privateKey = payload.get("privateKey").getAsString();
+    if (!privateKey.equals(privateKeys.get(playerId))) {
+      return true;
     }
+    return false;
   }
 
   private static String randomAlphaNumber(){
@@ -288,8 +294,8 @@ public class WebSockets {
   * updates every session in the game 
   * iterates over each game object once, but every player multiple times
   */
-  public static void update(){
-    try{
+  public static void update() {
+    try {
       //too many god damn maps, but it's b/c json objects can't be indexed later for class vars like
       //"isEmpty" for example
       Map<String, Boolean> payloadIsEmpty = new ConcurrentHashMap<>();
