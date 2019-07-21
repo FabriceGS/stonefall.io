@@ -28,6 +28,8 @@ import edu.brown.cs.stonefall.game.Constants;
 import edu.brown.cs.stonefall.game.Game;
 import edu.brown.cs.stonefall.game.GameState;
 import edu.brown.cs.stonefall.game.Player;
+import edu.brown.cs.stonefall.game.DefenseBot;
+import edu.brown.cs.stonefall.game.HumanPlayer;
 import edu.brown.cs.stonefall.gamebean.AttackerBean;
 import edu.brown.cs.stonefall.gamebean.BaseBean;
 import edu.brown.cs.stonefall.gamebean.MineBean;
@@ -152,7 +154,7 @@ public class WebSockets {
     int curId = payload.get("id").getAsInt();
     // Get the player object
     String playerId = "/p/" + curId;
-    Player thisPlayer = game.getPlayer(playerId);
+    HumanPlayer thisPlayer = (HumanPlayer) game.getPlayer(playerId);
 
     //cryptographic check
     String privateKey = payload.get("privateKey").getAsString();
@@ -309,9 +311,9 @@ public class WebSockets {
           Map<Player, JsonObject> tempPlayerJsons = new ConcurrentHashMap<>();
           playerPayloads.put(iterPlayer, tempPlayerJsons);
         }
-
       }
 
+      //separate maps of player strings to objects
       Map<String, ArrayList<JsonObject>> playerJsonResources = new ConcurrentHashMap<>();
       Map<String, ArrayList<JsonObject>> playerJsonWalls = new ConcurrentHashMap<>();
       Map<String, ArrayList<JsonObject>> playerJsonTurrets = new ConcurrentHashMap<>();
@@ -364,6 +366,24 @@ public class WebSockets {
         }
       }
 
+            //do the same ^ for the bots
+      game.getBots().forEach((key, bot) -> {   
+        JsonObject tmpPlayerJson = new JsonObject();
+        //add color
+        tmpPlayerJson.addProperty("color", bot.getColorHex());
+        //initalize all object lists
+        String indexKey = iterPlayer.getKey().getId() + key;
+        playerJsonWalls.put(indexKey, new ArrayList<JsonObject>());
+        playerJsonTurrets.put(indexKey, new ArrayList<JsonObject>());
+        playerJsonMines.put(indexKey, new ArrayList<JsonObject>());
+        playerJsonScaffoldings.put(indexKey, new ArrayList<JsonObject>());
+        playerJsonAttackers.put(indexKey, new ArrayList<JsonObject>());
+        payloadIsEmpty.put(indexKey, true);
+        (curPlayer.getValue()).put(bot, tmpPlayerJson);
+      });
+
+
+
       //choose a game state to be everybody's game state
       Integer firstSeshId;
       GameState firstState = null;
@@ -386,6 +406,7 @@ public class WebSockets {
       baseBeans.addAll(firstState.getBases());
       // baseBeans.add(firstState.getMyBase());
       for (BaseBean b : baseBeans) {
+        // System.out.println("a base: " + b.getX() + " " + b.getY());
         JsonObject tempBase = new JsonObject();
         tempBase.addProperty("x", b.getX());
         tempBase.addProperty("y", b.getY());
@@ -396,9 +417,12 @@ public class WebSockets {
         tempBase.addProperty("name", b.getName());
         //check which players should get this base
         for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-          Player tempPlayer = curPlayerPayload.getKey();
+          HumanPlayer tempPlayer = (HumanPlayer) curPlayerPayload.getKey();
           String basePlayerId = b.getPlayerId();
           //if it is "my" or if it is in my viewing window, #sendittt
+          System.out.println("is in base check?");
+          System.out.println(b.getX() + " " + b.getY());
+          System.out.println(tempPlayer.inViewingWindow(b.getX(), b.getY()));
           if(basePlayerId.equals(tempPlayer.getId()) || tempPlayer.inViewingWindow(b.getX(), b.getY())){
             //get player payload
             Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
@@ -442,7 +466,7 @@ public class WebSockets {
         // walls.add(tempWall);
         //check which players should get this wall
         for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-          Player tempPlayer = curPlayerPayload.getKey();
+          HumanPlayer tempPlayer = (HumanPlayer) curPlayerPayload.getKey();
           String wallPlayerId = w.getPlayerId();
           //if it is "my" or if it is in my viewing window, send it
           if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
@@ -485,7 +509,7 @@ public class WebSockets {
         // Turrets.add(tempTurret);
         //check which players should get this Turret
         for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-          Player tempPlayer = curPlayerPayload.getKey();
+          HumanPlayer tempPlayer = (HumanPlayer) curPlayerPayload.getKey();
           String turretPlayerId = w.getPlayerId();
           //if it is "my" or if it is in my viewing window, send it
           if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
@@ -520,7 +544,7 @@ public class WebSockets {
         // Mines.add(tempMine);
         //check which players should get this Mine
         for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-          Player tempPlayer = curPlayerPayload.getKey();
+          HumanPlayer tempPlayer = (HumanPlayer) curPlayerPayload.getKey();
           String minePlayerId = w.getPlayerId();
           //if it is "my" or if it is in my viewing window, send it
           if(tempPlayer.inViewingWindow(w.getX(), w.getY())){
@@ -565,7 +589,7 @@ public class WebSockets {
         // Attackers.add(tempAttacker);
         //check which players should get this Attacker
         for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-          Player tempPlayer = curPlayerPayload.getKey();
+          HumanPlayer tempPlayer = (HumanPlayer) curPlayerPayload.getKey();
           String attackerPlayerId = w.getPlayerId();
           //if it is "my" or if it is in my viewing window, send it
           if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
@@ -598,7 +622,7 @@ public class WebSockets {
         // Scaffoldings.add(tempScaffolding);
         //check which players should get this Scaffolding
         for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-          Player tempPlayer = curPlayerPayload.getKey();
+          HumanPlayer tempPlayer = (HumanPlayer) curPlayerPayload.getKey();
           String scaffoldingPlayerId = w.getPlayerId();
           //if it is in my viewing window, send it
           if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
@@ -631,7 +655,7 @@ public class WebSockets {
         }
         //check which players should get this Resource
         for (Entry<Player, Map<Player, JsonObject>> curPlayerPayload : playerPayloads.entrySet()) {
-          Player tempPlayer = curPlayerPayload.getKey();
+          HumanPlayer tempPlayer = (HumanPlayer) curPlayerPayload.getKey();
           // if it is in my viewing window, send it
           if(tempPlayer.inViewingWindow(w.getX(), w.getY())){
             //add  resource to its corresponding owner's array for all player's in whomst've viewing window the resource is in

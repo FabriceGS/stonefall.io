@@ -1,58 +1,53 @@
 package edu.brown.cs.stonefall.game;
 
-import java.awt.Color;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-
-import edu.brown.cs.stonefall.entity.MeleeAttacker;
-import edu.brown.cs.stonefall.entity.RangedAttacker;
-import edu.brown.cs.stonefall.interfaces.Attacker;
-import edu.brown.cs.stonefall.interfaces.Killable;
-import edu.brown.cs.stonefall.map.Grid;
 import edu.brown.cs.stonefall.structure.Base;
 import edu.brown.cs.stonefall.structure.Mine;
 import edu.brown.cs.stonefall.structure.Scaffold;
 import edu.brown.cs.stonefall.structure.Turret;
 import edu.brown.cs.stonefall.structure.Wall;
+import edu.brown.cs.stonefall.interfaces.Attacker;
+import edu.brown.cs.stonefall.interfaces.Killable;
+import edu.brown.cs.stonefall.entity.MeleeAttacker;
+import edu.brown.cs.stonefall.map.Grid;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.awt.Color;
+
 
 /**
- * Backend player class. Responsible for maintaining relationship between player
- * and all of their owned objects.
+ * HumanPlayer interface to allow bot integration.
  *
- * @author Theodoros
+ * @author David
  */
-public class HumanPlayer implements Player{
+public abstract class Player {
 
-  private Base base;
+  protected Base base;
 
-  private Map<String, Wall> walls;
-  private Map<String, Turret> turrets;
-  private Map<String, Mine> mines;
-  private Map<String, Scaffold> scaffolds;
+  protected Map<String, Wall> walls;
+  protected Map<String, Turret> turrets;
+  protected Map<String, Mine> mines;
+  protected Map<String, Scaffold> scaffolds;
 
-  private Map<String, Attacker> attackers;
+  protected Map<String, Attacker> attackers;
 
-  private String name;
-  private String id;
-  private Color color;
+  protected String name;
+  protected String id;
+  protected Color color;
 
-  private int resourceCount;
-  private int mineIdNum;
-  private int attackerIdNum;
-  private int structureIdNum;
-  private int scaffoldIdNum;
-  private int score;
-  private int topScore;
-  //these represent the viewing window of the user on the frontend
-  private int topLX;
-  private int topLY;
-  private int bottomRX;
-  private int bottomRY;
+  protected int resourceCount;
+  protected int mineIdNum;
+  protected int attackerIdNum;
+  protected int structureIdNum;
+  protected int scaffoldIdNum;
+  protected int score;
+  protected int topScore;
 
-  private Random random;
+  protected Random random;
+
 
   /**
    * Constructor for a player.
@@ -86,48 +81,38 @@ public class HumanPlayer implements Player{
    * @param id
    *          id of player
    */
-  public HumanPlayer(String name, String id) {
-    random = new Random();
+    public Player(String name, String id) {
+        System.out.println("constructor getting called");
+        random = new Random();
 
-    this.name = name;
-    this.id = id;
-    color = new Color(random.nextInt(Constants.MAX_COLOR_VALUE));
+        this.name = name;
+        this.id = id;
+        color = new Color(random.nextInt(Constants.MAX_COLOR_VALUE));
 
-    mines = new ConcurrentHashMap<>();
-    attackers = new ConcurrentHashMap<>();
-    turrets = new ConcurrentHashMap<>();
-    walls = new ConcurrentHashMap<>();
-    scaffolds = new ConcurrentHashMap<>();
+        mines = new ConcurrentHashMap<>();
+        attackers = new ConcurrentHashMap<>();
+        turrets = new ConcurrentHashMap<>();
+        walls = new ConcurrentHashMap<>();
+        scaffolds = new ConcurrentHashMap<>();
 
-    int x = random.nextInt(Constants.BOARD_WIDTH);
-    int y = random.nextInt(Constants.BOARD_HEIGHT);
+        int x = random.nextInt(Constants.BOARD_WIDTH);
+        int y = random.nextInt(Constants.BOARD_HEIGHT);
 
-    while (!Grid.validateCoordinates(x, y)) {
-      x = random.nextInt(Constants.BOARD_WIDTH);
-      y = random.nextInt(Constants.BOARD_HEIGHT);
+        while (!Grid.validateCoordinates(x, y)) {
+            x = random.nextInt(Constants.BOARD_WIDTH);
+            y = random.nextInt(Constants.BOARD_HEIGHT);
+        }
+
+        base = new Base(Grid.getGridBlock(x, y).get());
+
+        score = 0;
+        topScore = 0;
+
+        mineIdNum = 0;
+        attackerIdNum = 0;
+        structureIdNum = 0;
+        scaffoldIdNum = 0;
     }
-
-    base = new Base(Grid.getGridBlock(x, y).get());
-    topLX = x - 10;
-    topLY = x - 10;
-    bottomRX = x + 10;
-    bottomRY = x + 10;
-
-    score = 0;
-    topScore = 0;
-
-    if (name.equals("breezy") || name.equals("jj") || name.equals("papper")
-        || name.equals("dave") || name.equals("mac")) {
-      resourceCount = 200000;
-    } else {
-      resourceCount = 2000;
-    }
-
-    mineIdNum = 0;
-    attackerIdNum = 0;
-    structureIdNum = 0;
-    scaffoldIdNum = 0;
-  }
 
   /**
    * Returns color of player in string format.
@@ -176,6 +161,7 @@ public class HumanPlayer implements Player{
     return false;
   }
 
+
   /**
    * Spawns a mine at the x, y coordinate.
    *
@@ -213,32 +199,6 @@ public class HumanPlayer implements Player{
         && resourceCount >= multiplyByScoreLogistically(Constants.ATTACKER_COST)
         && validateSpawn(x, y)) {
       Attacker attacker = new MeleeAttacker(Grid.getGridBlock(x, y).get());
-
-      String attackerId = "/a/" + attackerIdNum;
-      attackers.put(attackerId, attacker);
-      attackerIdNum++;
-
-      resourceCount -= multiplyByScoreLogistically(Constants.ATTACKER_COST);
-      score += Constants.ATTACKER_COST;
-      if (score > topScore) {
-        topScore = score;
-      }
-    }
-  }
-
-  /**
-   * Spawns a ranged attacker at the x, y coordinate.
-   *
-   * @param x
-   *          x coordinate
-   * @param y
-   *          y coordinate
-   */
-  public synchronized void spawnRangedAttacker(int x, int y) {
-    if (Grid.validateCoordinates(x, y)
-        && resourceCount >= multiplyByScoreLogistically(Constants.ATTACKER_COST)
-        && validateSpawn(x, y)) {
-      Attacker attacker = new RangedAttacker(Grid.getGridBlock(x, y).get());
 
       String attackerId = "/a/" + attackerIdNum;
       attackers.put(attackerId, attacker);
@@ -364,30 +324,6 @@ public class HumanPlayer implements Player{
    */
   public boolean isDead() {
     return base.isDead();
-  }
-
-    /**
-   * Sets the player's viewing window.
-   *
-   * @param x1,y1,x1,y2
-   *          new resource count
-   */
-  public void setViewingWindow(int x1, int y1, int x2, int y2) {
-    topLX = x1;
-    topLY = y1;
-    bottomRX = x2;
-    bottomRY = y2;
-  }
-
-  /**
-   * Sets the player's viewing window.
-   *
-   * @param x1,y1,x1,y2
-   *          new resource count
-   */
-  public boolean inViewingWindow(int x, int y) {
-    // return (x >= topLX-1) && (x<= bottomRX+1) && (y >= topLY-1) && (y <= bottomRY+1);
-    return (x >= topLX) && (x<= bottomRX) && (y >= topLY) && (y <= bottomRY);
   }
 
   /**

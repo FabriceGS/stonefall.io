@@ -27,7 +27,7 @@ import edu.brown.cs.stonefall.structure.Wall;
 public class Game {
 
   private Map<String, Player> players;
-  private Map<String, Bot> bots;
+  private Map<String, DefenseBot> bots;
   private Map<String, GameState> gameStates;
   private Game game;
   private GameState theOneTrueState;
@@ -38,6 +38,9 @@ public class Game {
 
   private int resSpawnCounter;
   private int resCollectCounter;
+
+  private int nextBotId;
+  private int botThinkingTime;
 
   /**
    * Constructs a new instance of a Stonefall game.
@@ -53,6 +56,8 @@ public class Game {
     resourceIdNum = 0;
     resSpawnCounter = 0;
     resCollectCounter = 0;
+    nextBotId = 0;
+    botThinkingTime = 0;
 
     Grid.buildGrid();
     random = new Random();
@@ -86,9 +91,17 @@ public class Game {
 
   private void updateBots() {
     //check size of player hash map
-    //if less then constants.min_players
-    //build a new Xbot
-    //add to hashmap
+    //if less than constants.min_players
+      //build a new Xbot
+      //add to hashmap
+    //else if greater than constants.min_players
+      //remove a bot (player)
+    if(botThinkingTime%30 == 0){
+      bots.forEach((key, bot) -> {
+        bot.run();
+      });
+    }
+    botThinkingTime+=1;
   }
 
   /**
@@ -165,6 +178,9 @@ public class Game {
    */
   public synchronized void addPlayer(Player player) {
     players.put(player.getId(), player);
+    System.out.println("passing bot");
+    bots.put("/b/" + nextBotId, new DefenseBot("defense bot", "/b/" + nextBotId));
+    System.out.println("finished adding bot");
     // initialize gamestate
     if(theOneTrueState == null){
       theOneTrueState = new GameState(game, player);
@@ -294,7 +310,23 @@ public class Game {
    * @return The Map of playerIds to Players.
    */
   public Map<String, Player> getPlayers() {
-    return players;
+    Map<String, Player> allPlayers = new ConcurrentHashMap<>();
+    players.forEach((key, player) -> {
+      allPlayers.put(key, player);
+    });
+    bots.forEach((key, player) -> {
+      allPlayers.put(key, player);
+    });
+    return allPlayers;
+  }
+
+    /**
+   * Returns the Map of playerIds to bots.
+   * 
+   * @return The Map of playerIds to bots.
+   */
+  public Map<String, DefenseBot> getBots() {
+    return bots;
   }
 
   /**
@@ -314,7 +346,11 @@ public class Game {
    * @return The Player associated with id, or null if mapping is empty.
    */
   public Player getPlayer(String id) {
-    return players.get(id);
+    Player thePlayer = players.get(id);
+    if(thePlayer == null){
+      thePlayer = bots.get(id);
+    }
+    return thePlayer;
   }
 
   /**
