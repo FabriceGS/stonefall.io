@@ -24,7 +24,7 @@ import edu.brown.cs.stonefall.structure.Wall;
  *
  * @author Theodoros
  */
-public class Player {
+public abstract class Player {
 
   protected Base base;
 

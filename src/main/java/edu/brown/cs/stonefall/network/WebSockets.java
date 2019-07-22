@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import edu.brown.cs.stonefall.game.HumanPlayer;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketException;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -164,7 +165,7 @@ public class WebSockets {
       String name = payload.get("name").getAsString();
       // Add the player to the game if doesn't already exist
       if (thisPlayer == null) {
-        thisPlayer = new Player(name, playerId);
+        thisPlayer = new HumanPlayer(name, playerId);
         game.addPlayer(thisPlayer);
       }
 
@@ -315,8 +316,14 @@ public class WebSockets {
           Map<Player, JsonObject> tempPlayerJsons = new ConcurrentHashMap<>();
           playerPayloads.put(iterPlayer, tempPlayerJsons);
         }
-
       }
+//      TODO: Maybe this is a way you can add player payloads for bots or something? It still broke, but up to you
+//      Map<String, Player> playerMap = game.getPlayers();
+//      for (Entry<String, Player> playerEntry : playerMap.entrySet()) {
+//        if (!playerPayloads.containsKey(playerEntry.getValue())) {
+//          playerPayloads.put(playerEntry.getValue(), new ConcurrentHashMap<>());
+//        }
+//      }
 
       Map<String, ArrayList<JsonObject>> playerJsonResources = new ConcurrentHashMap<>();
       Map<String, ArrayList<JsonObject>> playerJsonWalls = new ConcurrentHashMap<>();

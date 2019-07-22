@@ -46,7 +46,6 @@ public class Game {
    */
   public Game() {
     game = this;
-    botManager = new BotManager(this);
     theOneTrueState = null;
     players = new ConcurrentHashMap<>();
     gameStates = new ConcurrentHashMap<>();
@@ -62,6 +61,8 @@ public class Game {
     for (int i = 0; i < Constants.INITIAL_RESOURCE_COUNT; i++) {
       spawnResource();
     }
+
+    botManager = new BotManager(this);
   }
 
   // TimeHandler class responsible for updating GameState every 0.1 seconds.
@@ -91,7 +92,7 @@ public class Game {
    */
   public void startTimers() {
     Timer timer = new Timer();
-    timer.schedule(new Tick(), 0, Constants.TICK_PERIOD);
+    timer.schedule(new Tick(), 10000, Constants.TICK_PERIOD);
   }
 
   private void updateGameStates() {

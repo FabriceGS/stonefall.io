@@ -32,7 +32,7 @@ public class BotManager {
       botFutures = botFutures.stream().filter(Future::isDone).collect(Collectors.toList());
       int newNumBots = botFutures.size();
       for (int i = 0; i < numBots - newNumBots; i++) {
-        DefenseBot defenseBot = new DefenseBot("/b/" + botIdCounter, "Mr. Roboto");
+        DefenseBot defenseBot = new DefenseBot( "Mr. Roboto", "/b/" + botIdCounter);
         botIdCounter++;
         game.addPlayer(defenseBot);
         Future<?> defenseBotFuture = threadPoolExecutor.submit(defenseBot);
@@ -44,7 +44,7 @@ public class BotManager {
   private void initializeBots() {
     List<DefenseBot> bots = new ArrayList<>();
     for (int i = 0; i < Constants.MAX_BOTS; i++) {
-      bots.add(new DefenseBot("/b/" + botIdCounter, "Mr. Roboto"));
+      bots.add(new DefenseBot("Mr. Roboto", "/b/" + botIdCounter));
       botIdCounter++;
     }
 
