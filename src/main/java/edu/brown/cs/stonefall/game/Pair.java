@@ -17,4 +17,8 @@ public class Pair {
         && ((Pair) other).y == this.y;
     }
 
+    public String toString(){
+        return "(" + x + ", " + y + ")";
+    }
+
 }

@@ -322,6 +322,8 @@ public class WebSockets {
       Map<String, ArrayList<JsonObject>> playerJsonAttackers = new ConcurrentHashMap<>();
       //creates the outline of the entire payload, i.e. all info by player id
       //but each list starts out empty
+      //for each session
+      //for each subplayer
       for (Entry<Integer, Session> curEntry : sessions.entrySet()) {
         Session curSesh = curEntry.getValue();
         if ((curSesh == null) || !curSesh.isOpen()) {
@@ -335,6 +337,7 @@ public class WebSockets {
           //initialize resources (only one per player )
           playerJsonResources.put("/p/" + tmpSeshId, new ArrayList<JsonObject>());
           //put empty player json in each player's payload map
+          //for each payload
           for (Entry<Player, Map<Player, JsonObject>> curPlayer : playerPayloads.entrySet()) {
             JsonObject tmpPlayerJson = aPlayerJson.deepCopy();
             //add color
@@ -366,20 +369,28 @@ public class WebSockets {
         }
       }
 
-            //do the same ^ for the bots
+      //do the same ^ for the bots
       game.getBots().forEach((key, bot) -> {   
-        JsonObject tmpPlayerJson = new JsonObject();
-        //add color
-        tmpPlayerJson.addProperty("color", bot.getColorHex());
-        //initalize all object lists
-        String indexKey = iterPlayer.getKey().getId() + key;
-        playerJsonWalls.put(indexKey, new ArrayList<JsonObject>());
-        playerJsonTurrets.put(indexKey, new ArrayList<JsonObject>());
-        playerJsonMines.put(indexKey, new ArrayList<JsonObject>());
-        playerJsonScaffoldings.put(indexKey, new ArrayList<JsonObject>());
-        playerJsonAttackers.put(indexKey, new ArrayList<JsonObject>());
-        payloadIsEmpty.put(indexKey, true);
-        (curPlayer.getValue()).put(bot, tmpPlayerJson);
+        JsonObject aPlayerJson = new JsonObject();
+        aPlayerJson.addProperty("id", key);
+        Player iterBot = bot;
+
+        //put empty player json in each player's payload map
+        //for each payload
+        for (Entry<Player, Map<Player, JsonObject>> curPlayer : playerPayloads.entrySet()) {
+          JsonObject tmpPlayerJson = aPlayerJson.deepCopy();
+          //add color
+          tmpPlayerJson.addProperty("color", iterBot.getColorHex());
+          //initalize all object lists
+          String indexKey = curPlayer.getKey().getId() + iterBot.getId();
+          playerJsonWalls.put(indexKey, new ArrayList<JsonObject>());
+          playerJsonTurrets.put(indexKey, new ArrayList<JsonObject>());
+          playerJsonMines.put(indexKey, new ArrayList<JsonObject>());
+          playerJsonScaffoldings.put(indexKey, new ArrayList<JsonObject>());
+          playerJsonAttackers.put(indexKey, new ArrayList<JsonObject>());
+          payloadIsEmpty.put(indexKey, true);
+          (curPlayer.getValue()).put(iterBot, tmpPlayerJson);
+        }
       });
 
 
@@ -400,7 +411,7 @@ public class WebSockets {
         return;
       }
       //now iterate over every object in the game state and determine in which player payload it belongs
-
+      // System.out.println("----bases-----");
       //iterate over all bases
       List<BaseBean> baseBeans = new ArrayList<BaseBean>();
       baseBeans.addAll(firstState.getBases());
@@ -420,9 +431,9 @@ public class WebSockets {
           HumanPlayer tempPlayer = (HumanPlayer) curPlayerPayload.getKey();
           String basePlayerId = b.getPlayerId();
           //if it is "my" or if it is in my viewing window, #sendittt
-          System.out.println("is in base check?");
-          System.out.println(b.getX() + " " + b.getY());
-          System.out.println(tempPlayer.inViewingWindow(b.getX(), b.getY()));
+          // System.out.println("is in base check?");
+          // System.out.println(b.getX() + " " + b.getY());
+          // System.out.println(tempPlayer.inViewingWindow(b.getX(), b.getY()));
           if(basePlayerId.equals(tempPlayer.getId()) || tempPlayer.inViewingWindow(b.getX(), b.getY())){
             //get player payload
             Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
@@ -438,6 +449,8 @@ public class WebSockets {
           }
         }
       }
+
+      // System.out.println("------walls-------");
 
       // wallss
       //we're gonna need to do something like this for the arrays...
@@ -472,7 +485,7 @@ public class WebSockets {
           if( tempPlayer.inViewingWindow(w.getX(), w.getY())){
             //get player payload
             Map<Player, JsonObject> thisPlayerJsons = curPlayerPayload.getValue();
-            
+            // System.out.println("player wall id: " + wallPlayerId);
             Player wallOwner = game.getPlayer(wallPlayerId);
             if(wallOwner != null){
               //get jsonobject corresponding to appropriate player within the payload
@@ -784,6 +797,7 @@ public class WebSockets {
     } catch (NullPointerException n){
       System.out.println("websockets update null pointer exception");
       n.printStackTrace();
+      
     }
       catch (Exception f) {
       f.printStackTrace();

@@ -42,7 +42,7 @@ public class DefenseBot extends Player {
         base = new Base(Grid.getGridBlock(10, 10).get());
 
         System.out.println("super player constructed");
-        resourceCount=10000;
+        resourceCount=100000;
         pq_closest = new NoDuplicates<Pair>((a, b) -> (int) (distanceToBase((Pair)b) - distanceToBase((Pair)a)));
         pq_farthest = new NoDuplicates<Pair>((a, b) -> (int) (distanceToBase((Pair)a) - distanceToBase((Pair)b)));
         spawnableLocs = new ArrayList<Pair>();
@@ -68,7 +68,6 @@ public class DefenseBot extends Player {
         if(pq_closest.isEmpty() || pq_farthest.isEmpty()){
             return;
         }
-        System.out.println("running");
         if(resourceCount > (multiplyByScoreLogistically(Constants.TURRET_COST) + 8 * multiplyByScoreLogistically(Constants.WALL_COST))){
 		    // build turret + 8 walls
             Pair closest = pq_closest.poll();
@@ -128,18 +127,21 @@ public class DefenseBot extends Player {
     }
 
     private void addBuilding(int x, int y){
-        if (Grid.validateCoordinates(x, y) && validateSpawn(x, y)) {
-            int offset = 1;
-            while (offset <= 3) {
-                for (int i = -offset + x; i < 1 + offset + x; i++) {
-                    for (int j = -offset + y; j < 1 + offset + y; j++) {
-                        pq_closest.add(new Pair(x, y));
-                        pq_farthest.add(new Pair(x, y));
-                        spawnableLocs.add(new Pair(x, y));
+        System.out.println("bot is building at: " + x + ", " + y);
+        
+        int offset = 1;
+        while (offset <= 3) {
+            for (int i = -offset + x; i < 1 + offset + x; i++) {
+                for (int j = -offset + y; j < 1 + offset + y; j++) {
+                    System.out.println("adding location: " + i + ", " + j);
+                    if (Grid.validateCoordinates(i, j) && validateSpawn(i, j)) {
+                        pq_closest.add(new Pair(i, j));
+                        pq_farthest.add(new Pair(i, j));
+                        spawnableLocs.add(new Pair(i, j));
                     }
                 }
-                offset +=1 ;
             }
+            offset +=1 ;
         }
     }
 

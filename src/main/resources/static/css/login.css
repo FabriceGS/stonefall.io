@@ -38,6 +38,9 @@ input {
   outline: none;
 }
 
+#donateHeader {
+  font-size: 14pt;
+}
 
 #instructionsHeader {
   margin-bottom: 1vh;

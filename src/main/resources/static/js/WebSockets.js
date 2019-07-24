@@ -45,7 +45,7 @@ const WebSockets = function() {
           sendInitialize();
           break;
         case MESSAGE_TYPE.UPDATE:
-          if(consoleLogger % 80 == 0){ console.log("payload received:", data.payload);}
+          if(consoleLogger % 60 == 0){ console.log("payload received:", data.payload);}
           consoleLogger ++;
           //setting our own id to whatever was sent to us
           id = data.id;
