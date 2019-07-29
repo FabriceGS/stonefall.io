@@ -158,6 +158,29 @@ public class Game {
           }
         }
       }
+
+      //do the same for the bots
+      for (Player bot : bots.values()) {
+        bot.setResourceCount(bot.getResourceCount() + 2);
+        for (Map.Entry<String, Resource> resource : resources.entrySet()) {
+
+          for (Mine mine : bot.getMines().values()) {
+            if (Grid.isWithinNBlocks(1, mine.getBlock(),
+                resource.getValue().getBlock())) {
+              mine.collect(resource.getValue());
+              bot.setResourceCount(
+                  bot.getResourceCount() + Constants.MINE_COLLECT_RATIO);
+
+              if (resource.getValue().getHealth() <= 0) {
+                Grid.getGridBlock(resource.getValue().getX(),
+                    resource.getValue().getY()).get().depopulate();
+                resources.remove(resource.getKey());
+              }
+            }
+          }
+        }
+      }
+
       resCollectCounter = 0;
     }
 

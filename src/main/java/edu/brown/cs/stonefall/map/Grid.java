@@ -102,6 +102,10 @@ public final class Grid {
     return mapBounds.contains(x, y) && !Grid.getGridBlock(x, y).get().isFull();
   }
 
+  public static boolean inBounds(int x, int y){
+    return mapBounds.contains(x, y);
+  }
+
   /**
    * Validates if the target GridBlock is within n GridBlocks of the source
    * GridBlock.

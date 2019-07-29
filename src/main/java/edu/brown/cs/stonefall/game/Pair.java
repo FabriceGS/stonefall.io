@@ -1,5 +1,7 @@
 package edu.brown.cs.stonefall.game;
 
+import java.util.Objects;
+
 public class Pair {
 
     public int x;
@@ -15,6 +17,11 @@ public class Pair {
         return (other instanceof Pair) 
         && ((Pair) other).x == this.x
         && ((Pair) other).y == this.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 
     public String toString(){

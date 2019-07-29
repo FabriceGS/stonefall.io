@@ -45,7 +45,7 @@ const WebSockets = function() {
           sendInitialize();
           break;
         case MESSAGE_TYPE.UPDATE:
-          if(consoleLogger % 60 == 0){ console.log("payload received:", data.payload);}
+          if(consoleLogger % 30 == 0){ console.log("payload received:", data.payload);}
           consoleLogger ++;
           //setting our own id to whatever was sent to us
           id = data.id;
@@ -83,7 +83,7 @@ const WebSockets = function() {
   };
 
   const sendCoords = (x1,y1,x2,y2) => {
-    console.log("coords: ", x1, y1, x2, y2);    
+    // console.log("coords: ", x1, y1, x2, y2);    
     conn.send(
       JSON.stringify({
         type: MESSAGE_TYPE.UPDATE,

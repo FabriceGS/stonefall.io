@@ -275,22 +275,29 @@ public abstract class Player {
       Scaffold scaffold = new Scaffold(Grid.getGridBlock(x, y).get(), this,
           scaffoldType, scaffoldId);
 
+      boolean canBuild = false;
+
       if (scaffoldType == Constants.OBJECT_TYPE.MINE.ordinal()
           && resourceCount >= multiplyByScoreLogistically(
               Constants.MINE_COST)) {
         resourceCount -= multiplyByScoreLogistically(Constants.MINE_COST);
+        canBuild = true;
       } else if (scaffoldType == Constants.OBJECT_TYPE.TURRET.ordinal()
           && resourceCount >= multiplyByScoreLogistically(
               Constants.TURRET_COST)) {
         resourceCount -= multiplyByScoreLogistically(Constants.TURRET_COST);
+        canBuild = true; 
       } else if (scaffoldType == Constants.OBJECT_TYPE.WALL.ordinal()
           && resourceCount >= multiplyByScoreLogistically(
               Constants.WALL_COST)) {
         resourceCount -= multiplyByScoreLogistically(Constants.WALL_COST);
+        canBuild = true;
       }
 
-      scaffolds.put(scaffoldId, scaffold);
-      scaffoldIdNum++;
+      if(canBuild){
+        scaffolds.put(scaffoldId, scaffold);
+        scaffoldIdNum++;
+      }
     }
   }
 
