@@ -40,14 +40,6 @@
     <!-- <p id="instructions"> -->
       <a id="tutorialButton" class="button button-primary button-pill" href="/instructions">Tutorial</a>
 
-      <div style = "position: fixed; top: 5px; right: 5px">
-          <a id="donateButton" class="button button-secondary button-small button-pill" onclick="getElementById('donateForm').style.display = ((getElementById('donateForm').style.display==='none') ? 'block' : 'none')">Donate</a>
-          <div id = "donateForm">
-            <script src="https://donorbox.org/widget.js" paypalExpress="false"></script><iframe src="https://donorbox.org/embed/keep-the-severs-running?hide_donation_meter=true" height="685px" width="100%" style="max-width:500px; min-width:310px; max-height:none!important" seamless="seamless" name="donorbox" frameborder="0" scrolling="no" allowpaymentrequest></iframe>
-          </div>
-      </div>
-
-
         <!-- (1) Mine resources by building a mine next to a rock <br>
         (2) Build walls near your base to stop people from attacking you <br>
         (3) Build turrets behind those walls to defend yourself <br>
@@ -58,6 +50,9 @@
         Look around with the arrow keys. <br> -->
         <!-- Have fun, and let the stones fall. <br> -->
      <!-- < /p> -->
+     <div>
+        <a id="aboutButton" class="button button-secondary button-small button-pill" href="/hq"> About Us</a>
+     </div>
      <div style = "position: fixed; bottom: 5px; left: 5px">
      <a id="createdBy" href="https://fabricegs.github.io/index.html" > Built by Fabrice Guyot-Sionnest, David Oyeka, Teo Tsivranidis & Mac Mccann</a>
      </div>

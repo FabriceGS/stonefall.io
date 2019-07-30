@@ -38,16 +38,16 @@ input {
   outline: none;
 }
 
-#donateHeader {
-  font-size: 14pt;
-}
-
 #instructionsHeader {
   margin-bottom: 1vh;
 }
 
 #instruction{
   margin-top: 0vh;
+}
+
+#aboutButton{
+  margin-top:10vh;
 }
 
 #myName {

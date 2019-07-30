@@ -1,267 +1,148 @@
 <!DOCTYPE html>
+<html lang="zxx" class="no-js">
 <head>
-  <meta charset="utf-8">
-  <title>${title}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- In real-world webapps, css is usually minified and
-  concatenated. Here, separate normalize from our code, and
-  avoid minification for clarity. -->
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/html5bp.css">
-  <link rel="stylesheet" href="css/login.css">
-  <link rel="stylesheet" href="css/gameover.css">
-  <link rel="stylesheet" href="css/buttons.css">
-  <link rel="stylesheet" href="css/instructions.css">
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<!-- <link rel="shortcut icon" href="img/fav.png"> -->
+	<!-- Author Meta -->
+	<meta name="author" content="Fabrice GS">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>Stonefall HQ</title>
 
-  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
-</head>
-<body>
-  <div id="inGod">
-    <h1 id="inGodHeader">Stonefall HQ</h1>
-    <h2 id="inGodSubHeader">About us</h2>
-    <a href="#inLeftStrip1" id="inGodDownArrowLink">
-      <img src="\img\leftarrow.png" alt="wallImage" id="inGodDownArrow" class="inGodDownArow">
-    </a>
-    <!-- a left strip  -->
-    <div id="inLeftStrip1" class="inLeftStrip" >
-      <!-- honestly not sure why this works with css flexbox but it does -->
-      <div class="inLeftStripBody" >
-        <!-- the text in the left strip  -->
-        <div id="inLeftStripText1" class="inLeftStripText">
-          <h2 class="inStripHeader"> Your Base </h2>
-          <p class="inStripSmallText"> This is your base. Protect it by building things! </p>
-          <img src="\img\tutorialBase.png" alt="wallImage" id="inLeftStripImage1" class="inLeftStripImage">
-        </div>
-      </div>
-    </div>
-    <!-- a right strip  -->
-    <div id="inRightStrip1" class="inRightStrip">
-      <div class="inRightStripBody" >
+	<link href="https://fonts.googleapis.com/css?family=Poppins:100,300,500" rel="stylesheet">
+		<!-- CSS============================================= -->
+		<link rel="stylesheet" href="css/buttons.css">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/about_main.css">
+	</head>
+	<body>
+	<div class="oz-body-wrap">
+		<!-- Start Banner Area -->
+		<section class="banner-area relative">
+			<div class="container">
+				<div class="row fullscreen align-items-center justify-content-center">
+					<div class="col-lg-6">
+						<div class="story-content">
+							<h6 class="text-uppercase">a new kind of IO game, called Stonefall</h6>
+							<h1>Let The <span class="sp-1">Stones</span><br>
+							 <span class="sp-2">Fall</span></h1>
+						</div>
+						<div class="story-content">
+							Welcome to Stonefall HQ. This was our final project for CS0320 at Brown University. It's amazing what you can do with a few all nighters in the sciences library. We actually thought the game was pretty fun, so over summer '19 we redesigned some elements and published the game. We hope you enjoy it!
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End Banner Area -->
+		<!-- Start Feature Area -->
+		<section class="feature-area pt-100 pb-100 relative">
+			<div class="overlay overlay-bg"></div>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-4 col-sm-6 d-flex align-items-stretch">
+						<div class="single-feature">
+							<div class="icon">
+								<img src="img/fabrice.png" class="lnr" width="150" alt="fabrice">
+							</div>
+							<div class="desc">
+								<h2 class="text-uppercase">Fabice Guyot-Sionnest <br> <i>Networks</i></h2>
+								<p>
+									Sped up backend & networks ~5x over summer '19 and published the game. Currently working on patent law software solutions in Chicago.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 d-flex align-items-stretch">
+						<div class="single-feature">
+							<div class="icon">
+								<img src="img/david.png" class="lnr" width="150" alt="dave">
+							</div>
+							<div class="desc">
+								<h2 class="text-uppercase">David Oyeka <br> <i>Path Finding</i></h2>
+								<p>
+									Worked on pathfinding and building simple AI bots. When Dave isn't looking fly as heck, he's off happily selling his soul at Goldman in NYC. 
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 d-flex align-items-stretch">
+						<div class="single-feature">
+							<div class="icon">
+								<img src="img/mac.png" class="lnr" width="150" alt="mac">
+							</div>
+							<div class="desc">
+								<h2 class="text-uppercase">Mac McCann <br> <i>Frontend</i></h2>
+								<p>
+									Built our entire frontend. This is the only photo on the internet of Mac without his girlfriend. He's working at FB in Menlo Park, CA.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 d-flex align-items-stretch">
+						<div class="single-feature">
+							<div class="icon">
+								<img src="img/teo.png" class="lnr" height="200" alt="fabrice is hot">
+							</div>
+							<div class="desc">
+								<h2 class="text-uppercase">Teo Tsivranidis <br> <i>Backend</i></h2>
+								<p>
+									Built the backend infrastructure to tie together the component parts. Our resident foreigner, this hunk of greek yogurt is working on a startup in Providence, RI.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Start Feature Area -->
+		<!-- Start Conatct- Area -->
+		<section class="contact-area pt-100 pb-100 relative">
+			<div class="overlay overlay-bg"></div>
+			<div class="container">
+				<div class="row justify-content-center text-center">
+					<div class="single-contact col-lg-6 col-md-8">
+						<h2 class="text-white">Send Us A <span>Message</span></h2>
+						<p class="text-white">
+							Experiencing Bugs? Want To Share Compliments? Stories? Email me at fabrice@stonefall.io
+						</p>
+					</div>
+				</div>
+				<!-- <form id="myForm" action="mail.php" method="post" class="contact-form"> -->
+				<div class="row justify-content-center text-center">
+					<div class="col-lg-5 bottom-padding">
+						Or feel free to send us a donation to support server costs! Thanks :-)
+					</div>
+					<div class="single-contact col-lg-6 col-md-8">
+						<script src="https://donorbox.org/widget.js" paypalExpress="false"></script><iframe src="https://donorbox.org/embed/keep-the-severs-running?hide_donation_meter=true" height="685px" width="100%" style="max-width:500px; min-width:310px; max-height:none!important" seamless="seamless" name="donorbox" frameborder="0" scrolling="no" allowpaymentrequest></iframe>
+					</div>
 
-      <!-- text in right strip  -->
-      <div id="inRightStripText1" class="inRightStripText">
-        <h2 class="inStripHeader"> Resources </h2>
-        <p class="inStripSmallText"> Everything you need to create your empire costs resources. Keep track of your resources here. </p>
-      <img src="\img\tutorialTrackResources.png" alt="wallImage" id="inRightStripImage1" class="inRightStripImage">
-    </div>
+				</div>
 
-    </div>
-    </div>
+				<!-- </form> -->
+			</div>
+		</section>
+		<!-- End Conatct- Area -->
+		<section class="play-area pt-100 pb-100 relative">
+			<div class="overlay overlay-bg"></div>
+			<div class="container">
+				<div class="row justify-content-center text-center">
+					<div class="single-contact col-lg-6 col-md-8">
+						<a id="goPlay" class="button button-primary button-pill button-giant" href="/">Play</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 
-    <!-- a left strip  -->
-    <div id="inLeftStrip1" class="inLeftStrip" >
-      <div class="inLeftStripBody" >
-
-      <!-- the text in the left strip  -->
-      <div id="inLeftStripText1" class="inLeftStripText">
-        <h2 class="inStripHeader"> Resources continued... </h2>
-        <p class="inStripSmallText"> How do you get resources? Go down here to the selection menu and pick "mine" </p>
-      <img src="\img\tutorialMinerIcon.png" alt="wallImage" id="inLeftStripImage1" class="inLeftStripImage">
-    </div>
-
-    </div>
-    </div>
-
-    <!-- a right strip  -->
-    <div id="inRightStrip1" class="inRightStrip">
-      <div class="inRightStripBody" >
-
-      <!-- text in right strip  -->
-      <div id="inRightStripText1" class="inRightStripText">
-        <h2 class="inStripHeader"> Resources continued </h2>
-        <p class="inStripSmallText"> Once you've built a mine and placed it on the board next to a resource,
-          you should start seeing your resources increase! <br> Note that you can only build new structures in the non-shaded area; within 4 blocks of your other structures.</p>
-      <img src="\img\tutorialSelectMiner.png" alt="wallImage" id="inRightStripImage1" class="inRightStripImage">
-    </div>
-
-    </div>
-  </div>
-
-    <!-- the next left strip  -->
-    <div id="inLeftStrip2" class="inLeftStrip" >
-      <div class="inLeftStripBody" >
-
-      <!-- the text in the left strip  -->
-      <div id="inLeftStripText2" class="inLeftStripText">
-        <h2 class="inStripHeader"> Defend your base </h2>
-        <p class="inStripSmallText"> Once you have enough resources, build a turret.
-          Turrets can kill attackers from a distance, but can be killed very easily!
-          They are especially vulnerable while they are being built so try not to build close
-          to other attackers. </p>
-      <img src="\img\tutorialTurret.png" alt="wallImage" id="inLeftStripImage2" class="inLeftStripImage">
-    </div>
-
-      </div>
-    </div>
-
-    <!-- the next right strip  -->
-    <div id="inRightStrip2" class="inRightStrip">      <div class="inRightStripBody" >
-
-      <!-- text in right strip  -->
-      <div id="inRightStripText2" class="inRightStripText">
-        <h2 class="inStripHeader"> Walls </h2>
-        <p class="inStripSmallText"> Walls are cheap and have lots of health. Surround your turrets with walls. </p>
-      <img src="\img\tutorialWalls.png" alt="wallImage" id="inRightStripImage2" class="inRightStripImage">
-    </div>
-  </div>
-</div>
-
-    <!-- the next left strip  -->
-    <div id="inLeftStrip2" class="inLeftStrip" >
-      <div class="inLeftStripBody" >
-
-      <!-- the text in the left strip  -->
-      <div id="inLeftStripText2" class="inLeftStripText">
-        <h2 class="inStripHeader"> Walls continued... </h2>
-        <p class="inStripSmallText"> Note that attackers can travel diagonally, so this is <b> NOT </b> a safe wall placement. </p>
-      <img src="\img\tutorialBadPlacement.png" alt="wallImage" id="inLeftStripImage2" class="inLeftStripImage">
-    </div>
-</div>
-    </div>
-
-    <!-- the next right strip  -->
-    <div id="inRightStrip2" class="inRightStrip">
-      <div class="inRightStripBody" >
-
-      <!-- text in right strip  -->
-      <div id="inRightStripText2" class="inRightStripText">
-        <h2 class="inStripHeader"> Cost inflation </h2>
-        <p class="inStripSmallText"> You may have noticed by now that some of your building costs have risen. They rise
-        in proportion to your score (which you can find in the top left corner). </p>
-      <img src="\img\tutorialCostInflation.png" alt="wallImage" id="inRightStripImage2" class="inRightStripImage">
-    </div>
-</div>
-    </div>
-
-    <!-- the next left strip  -->
-    <div id="inLeftStrip2" class="inLeftStrip" >
-      <div class="inLeftStripBody" >
-
-      <!-- the text in the left strip  -->
-      <div id="inLeftStripText2" class="inLeftStripText">
-        <h2 class="inStripHeader"> Attack! </h2>
-        <p class="inStripSmallText"> Wouldn't it be nice to get resources another way? Well, every time you kill somebody else's stuff,
-        you get resources. The higher their score, the more resources you get.  </p>
-      <img src="\img\tutorialAttackPrep.png" alt="wallImage" id="inLeftStripImage2" class="inLeftStripImage">
-    </div>
-    </div>
-  </div>
-
-
-    <!-- the next right strip  -->
-    <div id="inRightStrip2" class="inRightStrip">
-    <div class="inRightStripBody" >
-
-      <!-- text in right strip  -->
-      <div id="inRightStripText2" class="inRightStripText">
-
-        <h2 class="inStripHeader"> Build attackers </h2>
-        <p class="inStripSmallText"> Select an attacker
-        and place one on the map.  </p>
-      <img src="\img\tutorialBuildOne.png" alt="wallImage" id="inRightStripImage2" class="inRightStripImage">
-    </div>
-    </div>
-  </div>
-
-    </div>
-
-    <!-- a left strip  -->
-    <div id="inLeftStrip1" class="inLeftStrip" >
-      <div class="inLeftStripBody" >
-
-      <!-- the text in the left strip  -->
-      <div id="inLeftStripText1" class="inLeftStripText">
-        <h2 class="inStripHeader"> Attack! </h2>
-        <p class="inStripSmallText"> Select your attacker by left clicking.  </p>
-      <img src="\img\tutorialSelectOne.png" alt="wallImage" id="inLeftStripImage1" class="inLeftStripImage">
-    </div>
-  </div>
-
-    </div>
-
-    <!-- a right strip  -->
-    <div id="inRightStrip1" class="inRightStrip">
-      <div class="inRightStripBody" >
-
-      <!-- text in right strip  -->
-      <div id="inRightStripText1" class="inRightStripText">
-        <h2 class="inStripHeader"> Attack, continued </h2>
-        <p class="inStripSmallText"> Select multiple attackers by holding shift while left clicking. </p>
-      <img src="\img\tutorialSelectMultiple.png" alt="wallImage" id="inRightStripImage1" class="inRightStripImage">
-    </div>
-  </div>
-
-    </div>
-
-    <!-- a left strip  -->
-    <div id="inLeftStrip1" class="inLeftStrip" >
-      <div class="inLeftStripBody" >
-
-      <!-- the text in the left strip  -->
-      <div id="inLeftStripText1" class="inLeftStripText">
-        <h2 class="inStripHeader"> Attack, continued </h2>
-        <p class="inStripSmallText"> Now right click on your target to attack! <br> If you don't see any enemies on your screen, explore the map using the arrow keys or by dragging to find some. The map is very large, so if you lose your base at any point hit the space bar to return to it.</p>
-      <img src="\img\tutorialAttack.png" alt="wallImage" id="inLeftStripImage1" class="inLeftStripImage">
-    </div>
-  </div>
-
-    </div>
-
-    <!-- a right strip  -->
-    <div id="inRightStrip1" class="inRightStrip">
-      <div class="inRightStripBody" >
-
-      <!-- text in right strip  -->
-      <div id="inRightStripText1" class="inRightStripText">
-        <h2 class="inStripHeader"> You're almost ready to play! </h2>
-        <p class="inStripSmallText"> Sell buildings by selecting a building and then clicking the sell button on the top left.  </p>
-      <img src="\img\tutorialSellBuilding.png" alt="wallImage" id="inRightStripImage1" class="inRightStripImage">
-    </div>
-  </div>
-
-    </div>
-
-    <!-- a left strip  -->
-    <div id="inLeftStrip1" class="inLeftStrip" >
-      <div class="inLeftStripBody" >
-
-      <!-- the text in the left strip  -->
-      <div id="inLeftStripText1" class="inLeftStripText">
-        <h2 class="inStripHeader"> You're ready! </h2>
-        <p class="inStripSmallText"> If you ever got lost on the map, press the space bar to return to home. Explore some of the
-          other units in the selection bar.
-          Have fun, try to get to the top of the leaderboard, and let the stones fall! </p>
-      <img src="\img\tutorialBaserando.png" alt="wallImage" id="inLeftStripImage1" class="inLeftStripImage">
-    </div>
-
-  </div>
-
-    </div>
-
-    <!-- let em play the game son!  -->
-
-        <!-- a right strip  -->
-        <div id="inRightStrip1" class="inRightStrip">
-          <div class="inRightStripBody" >
-
-          <!-- text in right strip  -->
-          <div id="inRightStripText1" class="inRightStripText">
-            <!-- <h2 class="inS tripHeader"> You're almost ready to play! </h2> -->
-
-          </div>
-          <a id="inPlay" class="button button-primary button-pill" href="/">Play</a>
-
-      </div>
-
-
-
-
-
-
-  </div>
-  <!-- Again, we're serving up the unminified source for clarity. -->
-  <script src="js/jquery-3.1.1.js"></script>
-</body>
-<!-- See http://html5boilerplate.com/ for a good place to start
-dealing with real world issues like old browsers.  -->
+		<script src="js/jquery-2.2.4.min.js"></script>
+		<script src="js/about_main.js"></script>
+	</body>
 </html>

@@ -101,10 +101,7 @@ public class DefenseBot extends Player {
                 Pair pair = resourceItr.next();
                 System.out.println("checking resource :" + pair);
                 //if there's a resource
-                // System.out.println("checking: " + pair.x + ", " + pair.y + Grid.getGridBlock(pair.x, pair.y).get().getEntity());
-                // if(Grid.getGridBlock(pair.x, pair.y).get().getEntity() instanceof Resource){
-                //     System.out.println("found resource");
-                    //if we aren't already gathering
+                //if we aren't already gathering
                 int toMineX = -1;
                 int toMineY = -1;
                 for (int i = -1 + pair.x; i < 1 + 1 + pair.x; i++) {
@@ -154,29 +151,6 @@ public class DefenseBot extends Player {
             }
         }
     }
-
-    // //override creation & removal objects to keep
-    // //our pq of available spaces updated
-    // @Override
-    // public synchronized void spawnWall(int x, int y){
-    //     // super.spawnWall(x, y);
-    //     // resourceCount -= multiplyByScoreLogistically(Constants.WALL_COST);
-    //     spawnScaffold(x, y, Constants.OBJECT_TYPE.WALL.ordinal());
-    // }
-
-    // @Override
-    // public synchronized void spawnTurret(int x, int y){
-    //     // super.spawnTurret(x, y);
-    //     // resourceCount -= multiplyByScoreLogistically(Constants.TURRET_COST);
-    //     spawnScaffold(x, y, Constants.OBJECT_TYPE.TURRET.ordinal());
-    // }
-
-    // @Override
-    // public synchronized void spawnMine(int x, int y){
-    //     // super.spawnMine(x, y);
-    //     // resourceCount -= multiplyByScoreLogistically(Constants.MINE_COST);
-    //     spawnScaffold(x, y, Constants.OBJECT_TYPE.MINE.ordinal());
-    // }
 
     @Override
     public synchronized void spawnScaffold(int x, int y, int scaffoldType) {
