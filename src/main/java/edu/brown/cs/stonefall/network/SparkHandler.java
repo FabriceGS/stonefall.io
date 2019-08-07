@@ -86,6 +86,10 @@ public class SparkHandler {
       Map<String, Object> variables = ImmutableMap.of("title", "Stonefall");
       return new ModelAndView(variables, "instructions.ftl");
     }, freeMarker);
+    Spark.get("/hq", (req, res) -> {
+      Map<String, Object> variables = ImmutableMap.of("title", "Stonefall");
+      return new ModelAndView(variables, "about.ftl");
+    }, freeMarker);
 
     // Setup Spark Routes for game page
     // Spark.get("/", new FrontHandler(), freeMarker);
