@@ -58,6 +58,10 @@
         Look around with the arrow keys. <br> -->
         <!-- Have fun, and let the stones fall. <br> -->
      <!-- < /p> -->
+      <div>
+        <a id="aboutButton" class="button button-secondary button-small button-pill" href="/hq"> About Us</a>
+     </div>
+     
      <div style = "position: fixed; bottom: 5px; left: 5px">
      <a id="createdBy" href="https://fabricegs.github.io/index.html" > Built by Fabrice Guyot-Sionnest, David Oyeka, Teo Tsivranidis & Mac Mccann</a>
      </div>
