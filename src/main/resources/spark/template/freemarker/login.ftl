@@ -40,12 +40,12 @@
     <!-- <p id="instructions"> -->
       <a id="tutorialButton" class="button button-primary button-pill" href="/instructions">Tutorial</a>
 
-      <div style = "position: fixed; top: 5px; right: 5px">
+    <!--  <div style = "position: fixed; top: 5px; right: 5px">
         <a id="donateButton" class="button button-plain button-pill" onclick="getElementById('donateForm').style.display = ((getElementById('donateForm').style.display==='none') ? 'block' : 'none')">Donate</a>
         <div id = "donateForm">
           <script src="https://donorbox.org/widget.js" paypalExpress="false"></script><iframe src="https://donorbox.org/embed/keep-the-severs-running?hide_donation_meter=true" height="685px" width="100%" style="max-width:500px; min-width:310px; max-height:none!important" seamless="seamless" name="donorbox" frameborder="0" scrolling="no" allowpaymentrequest></iframe>
         </div>
-      </div>
+      </div> -->
 
 
         <!-- (1) Mine resources by building a mine next to a rock <br>
