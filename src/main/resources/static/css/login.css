@@ -25,6 +25,10 @@
   display: none;
 }
 
+#aboutButton{
+  margin-top:10vh;
+}
+
 h1 {
   padding-top: 5vh;
   margin: 0;
